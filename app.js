@@ -1,11 +1,8 @@
 const SUPABASE_URL = "https://ymgsxzpepmsdfkkvyyzg.supabase.co";
-const SUPABASE_KEY = "sb_publishable_nYThOTaTkC_grNuhePyGHw_nyYYLypH";
+const SUPABASE_KEY = "TU_PUBLISHABLE_KEY";
+
 console.log("SUPABASE_URL =", SUPABASE_URL);
 
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
 const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
@@ -28,7 +25,9 @@ loginForm.addEventListener("submit", async (event) => {
     .getElementById("password")
     .value;
 
+  message.style.color = "#ff6b6b";
   message.textContent = "";
+
   loginButton.disabled = true;
   loginButton.textContent = "VERIFICANDO...";
 
@@ -36,12 +35,12 @@ loginForm.addEventListener("submit", async (event) => {
 
     const { data, error } =
       await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
+        email,
+        password
       });
 
     if (error) {
-      console.error(error);
+      console.error("Error Supabase:", error);
 
       message.textContent =
         "Correo o contraseña incorrectos.";
@@ -52,15 +51,11 @@ loginForm.addEventListener("submit", async (event) => {
     console.log("Login correcto:", data.user.id);
 
     message.style.color = "#55d98b";
-    message.textContent =
-      "Acceso autorizado.";
-
-    // Más adelante:
-    // window.location.href = "dashboard.html";
+    message.textContent = "Acceso autorizado.";
 
   } catch (error) {
 
-    console.error(error);
+    console.error("Error:", error);
 
     message.style.color = "#ff6b6b";
     message.textContent =
