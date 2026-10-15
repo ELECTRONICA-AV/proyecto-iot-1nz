@@ -134,3 +134,22 @@ button:disabled {
   font-size: 14px;
   color: #ff6b6b;
 }
+select {
+  width: 100%;
+  padding: 14px;
+
+  border: 1px solid #33445f;
+  border-radius: 10px;
+
+  background: #0b111c;
+  color: white;
+
+  font-size: 16px;
+  outline: none;
+
+  cursor: pointer;
+}
+
+select:focus {
+  border-color: #1976ff;
+}
