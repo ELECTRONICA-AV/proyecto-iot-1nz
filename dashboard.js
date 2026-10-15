@@ -74,11 +74,96 @@ Por ahora NO hablan con Blynk.
 
 document
   .getElementById("batteryButton")
-  .addEventListener("click", () => {
+  .addEventListener("click", async () => {
 
-    alert(
-      "La lectura de batería se conectará al ESP32 en el siguiente paso."
-    );
+    const button =
+      document.getElementById("batteryButton");
+
+    const batteryValue =
+      document.getElementById("batteryValue");
+
+    button.disabled = true;
+    button.textContent = "CONSULTANDO...";
+
+    try {
+
+      // Obtener la sesión actual de Supabase
+      const {
+        data: { session },
+        error: sessionError
+      } = await supabaseClient.auth.getSession();
+
+      if (sessionError || !session) {
+        window.location.replace("index.html");
+        return;
+      }
+
+      // Llamar a nuestra Edge Function
+      const response = await fetch(
+        `${SUPABASE_URL}/functions/v1/vehicle-api`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+
+            "Authorization":
+              `Bearer ${session.access_token}`,
+
+            "apikey": SUPABASE_KEY
+          },
+
+          body: JSON.stringify({
+            action: "battery"
+          })
+        }
+      );
+
+      const result = await response.json();
+
+      console.log(
+        "Respuesta vehicle-api:",
+        result
+      );
+
+      if (!response.ok || !result.success) {
+
+        throw new Error(
+          result.error ||
+          "No se pudo consultar la batería"
+        );
+
+      }
+
+      // Mostrar voltaje recibido de Blynk
+      batteryValue.textContent =
+        Number(result.battery).toFixed(2);
+
+      // Actualizar última comunicación
+      document
+        .getElementById("lastCommunication")
+        .textContent =
+          new Date().toLocaleString();
+
+    } catch (error) {
+
+      console.error(
+        "Error consultando batería:",
+        error
+      );
+
+      batteryValue.textContent = "--";
+
+      alert(
+        "No se pudo obtener el voltaje de batería."
+      );
+
+    } finally {
+
+      button.disabled = false;
+      button.textContent = "CONSULTAR";
+
+    }
 
   });
 
