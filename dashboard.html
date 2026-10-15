@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Electrónica AV | Toyota 1NZ</title>
+
+  <link rel="stylesheet" href="dashboard.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loader"></div>
+    <p>Verificando acceso...</p>
+  </div>
+
+  <main id="dashboard" class="dashboard hidden">
+
+    <header class="topbar">
+      <div>
+        <p class="brand">ELECTRÓNICA AV</p>
+        <h1>Toyota 1NZ</h1>
+      </div>
+
+      <div class="connection">
+        <span id="statusDot" class="status-dot offline"></span>
+        <span id="connectionText">SIN CONEXIÓN</span>
+      </div>
+    </header>
+
+    <section class="grid">
+
+      <article class="card">
+        <div class="icon">🔋</div>
+        <h2>Batería</h2>
+        <div class="value">
+          <span id="batteryValue">--</span>
+          <small>V</small>
+        </div>
+
+        <button class="secondary" id="batteryButton">
+          CONSULTAR
+        </button>
+      </article>
+
+      <article class="card">
+        <div class="icon">🌡️</div>
+        <h2>Temperatura</h2>
+        <div class="value">
+          <span id="temperatureValue">--</span>
+          <small>°C</small>
+        </div>
+
+        <button class="secondary" id="temperatureButton">
+          CONSULTAR
+        </button>
+      </article>
+
+      <article class="card">
+        <div class="icon">⛽</div>
+        <h2>Combustible</h2>
+        <div class="value">
+          <span id="fuelValue">--</span>
+          <small>%</small>
+        </div>
+
+        <button class="secondary" id="fuelButton">
+          CONSULTAR
+        </button>
+      </article>
+
+      <article class="card">
+        <div class="icon">⚙️</div>
+        <h2>Motor</h2>
+
+        <div id="engineStatus" class="engine-status">
+          DESCONOCIDO
+        </div>
+
+        <p class="card-note">
+          Estado actual del motor
+        </p>
+      </article>
+
+    </section>
+
+    <section class="control-panel">
+
+      <div class="section-title">
+        <p>CONTROL REMOTO</p>
+        <h2>Control del vehículo</h2>
+      </div>
+
+      <div class="motor-controls">
+
+        <button id="startButton" class="control-button start">
+          ENCENDER MOTOR
+        </button>
+
+        <button id="stopButton" class="control-button stop">
+          APAGAR MOTOR
+        </button>
+
+      </div>
+
+      <button id="immobilizerButton"
+              class="control-button immobilizer">
+        🔒 INMOVILIZAR VEHÍCULO
+      </button>
+
+      <p class="safety-note">
+        Los comandos críticos requerirán confirmación antes de ser enviados.
+      </p>
+
+    </section>
+
+    <footer>
+
+      <div>
+        <span class="footer-label">
+          Última comunicación
+        </span>
+
+        <strong id="lastCommunication">
+          --
+        </strong>
+      </div>
+
+      <button id="logoutButton" class="logout">
+        CERRAR SESIÓN
+      </button>
+
+    </footer>
+
+  </main>
+
+  <script src="dashboard.js"></script>
+
+</body>
+</html>
