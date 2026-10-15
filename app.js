@@ -7,7 +7,7 @@ const SUPABASE_KEY = "sb_publishable_nYThOTaTkC_grNuhePyGHw_nyYYLypH";
 const VEHICLES = {
   "1NZ": {
     name: "Toyota 1NZ",
-    email: "TU_CORREO_DE_SUPABASE"
+    email: "zetaandrew45@gmail.com"
   }
 };
 
