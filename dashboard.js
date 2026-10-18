@@ -4,10 +4,12 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
   "sb_publishable_nYThOTaTkC_grNuhePyGHw_nyYYLypH";
 
+
 const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
+
 
 const loadingScreen =
   document.getElementById("loadingScreen");
@@ -17,6 +19,7 @@ const dashboard =
 
 const logoutButton =
   document.getElementById("logoutButton");
+
 
 /*
 --------------------------------------------------
@@ -31,19 +34,23 @@ async function verifySession() {
     error
   } = await supabaseClient.auth.getSession();
 
+
   if (error || !session) {
 
     window.location.replace("index.html");
-    return;
 
+    return;
   }
 
-  loadingScreen.classList.add("hidden");
-  dashboard.classList.remove("hidden");
 
+  loadingScreen.classList.add("hidden");
+
+  dashboard.classList.remove("hidden");
 }
 
+
 verifySession();
+
 
 /*
 --------------------------------------------------
@@ -57,198 +64,435 @@ logoutButton.addEventListener(
 
     await supabaseClient.auth.signOut();
 
-    sessionStorage.removeItem("vehicleCode");
+    sessionStorage.removeItem(
+      "vehicleCode"
+    );
 
-    window.location.replace("index.html");
-
+    window.location.replace(
+      "index.html"
+    );
   }
 );
 
+
 /*
 --------------------------------------------------
-BOTONES DE TELEMETRÍA
-
-Por ahora NO hablan con Blynk.
+OBTENER SESIÓN
 --------------------------------------------------
+*/
+
+async function getSession() {
+
+  const {
+    data: { session },
+    error
+  } = await supabaseClient.auth.getSession();
+
+
+  if (error || !session) {
+
+    window.location.replace(
+      "index.html"
+    );
+
+    return null;
+  }
+
+
+  return session;
+}
+
+
+/*
+--------------------------------------------------
+LLAMAR VEHICLE-API
+--------------------------------------------------
+
+Todas las órdenes pasan por:
+
+Dashboard
+   ↓
+Supabase
+   ↓
+vehicle-api
+   ↓
+Blynk
+   ↓
+ESP32
+
+El token Blynk nunca está en GitHub.
+--------------------------------------------------
+*/
+
+async function vehicleApi(action) {
+
+  const session =
+    await getSession();
+
+
+  if (!session) {
+
+    throw new Error(
+      "Sesión no disponible"
+    );
+  }
+
+
+  const response = await fetch(
+    `${SUPABASE_URL}/functions/v1/vehicle-api`,
+    {
+      method: "POST",
+
+      headers: {
+
+        "Content-Type":
+          "application/json",
+
+        "Authorization":
+          `Bearer ${session.access_token}`,
+
+        "apikey":
+          SUPABASE_KEY
+      },
+
+      body: JSON.stringify({
+        action: action
+      })
+    }
+  );
+
+
+  let result;
+
+
+  try {
+
+    result =
+      await response.json();
+
+  } catch (error) {
+
+    throw new Error(
+      "Respuesta inválida del servidor"
+    );
+  }
+
+
+  console.log(
+    "vehicle-api:",
+    action,
+    result
+  );
+
+
+  if (
+    !response.ok ||
+    !result.success
+  ) {
+
+    throw new Error(
+      result.error ||
+      "Error ejecutando la solicitud"
+    );
+  }
+
+
+  return result;
+}
+
+
+/*
+--------------------------------------------------
+ACTUALIZAR ÚLTIMA COMUNICACIÓN
+--------------------------------------------------
+*/
+
+function updateLastCommunication() {
+
+  const element =
+    document.getElementById(
+      "lastCommunication"
+    );
+
+
+  if (element) {
+
+    element.textContent =
+      new Date().toLocaleString();
+  }
+}
+
+
+/*
+==================================================
+BATERÍA
+==================================================
 */
 
 document
   .getElementById("batteryButton")
-  .addEventListener("click", async () => {
+  .addEventListener(
+    "click",
+    async () => {
 
-    const button =
-      document.getElementById("batteryButton");
-
-    const batteryValue =
-      document.getElementById("batteryValue");
-
-    button.disabled = true;
-    button.textContent = "CONSULTANDO...";
-
-    try {
-
-      // Obtener la sesión actual de Supabase
-      const {
-        data: { session },
-        error: sessionError
-      } = await supabaseClient.auth.getSession();
-
-      if (sessionError || !session) {
-        window.location.replace("index.html");
-        return;
-      }
-
-      // Llamar a nuestra Edge Function
-      const response = await fetch(
-        `${SUPABASE_URL}/functions/v1/vehicle-api`,
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-
-            "Authorization":
-              `Bearer ${session.access_token}`,
-
-            "apikey": SUPABASE_KEY
-          },
-
-          body: JSON.stringify({
-            action: "battery"
-          })
-        }
-      );
-
-      const result = await response.json();
-
-      console.log(
-        "Respuesta vehicle-api:",
-        result
-      );
-
-      if (!response.ok || !result.success) {
-
-        throw new Error(
-          result.error ||
-          "No se pudo consultar la batería"
+      const button =
+        document.getElementById(
+          "batteryButton"
         );
 
+      const batteryValue =
+        document.getElementById(
+          "batteryValue"
+        );
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "CONSULTANDO...";
+
+
+      try {
+
+        const result =
+          await vehicleApi(
+            "battery"
+          );
+
+
+        batteryValue.textContent =
+          Number(
+            result.battery
+          ).toFixed(2);
+
+
+        updateLastCommunication();
+
+
+      } catch (error) {
+
+        console.error(
+          "Error consultando batería:",
+          error
+        );
+
+
+        batteryValue.textContent =
+          "--";
+
+
+        alert(
+          "No se pudo obtener el voltaje de batería.\n\n" +
+          error.message
+        );
+
+
+      } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+          "CONSULTAR";
       }
-
-      // Mostrar voltaje recibido de Blynk
-      batteryValue.textContent =
-        Number(result.battery).toFixed(2);
-
-      // Actualizar última comunicación
-      document
-        .getElementById("lastCommunication")
-        .textContent =
-          new Date().toLocaleString();
-
-    } catch (error) {
-
-      console.error(
-        "Error consultando batería:",
-        error
-      );
-
-      batteryValue.textContent = "--";
-
-      alert(
-        "No se pudo obtener el voltaje de batería."
-      );
-
-    } finally {
-
-      button.disabled = false;
-      button.textContent = "CONSULTAR";
-
     }
+  );
 
-  });
 
+/*
+==================================================
+TEMPERATURA
+==================================================
+*/
 
 document
   .getElementById("temperatureButton")
-  .addEventListener("click", () => {
+  .addEventListener(
+    "click",
+    () => {
 
-    alert(
-      "La lectura de temperatura se conectará al ESP32 en el siguiente paso."
-    );
+      alert(
+        "La lectura de temperatura se conectará al ESP32 más adelante."
+      );
+    }
+  );
 
-  });
 
+/*
+==================================================
+COMBUSTIBLE
+==================================================
+*/
 
 document
   .getElementById("fuelButton")
-  .addEventListener("click", () => {
+  .addEventListener(
+    "click",
+    () => {
 
-    alert(
-      "La lectura de combustible se conectará al ESP32 en el siguiente paso."
-    );
+      alert(
+        "La lectura de combustible se conectará al ESP32 más adelante."
+      );
+    }
+  );
 
-  });
 
 /*
---------------------------------------------------
-COMANDOS CRÍTICOS
+==================================================
+ENCENDER MOTOR
+==================================================
 
-Todavía NO se envía ninguna orden real.
---------------------------------------------------
+Por ahora:
+
+GPIO26 = LED IGN
+GPIO33 = LED START
+
+NO hay conexión al vehículo.
+==================================================
 */
 
 document
   .getElementById("startButton")
-  .addEventListener("click", () => {
+  .addEventListener(
+    "click",
+    async () => {
 
-    const confirmed = confirm(
-      "¿Desea solicitar el encendido del motor?"
-    );
+      const confirmed =
+        confirm(
+          "¿Desea solicitar el encendido del motor?"
+        );
 
-    if (confirmed) {
 
-      alert(
-        "Prueba de interfaz: no se envió ninguna orden al vehículo."
-      );
+      if (!confirmed) {
 
+        return;
+      }
+
+
+      const button =
+        document.getElementById(
+          "startButton"
+        );
+
+
+      button.disabled = true;
+
+      const originalText =
+        button.textContent;
+
+
+      button.textContent =
+        "ENVIANDO...";
+
+
+      try {
+
+        // ------------------------------------------
+        // ENVIAR action=start
+        // ------------------------------------------
+
+        const result =
+          await vehicleApi(
+            "start"
+          );
+
+
+        console.log(
+          "Solicitud de arranque:",
+          result
+        );
+
+
+        updateLastCommunication();
+
+
+        alert(
+          "Solicitud de encendido enviada correctamente."
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Error solicitando arranque:",
+          error
+        );
+
+
+        alert(
+          "No se pudo enviar la solicitud de encendido.\n\n" +
+          error.message
+        );
+
+
+      } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+          originalText;
+      }
     }
+  );
 
-  });
 
+/*
+==================================================
+APAGAR MOTOR
+==================================================
+
+Todavía deshabilitado a nivel lógico.
+No enviamos ninguna orden al ESP32.
+==================================================
+*/
 
 document
   .getElementById("stopButton")
-  .addEventListener("click", () => {
+  .addEventListener(
+    "click",
+    () => {
 
-    const confirmed = confirm(
-      "¿Desea solicitar el apagado del motor?"
-    );
+      const confirmed =
+        confirm(
+          "¿Desea solicitar el apagado del motor?"
+        );
 
-    if (confirmed) {
 
-      alert(
-        "Prueba de interfaz: no se envió ninguna orden al vehículo."
-      );
+      if (confirmed) {
 
+        alert(
+          "El apagado remoto todavía no está habilitado."
+        );
+      }
     }
+  );
 
-  });
 
+/*
+==================================================
+INMOVILIZADOR
+==================================================
+
+Todavía deshabilitado a nivel lógico.
+==================================================
+*/
 
 document
   .getElementById("immobilizerButton")
-  .addEventListener("click", () => {
+  .addEventListener(
+    "click",
+    () => {
 
-    const confirmed = confirm(
-      "¿Desea activar el inmovilizador?"
-    );
+      const confirmed =
+        confirm(
+          "¿Desea activar el inmovilizador?"
+        );
 
-    if (confirmed) {
 
-      alert(
-        "Prueba de interfaz: no se envió ninguna orden al vehículo."
-      );
+      if (confirmed) {
 
+        alert(
+          "El inmovilizador todavía no está habilitado."
+        );
+      }
     }
-
-  });
+  );
