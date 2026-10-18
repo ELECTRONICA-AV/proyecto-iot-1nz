@@ -108,8 +108,6 @@ async function getSession() {
 LLAMAR VEHICLE-API
 --------------------------------------------------
 
-Todas las órdenes pasan por:
-
 Dashboard
    ↓
 Supabase
@@ -120,7 +118,6 @@ Blynk
    ↓
 ESP32
 
-El token Blynk nunca está en GitHub.
 --------------------------------------------------
 */
 
@@ -341,12 +338,11 @@ document
 ENCENDER MOTOR
 ==================================================
 
-Por ahora:
+SIMULACIÓN ACTUAL:
 
 GPIO26 = LED IGN
 GPIO33 = LED START
 
-NO hay conexión al vehículo.
 ==================================================
 */
 
@@ -363,7 +359,6 @@ document
 
 
       if (!confirmed) {
-
         return;
       }
 
@@ -385,10 +380,6 @@ document
 
 
       try {
-
-        // ------------------------------------------
-        // ENVIAR action=start
-        // ------------------------------------------
 
         const result =
           await vehicleApi(
@@ -440,8 +431,21 @@ document
 APAGAR MOTOR
 ==================================================
 
-Todavía deshabilitado a nivel lógico.
-No enviamos ninguna orden al ESP32.
+SIMULACIÓN ACTUAL:
+
+Dashboard
+   ↓
+action = stop
+   ↓
+Supabase
+   ↓
+Blynk V6 = 1
+   ↓
+ESP32
+   ↓
+START OFF
+IGN OFF
+
 ==================================================
 */
 
@@ -449,7 +453,7 @@ document
   .getElementById("stopButton")
   .addEventListener(
     "click",
-    () => {
+    async () => {
 
       const confirmed =
         confirm(
@@ -457,11 +461,69 @@ document
         );
 
 
-      if (confirmed) {
+      if (!confirmed) {
+        return;
+      }
+
+
+      const button =
+        document.getElementById(
+          "stopButton"
+        );
+
+
+      button.disabled = true;
+
+      const originalText =
+        button.textContent;
+
+
+      button.textContent =
+        "APAGANDO...";
+
+
+      try {
+
+        const result =
+          await vehicleApi(
+            "stop"
+          );
+
+
+        console.log(
+          "Solicitud de apagado:",
+          result
+        );
+
+
+        updateLastCommunication();
+
 
         alert(
-          "El apagado remoto todavía no está habilitado."
+          "Solicitud de apagado enviada correctamente."
         );
+
+
+      } catch (error) {
+
+        console.error(
+          "Error solicitando apagado:",
+          error
+        );
+
+
+        alert(
+          "No se pudo enviar la solicitud de apagado.\n\n" +
+          error.message
+        );
+
+
+      } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+          originalText;
       }
     }
   );
@@ -472,7 +534,7 @@ document
 INMOVILIZADOR
 ==================================================
 
-Todavía deshabilitado a nivel lógico.
+Todavía NO habilitado.
 ==================================================
 */
 
