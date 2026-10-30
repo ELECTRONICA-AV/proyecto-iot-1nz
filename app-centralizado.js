@@ -71,4 +71,3 @@ loginForm.addEventListener("submit", async function (event) {
     loginButton.textContent = "INGRESAR";
   }
 });
-```
