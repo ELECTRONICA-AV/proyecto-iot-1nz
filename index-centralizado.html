@@ -1,0 +1,70 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Electrónica AV | Cierre Centralizado</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+  <main class="login-container">
+
+    <section class="login-card">
+
+      <div class="logo">AV</div>
+
+      <h1>ELECTRÓNICA AV</h1>
+
+      <p class="subtitle">
+        CIERRE CENTRALIZADO
+      </p>
+
+      <form id="loginForm">
+
+        <label for="password">
+          Contraseña
+        </label>
+
+        <input
+          type="password"
+          id="password"
+          placeholder="Ingrese la contraseña"
+          autocomplete="current-password"
+          required
+        >
+
+        <button
+          type="submit"
+          id="loginButton"
+        >
+          INGRESAR
+        </button>
+
+        <p id="message"></p>
+
+      </form>
+
+      <button
+        type="button"
+        class="secondary"
+        onclick="window.location.href='index.html'"
+      >
+        VOLVER
+      </button>
+
+    </section>
+
+  </main>
+
+  <script src="app-centralizado.js"></script>
+
+</body>
+</html>
+```
