@@ -1,0 +1,124 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Electrónica AV | Cierre Centralizado</title>
+
+  <link rel="stylesheet" href="dashboard-centralizado.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+  <!-- Pantalla mientras comprobamos la sesión -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loader"></div>
+    <p>Verificando acceso...</p>
+  </div>
+
+
+  <!-- Dashboard -->
+  <main id="dashboard" class="dashboard hidden">
+
+    <header class="topbar">
+
+      <div>
+        <p class="brand">ELECTRÓNICA AV</p>
+        <h1>Cierre Centralizado</h1>
+      </div>
+
+      <div class="connection">
+        <span class="status-dot ready"></span>
+        <span>ACCESO AUTORIZADO</span>
+      </div>
+
+    </header>
+
+
+    <section class="control-panel">
+
+      <div class="section-title">
+        <p>CONTROL REMOTO</p>
+        <h2>Control de puertas</h2>
+      </div>
+
+
+      <div class="lock-controls">
+
+        <button
+          id="openButton"
+          class="control-button open"
+          type="button"
+        >
+          <span class="button-icon">🔓</span>
+          <span>ABRIR</span>
+        </button>
+
+
+        <button
+          id="closeButton"
+          class="control-button close"
+          type="button"
+        >
+          <span class="button-icon">🔒</span>
+          <span>CERRAR</span>
+        </button>
+
+      </div>
+
+
+      <div class="status-card">
+
+        <span class="status-label">
+          Último comando
+        </span>
+
+        <strong id="lastCommand">
+          Ninguno
+        </strong>
+
+      </div>
+
+
+      <p class="safety-note">
+        Los comandos requieren confirmación antes de ser enviados al vehículo.
+      </p>
+
+    </section>
+
+
+    <footer>
+
+      <div>
+        <span class="footer-label">
+          Última comunicación
+        </span>
+
+        <strong id="lastCommunication">
+          --
+        </strong>
+      </div>
+
+
+      <button
+        id="logoutButton"
+        class="logout"
+        type="button"
+      >
+        CERRAR SESIÓN
+      </button>
+
+    </footer>
+
+  </main>
+
+
+  <script src="dashboard-centralizado.js"></script>
+
+</body>
+</html>
+```
