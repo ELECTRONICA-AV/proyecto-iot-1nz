@@ -1,4 +1,4 @@
-```javascript
+
 const SUPABASE_URL =
   "https://ymgsxzpepmsdfkkvyyzg.supabase.co";
 
@@ -260,4 +260,3 @@ logoutButton.addEventListener(
     );
   }
 );
-```
