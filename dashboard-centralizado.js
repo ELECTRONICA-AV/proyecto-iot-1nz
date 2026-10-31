@@ -5,11 +5,6 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
   "sb_publishable_nYThOTaTkC_grNuhePyGHw_nyYYLypH";
 
-
-// ======================================================
-// CONFIGURACIÓN
-// ======================================================
-
 const CENTRALIZED_EMAIL =
   "www.leoandres9502202@gmail.com";
 
@@ -52,7 +47,7 @@ const lastCommunication =
 
 
 // ======================================================
-// VERIFICAR SESIÓN
+// VERIFICAR SESION
 // ======================================================
 
 async function verifySession() {
@@ -80,10 +75,6 @@ async function verifySession() {
     }
 
 
-    // Además de comprobar que existe una sesión,
-    // comprobamos que pertenece al usuario del
-    // Cierre Centralizado.
-
     const userEmail =
       session.user.email;
 
@@ -95,7 +86,7 @@ async function verifySession() {
     ) {
 
       console.warn(
-        "La sesión no pertenece al Cierre Centralizado."
+        "Sesion no autorizada para Cierre Centralizado"
       );
 
 
@@ -128,7 +119,7 @@ async function verifySession() {
   } catch (error) {
 
     console.error(
-      "Error verificando sesión:",
+      "Error verificando sesion:",
       error
     );
 
@@ -144,16 +135,143 @@ verifySession();
 
 
 // ======================================================
+// OBTENER SESION
+// ======================================================
+
+async function getSession() {
+
+  const {
+    data: { session },
+    error
+  } =
+    await supabaseClient.auth.getSession();
+
+
+  if (
+    error ||
+    !session
+  ) {
+
+    window.location.replace(
+      "index-centralizado.html"
+    );
+
+    return null;
+  }
+
+
+  return session;
+}
+
+
+// ======================================================
+// CENTRAL LOCK API
+// ======================================================
+
+async function centralLockApi(action) {
+
+  const session =
+    await getSession();
+
+
+  if (!session) {
+
+    throw new Error(
+      "Sesion no disponible"
+    );
+  }
+
+
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/functions/v1/central-lock-api`,
+      {
+        method: "POST",
+
+        headers: {
+
+          "Content-Type":
+            "application/json",
+
+          "Authorization":
+            `Bearer ${session.access_token}`,
+
+          "apikey":
+            SUPABASE_KEY
+        },
+
+        body: JSON.stringify({
+          action: action
+        })
+      }
+    );
+
+
+  let result;
+
+
+  try {
+
+    result =
+      await response.json();
+
+  } catch (error) {
+
+    throw new Error(
+      "Respuesta invalida del servidor"
+    );
+  }
+
+
+  console.log(
+    "central-lock-api:",
+    action,
+    result
+  );
+
+
+  if (
+    !response.ok ||
+    !result.success
+  ) {
+
+    throw new Error(
+      result.error ||
+      "No se pudo ejecutar el comando"
+    );
+  }
+
+
+  return result;
+}
+
+
+// ======================================================
+// ACTUALIZAR ESTADO
+// ======================================================
+
+function updateStatus(command) {
+
+  lastCommand.textContent =
+    command;
+
+
+  lastCommunication.textContent =
+    new Date().toLocaleString();
+}
+
+
+// ======================================================
 // ABRIR
 // ======================================================
 
 openButton.addEventListener(
   "click",
-  function () {
+  async function () {
 
     const confirmed =
       confirm(
-        "¿Desea abrir el cierre centralizado?"
+        "¿Desea ABRIR el cierre centralizado?"
       );
 
 
@@ -162,26 +280,67 @@ openButton.addEventListener(
     }
 
 
-    // Por ahora solamente simulamos.
-    // Después aquí llamaremos central-lock-api.
-
-    console.log(
-      "SIMULACIÓN: ABRIR"
-    );
+    openButton.disabled = true;
+    closeButton.disabled = true;
 
 
-    lastCommand.textContent =
-      "ABRIR";
+    const originalText =
+      openButton.innerHTML;
 
 
-    lastCommunication.textContent =
-      new Date().toLocaleString();
+    openButton.textContent =
+      "ENVIANDO...";
 
 
-    alert(
-      "Prueba correcta.\n\n" +
-      "El comando ABRIR todavía no fue enviado a Blynk."
-    );
+    try {
+
+      const result =
+        await centralLockApi(
+          "open"
+        );
+
+
+      console.log(
+        "Apertura enviada:",
+        result
+      );
+
+
+      updateStatus(
+        "ABRIR"
+      );
+
+
+      alert(
+        "Comando de apertura enviado correctamente."
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "Error abriendo:",
+        error
+      );
+
+
+      alert(
+        "No se pudo enviar el comando de apertura.\n\n" +
+        error.message
+      );
+
+
+    } finally {
+
+      openButton.innerHTML =
+        originalText;
+
+      openButton.disabled =
+        false;
+
+      closeButton.disabled =
+        false;
+    }
   }
 );
 
@@ -192,11 +351,11 @@ openButton.addEventListener(
 
 closeButton.addEventListener(
   "click",
-  function () {
+  async function () {
 
     const confirmed =
       confirm(
-        "¿Desea cerrar el cierre centralizado?"
+        "¿Desea CERRAR el cierre centralizado?"
       );
 
 
@@ -205,32 +364,73 @@ closeButton.addEventListener(
     }
 
 
-    // Por ahora solamente simulamos.
-    // Después aquí llamaremos central-lock-api.
-
-    console.log(
-      "SIMULACIÓN: CERRAR"
-    );
+    openButton.disabled = true;
+    closeButton.disabled = true;
 
 
-    lastCommand.textContent =
-      "CERRAR";
+    const originalText =
+      closeButton.innerHTML;
 
 
-    lastCommunication.textContent =
-      new Date().toLocaleString();
+    closeButton.textContent =
+      "ENVIANDO...";
 
 
-    alert(
-      "Prueba correcta.\n\n" +
-      "El comando CERRAR todavía no fue enviado a Blynk."
-    );
+    try {
+
+      const result =
+        await centralLockApi(
+          "close"
+        );
+
+
+      console.log(
+        "Cierre enviado:",
+        result
+      );
+
+
+      updateStatus(
+        "CERRAR"
+      );
+
+
+      alert(
+        "Comando de cierre enviado correctamente."
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "Error cerrando:",
+        error
+      );
+
+
+      alert(
+        "No se pudo enviar el comando de cierre.\n\n" +
+        error.message
+      );
+
+
+    } finally {
+
+      closeButton.innerHTML =
+        originalText;
+
+      openButton.disabled =
+        false;
+
+      closeButton.disabled =
+        false;
+    }
   }
 );
 
 
 // ======================================================
-// CERRAR SESIÓN
+// CERRAR SESION
 // ======================================================
 
 logoutButton.addEventListener(
@@ -244,7 +444,7 @@ logoutButton.addEventListener(
     } catch (error) {
 
       console.error(
-        "Error cerrando sesión:",
+        "Error cerrando sesion:",
         error
       );
     }
