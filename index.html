@@ -2,7 +2,6 @@
 <html lang="es">
 
 <head>
-
   <meta charset="UTF-8">
 
   <meta
@@ -12,63 +11,43 @@
 
   <meta
     name="theme-color"
-    content="#071426"
+    content="#f4f7fb"
   >
 
   <title>
-    CETA | Sistemas IoT Automotrices
+    CETA | Sistemas Electrónicos Automotrices
   </title>
 
   <link
     rel="stylesheet"
     href="style.css"
   >
-
 </head>
 
 
 <body>
 
-  <!-- =================================================== -->
-  <!-- FONDO DECORATIVO                                    -->
-  <!-- =================================================== -->
+  <!-- ================================================== -->
+  <!-- CABECERA INSTITUCIONAL                             -->
+  <!-- ================================================== -->
 
-  <div class="background-grid"></div>
+  <header class="main-header">
 
-  <div class="glow glow-blue"></div>
+    <div class="header-container">
 
-  <div class="glow glow-red"></div>
+      <div class="brand">
 
-
-  <!-- =================================================== -->
-  <!-- CONTENIDO PRINCIPAL                                 -->
-  <!-- =================================================== -->
-
-  <main class="main-container">
-
-
-    <!-- ================================================= -->
-    <!-- CABECERA INSTITUCIONAL                            -->
-    <!-- ================================================= -->
-
-    <header class="institution-header">
-
-      <div class="institution-identity">
-
-        <div class="logo-container">
-
+        <div class="logo-box">
           <img
             src="ceta-logo.png"
             alt="Logo CETA"
-            class="institution-logo"
           >
-
         </div>
 
 
-        <div class="institution-text">
+        <div class="brand-text">
 
-          <span class="institution-code">
+          <span class="brand-name">
             CETA
           </span>
 
@@ -77,7 +56,7 @@
           </h1>
 
           <p>
-            Plataforma de sistemas electrónicos e IoT vehicular
+            Plataforma de proyectos y sistemas electrónicos
           </p>
 
         </div>
@@ -85,147 +64,178 @@
       </div>
 
 
-      <div class="system-badge">
+      <div class="header-label">
 
-        <span class="system-dot"></span>
+        <span class="header-dot"></span>
 
         <div>
-
-          <small>
-            PLATAFORMA
-          </small>
-
-          <strong>
-            IoT VEHICULAR
-          </strong>
-
+          <small>PLATAFORMA</small>
+          <strong>PROYECTOS IoT</strong>
         </div>
 
       </div>
 
-    </header>
+    </div>
+
+  </header>
 
 
-    <!-- ================================================= -->
-    <!-- PRESENTACION                                      -->
-    <!-- ================================================= -->
+  <!-- LINEA INSTITUCIONAL -->
+
+  <div class="institution-line">
+    <div class="line-blue"></div>
+    <div class="line-red"></div>
+  </div>
+
+
+  <!-- ================================================== -->
+  <!-- CONTENIDO                                          -->
+  <!-- ================================================== -->
+
+  <main>
+
+
+    <!-- PRESENTACION -->
 
     <section class="hero">
 
-      <p class="eyebrow">
-        CONTROL · MONITOREO · AUTOMATIZACIÓN
-      </p>
+      <div class="hero-content">
 
-      <h2>
-        Seleccione un
-        <span>proyecto</span>
-      </h2>
+        <span class="section-tag">
+          SISTEMAS AUTOMOTRICES
+        </span>
 
-      <p class="hero-description">
-        Acceda al sistema de control correspondiente
-        al módulo o vehículo que desea supervisar.
-      </p>
+        <h2>
+          Selección de
+          <span>maqueta</span>
+        </h2>
+
+        <p>
+          Seleccione el sistema electrónico automotriz
+          al que desea ingresar.
+        </p>
+
+      </div>
+
+
+      <div class="hero-decoration">
+
+        <span>IoT</span>
+
+        <small>
+          ELECTRÓNICA<br>
+          AUTOMOTRIZ
+        </small>
+
+      </div>
 
     </section>
 
 
-    <!-- ================================================= -->
-    <!-- PROYECTOS                                         -->
-    <!-- ================================================= -->
+    <!-- ================================================== -->
+    <!-- SELECTOR                                           -->
+    <!-- ================================================== -->
 
-    <section class="projects">
+    <section class="selector-section">
+
+      <div class="selector-heading">
+
+        <div>
+
+          <span>
+            PROYECTOS DISPONIBLES
+          </span>
+
+          <h3>
+            Maquetas de trabajo
+          </h3>
+
+        </div>
+
+
+        <div class="project-count">
+          02 PROYECTOS
+        </div>
+
+      </div>
 
 
       <!-- ================================================= -->
-      <!-- TOYOTA 1NZ-FE                                    -->
+      <!-- TOYOTA                                            -->
       <!-- ================================================= -->
 
       <article
-        class="project-card project-primary"
+        class="model-card"
         onclick="window.location.href='index-1nz.html'"
-        tabindex="0"
-        role="button"
-        aria-label="Abrir proyecto Toyota 1NZ-FE"
-        onkeydown="
-          if(event.key === 'Enter' || event.key === ' ') {
-            window.location.href='index-1nz.html';
-          }
-        "
       >
 
-        <div class="project-top">
-
-          <div class="project-icon engine-icon">
-            ⚙
-          </div>
-
-          <span class="project-number">
-            01
-          </span>
-
+        <div class="model-number">
+          01
         </div>
 
 
-        <div class="project-content">
+        <div class="model-main">
 
-          <p class="project-category">
-            SISTEMA IoT VEHICULAR
-          </p>
+          <div class="model-icon">
 
-          <h3>
-            Toyota 1NZ-FE
-          </h3>
-
-          <p class="project-description">
-            Monitoreo y control remoto del sistema
-            electrónico del vehículo.
-          </p>
-
-        </div>
-
-
-        <div class="features">
-
-          <span>
-            TELEMETRÍA
-          </span>
-
-          <span>
-            ARRANQUE
-          </span>
-
-          <span>
-            SEGURIDAD
-          </span>
-
-        </div>
-
-
-        <div class="project-footer">
-
-          <div class="availability">
-
-            <span class="availability-dot"></span>
-
-            SISTEMA DISPONIBLE
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M5 11l1.5-4.5A2.2 2.2 0 0 1 8.6 5h6.8a2.2 2.2 0 0 1 2.1 1.5L19 11m-14 0h14a2 2 0 0 1 2 2v4h-2v2h-2v-2H7v2H5v-2H3v-4a2 2 0 0 1 2-2Zm2.5 2.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm9 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"
+              />
+            </svg>
 
           </div>
 
+
+          <div class="model-info">
+
+            <span class="model-type">
+              SISTEMA IoT VEHICULAR
+            </span>
+
+            <h4>
+              Toyota 1NZ-FE
+            </h4>
+
+            <p>
+              Sistema de monitoreo, control remoto y
+              supervisión electrónica del vehículo.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="model-features">
+
+          <span>Telemetría</span>
+          <span>Control remoto</span>
+          <span>Seguridad</span>
+
+        </div>
+
+
+        <div class="model-action">
+
+          <span class="available">
+            <i></i>
+            Disponible
+          </span>
 
           <button
             type="button"
-            class="open-project"
             onclick="
               event.stopPropagation();
               window.location.href='index-1nz.html';
             "
           >
-            ACCEDER
+            INGRESAR
 
-            <span>
-              →
-            </span>
-
+            <span>→</span>
           </button>
 
         </div>
@@ -238,92 +248,77 @@
       <!-- ================================================= -->
 
       <article
-        class="project-card project-secondary"
+        class="model-card"
         onclick="window.location.href='index-centralizado.html'"
-        tabindex="0"
-        role="button"
-        aria-label="Abrir proyecto Cierre Centralizado"
-        onkeydown="
-          if(event.key === 'Enter' || event.key === ' ') {
-            window.location.href='index-centralizado.html';
-          }
-        "
       >
 
-        <div class="project-top">
-
-          <div class="project-icon lock-icon">
-            ◆
-          </div>
-
-          <span class="project-number">
-            02
-          </span>
-
+        <div class="model-number">
+          02
         </div>
 
 
-        <div class="project-content">
+        <div class="model-main">
 
-          <p class="project-category">
-            SISTEMA DE SEGURIDAD
-          </p>
+          <div class="model-icon red">
 
-          <h3>
-            Cierre Centralizado
-          </h3>
-
-          <p class="project-description">
-            Control electrónico del sistema de
-            apertura y cierre centralizado.
-          </p>
-
-        </div>
-
-
-        <div class="features">
-
-          <span>
-            CONTROL
-          </span>
-
-          <span>
-            ACCESO
-          </span>
-
-          <span>
-            SEGURIDAD
-          </span>
-
-        </div>
-
-
-        <div class="project-footer">
-
-          <div class="availability">
-
-            <span class="availability-dot"></span>
-
-            SISTEMA DISPONIBLE
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2Zm-7-2a2 2 0 0 1 4 0v2h-4V6Zm2 10.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"
+              />
+            </svg>
 
           </div>
 
+
+          <div class="model-info">
+
+            <span class="model-type">
+              SISTEMA DE CONFORT Y SEGURIDAD
+            </span>
+
+            <h4>
+              Cierre Centralizado
+            </h4>
+
+            <p>
+              Control electrónico de apertura y cierre
+              para el sistema centralizado del vehículo.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="model-features">
+
+          <span>Apertura</span>
+          <span>Cierre</span>
+          <span>Control electrónico</span>
+
+        </div>
+
+
+        <div class="model-action">
+
+          <span class="available">
+            <i></i>
+            Disponible
+          </span>
 
           <button
             type="button"
-            class="open-project"
             onclick="
               event.stopPropagation();
               window.location.href='index-centralizado.html';
             "
           >
+            INGRESAR
 
-            ACCEDER
-
-            <span>
-              →
-            </span>
-
+            <span>→</span>
           </button>
 
         </div>
@@ -333,112 +328,106 @@
     </section>
 
 
-    <!-- ================================================= -->
-    <!-- INFORMACION INFERIOR                              -->
-    <!-- ================================================= -->
+    <!-- ================================================== -->
+    <!-- INFORMACION INSTITUCIONAL                          -->
+    <!-- ================================================== -->
 
-    <section class="platform-info">
+    <section class="institution-panel">
 
-      <div class="info-item">
+      <div class="institution-item">
 
-        <div class="info-symbol">
-          ◈
-        </div>
+        <span class="institution-icon">
+          01
+        </span>
 
         <div>
-
           <strong>
-            CONTROL REMOTO
+            ELECTRÓNICA AUTOMOTRIZ
           </strong>
 
-          <span>
-            Acceso desde Internet
-          </span>
-
+          <p>
+            Sistemas electrónicos aplicados al vehículo.
+          </p>
         </div>
 
       </div>
 
 
-      <div class="info-divider"></div>
+      <div class="institution-item">
 
-
-      <div class="info-item">
-
-        <div class="info-symbol">
-          ◉
-        </div>
+        <span class="institution-icon">
+          02
+        </span>
 
         <div>
-
           <strong>
-            MONITOREO
+            TECNOLOGÍA IoT
           </strong>
 
-          <span>
-            Información del vehículo
-          </span>
-
+          <p>
+            Comunicación, monitoreo y control remoto.
+          </p>
         </div>
 
       </div>
 
 
-      <div class="info-divider"></div>
+      <div class="institution-item">
 
-
-      <div class="info-item">
-
-        <div class="info-symbol">
-          ◆
-        </div>
+        <span class="institution-icon">
+          03
+        </span>
 
         <div>
-
           <strong>
-            ACCESO SEGURO
+            DESARROLLO PRÁCTICO
           </strong>
 
-          <span>
-            Autenticación protegida
-          </span>
-
+          <p>
+            Integración de electrónica y sistemas automotrices.
+          </p>
         </div>
 
       </div>
 
     </section>
 
+  </main>
 
-    <!-- ================================================= -->
-    <!-- FOOTER                                            -->
-    <!-- ================================================= -->
 
-    <footer>
+  <!-- ================================================== -->
+  <!-- FOOTER                                             -->
+  <!-- ================================================== -->
+
+  <footer>
+
+    <div class="footer-container">
 
       <div class="footer-brand">
 
-        <strong>
-          CETA
-        </strong>
+        <img
+          src="ceta-logo.png"
+          alt=""
+        >
 
-        <span>
-          ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
-        </span>
+        <div>
+          <strong>CETA</strong>
 
-      </div>
-
-
-      <div class="footer-project">
-
-        PROYECTO IoT AUTOMOTRIZ
+          <span>
+            ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
+          </span>
+        </div>
 
       </div>
 
-    </footer>
 
-  </main>
+      <div class="footer-text">
+        PLATAFORMA DE PROYECTOS IoT AUTOMOTRICES
+      </div>
+
+    </div>
+
+  </footer>
 
 </body>
-
 </html>
