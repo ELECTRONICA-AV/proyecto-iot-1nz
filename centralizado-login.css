@@ -24,11 +24,12 @@
   --navy-850: #07182b;
   --navy-800: #0a2038;
 
-  --blue: #1677ff;
-  --blue-light: #48a4ff;
+  --blue: #123f88;
+  --blue-light: #2d7eea;
 
-  --red: #e3182d;
-  --red-dark: #9f0d1d;
+  --red: #e30613;
+  --red-light: #ff3040;
+  --red-dark: #a70714;
 
   --white: #ffffff;
   --text: #eef5ff;
@@ -74,17 +75,19 @@ body::before {
   content: "";
 
   position: fixed;
+
   top: 0;
   left: 0;
 
-  width: 260px;
-  height: 260px;
+  width: 280px;
+  height: 280px;
 
   background:
     linear-gradient(
       135deg,
-      rgba(227, 24, 45, 0.95),
-      rgba(227, 24, 45, 0)
+      rgba(227, 6, 19, 0.95),
+      rgba(227, 6, 19, 0.20),
+      transparent 70%
     );
 
   clip-path:
@@ -95,6 +98,8 @@ body::before {
     );
 
   pointer-events: none;
+
+  z-index: 0;
 }
 
 
@@ -102,17 +107,19 @@ body::after {
   content: "";
 
   position: fixed;
+
   right: 0;
   bottom: 0;
 
-  width: 300px;
-  height: 300px;
+  width: 320px;
+  height: 320px;
 
   background:
     linear-gradient(
       315deg,
-      rgba(22, 119, 255, 0.55),
-      rgba(22, 119, 255, 0)
+      rgba(18, 63, 136, 0.85),
+      rgba(18, 63, 136, 0.15),
+      transparent 70%
     );
 
   clip-path:
@@ -123,11 +130,14 @@ body::after {
     );
 
   pointer-events: none;
+
+  z-index: 0;
 }
 
 
 .background-decoration {
   position: fixed;
+
   inset: 0;
 
   pointer-events: none;
@@ -145,20 +155,24 @@ body::after {
 
   background-size:
     45px 45px;
+
+  z-index: 0;
 }
 
 
 /* =========================================================
-   CONTENEDOR
+   CONTENEDOR PRINCIPAL
 ========================================================= */
 
 .login-container {
   position: relative;
+
   z-index: 1;
 
   min-height: 100vh;
 
   display: flex;
+
   justify-content: center;
   align-items: center;
 
@@ -167,7 +181,7 @@ body::after {
 
 
 /* =========================================================
-   TARJETA
+   TARJETA DE LOGIN
 ========================================================= */
 
 .login-card {
@@ -177,38 +191,40 @@ body::after {
   max-width: 460px;
 
   padding:
-    38px
+    36px
     38px
     28px;
 
   background:
     linear-gradient(
       145deg,
-      rgba(10, 32, 56, 0.96),
-      rgba(4, 16, 31, 0.98)
+      rgba(10, 32, 56, 0.97),
+      rgba(4, 16, 31, 0.99)
     );
 
   border:
-    1px solid var(--border);
+    1px solid
+    rgba(92, 146, 201, 0.28);
 
   border-radius: 24px;
 
   box-shadow:
     0 30px 80px
-      rgba(0, 0, 0, 0.55),
+      rgba(0, 0, 0, 0.58),
     0 0 45px
-      rgba(22, 119, 255, 0.08);
+      rgba(18, 63, 136, 0.10);
 
   overflow: hidden;
 }
 
 
-/* Línea roja superior */
+/* Línea superior rojo → azul */
 
 .login-card::before {
   content: "";
 
   position: absolute;
+
   top: 0;
   left: 0;
 
@@ -219,458 +235,80 @@ body::after {
     linear-gradient(
       90deg,
       var(--red),
-      #ff3548,
-      var(--blue)
+      var(--red-light) 40%,
+      var(--blue-light)
     );
 }
 
 
-/* =========================================================
-   MARCA
-========================================================= */
+/* Brillo interior */
 
-.brand-section {
-  display: flex;
-  align-items: center;
+.login-card::after {
+  content: "";
 
-  gap: 18px;
-}
-
-
-.logo {
-  flex-shrink: 0;
-
-  width: 76px;
-  height: 76px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 18px;
-
-  background:
-    linear-gradient(
-      145deg,
-      #e3182d,
-      #9f0d1d
-    );
-
-  border:
-    1px solid
-      rgba(255, 255, 255, 0.18);
-
-  box-shadow:
-    0 10px 30px
-      rgba(227, 24, 45, 0.28);
-
-  color: var(--white);
-
-  font-size: 19px;
-  font-weight: 900;
-
-  letter-spacing: 1px;
-}
-
-
-.brand-text h1 {
-  font-size: 30px;
-
-  font-weight: 900;
-
-  letter-spacing: 3px;
-
-  color: var(--white);
-}
-
-
-.brand-name {
-  max-width: 270px;
-
-  margin-top: 5px;
-
-  color: #aabbd0;
-
-  font-size: 10px;
-  font-weight: bold;
-
-  line-height: 1.5;
-
-  letter-spacing: 1.3px;
-}
-
-
-/* =========================================================
-   SEPARADOR
-========================================================= */
-
-.separator {
-  width: 100%;
-  height: 1px;
-
-  margin:
-    28px 0;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(100, 160, 220, 0.45),
-      transparent
-    );
-}
-
-
-/* =========================================================
-   INFORMACIÓN DEL PROYECTO
-========================================================= */
-
-.project-info {
-  margin-bottom: 30px;
-}
-
-
-.project-label {
-  display: inline-block;
-
-  margin-bottom: 8px;
-
-  color: var(--red);
-
-  font-size: 11px;
-  font-weight: 800;
-
-  letter-spacing: 2px;
-}
-
-
-.project-info h2 {
-  color: var(--white);
-
-  font-size: 25px;
-  font-weight: 800;
-
-  margin-bottom: 8px;
-}
-
-
-.project-info p {
-  color: var(--muted);
-
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-
-/* =========================================================
-   FORMULARIO
-========================================================= */
-
-label {
-  display: block;
-
-  margin-bottom: 9px;
-
-  color: #c7d7e9;
-
-  font-size: 11px;
-  font-weight: 800;
-
-  letter-spacing: 1.3px;
-}
-
-
-.password-container {
-  position: relative;
-}
-
-
-.password-icon {
   position: absolute;
 
-  left: 16px;
-  top: 50%;
+  width: 180px;
+  height: 180px;
 
-  transform:
-    translateY(-50%);
+  top: -100px;
+  right: -100px;
 
-  font-size: 16px;
+  border-radius: 50%;
+
+  background:
+    rgba(45, 126, 234, 0.08);
+
+  filter: blur(15px);
 
   pointer-events: none;
 }
 
 
-input {
-  width: 100%;
-
-  padding:
-    16px
-    16px
-    16px
-    48px;
-
-  border:
-    1px solid #294766;
-
-  border-radius: 12px;
-
-  background:
-    rgba(2, 9, 20, 0.8);
-
-  color: var(--white);
-
-  font-size: 15px;
-
-  outline: none;
-
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
-}
-
-
-input::placeholder {
-  color: #647b94;
-}
-
-
-input:focus {
-  border-color:
-    var(--blue-light);
-
-  background:
-    rgba(5, 18, 35, 0.95);
-
-  box-shadow:
-    0 0 0 3px
-      rgba(22, 119, 255, 0.12);
-}
-
-
 /* =========================================================
-   BOTÓN INGRESAR
+   IDENTIDAD CETA
 ========================================================= */
 
-.login-button {
+.brand-section {
   position: relative;
 
-  width: 100%;
+  z-index: 1;
 
-  margin-top: 22px;
+  display: flex;
 
-  padding: 16px;
+  flex-direction: column;
 
-  border: none;
-
-  border-radius: 12px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #e3182d,
-      #bd1023
-    );
-
-  color: var(--white);
-
-  font-size: 13px;
-  font-weight: 900;
-
-  letter-spacing: 1.2px;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 12px 30px
-      rgba(227, 24, 45, 0.24);
-
-  transition:
-    transform 0.15s ease,
-    filter 0.15s ease,
-    box-shadow 0.15s ease;
-}
-
-
-.login-button:hover {
-  filter:
-    brightness(1.12);
-
-  transform:
-    translateY(-1px);
-
-  box-shadow:
-    0 15px 35px
-      rgba(227, 24, 45, 0.32);
-}
-
-
-.login-button:active {
-  transform:
-    translateY(1px);
-}
-
-
-.login-button:disabled {
-  opacity: 0.55;
-
-  cursor:
-    not-allowed;
-
-  transform: none;
-}
-
-
-/* =========================================================
-   MENSAJES
-========================================================= */
-
-#message {
-  min-height: 20px;
-
-  margin-top: 16px;
+  align-items: center;
 
   text-align: center;
-
-  color: #ff6b6b;
-
-  font-size: 13px;
 }
 
 
 /* =========================================================
-   BOTÓN VOLVER
+   LOGO CETA
 ========================================================= */
 
-.back-button {
-  width: 100%;
+.logo-container {
+  width: 150px;
+  height: 150px;
 
-  margin-top: 8px;
-
-  padding: 14px;
-
-  border:
-    1px solid #294766;
-
-  border-radius: 12px;
-
-  background:
-    transparent;
-
-  color: #aebfd2;
-
-  font-size: 11px;
-  font-weight: 800;
-
-  letter-spacing: 1px;
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
-}
-
-
-.back-button:hover {
-  background:
-    rgba(22, 119, 255, 0.08);
-
-  border-color:
-    #3e6c99;
-
-  color:
-    var(--white);
-}
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.login-footer {
   display: flex;
+
   justify-content: center;
   align-items: center;
 
-  gap: 8px;
+  padding: 6px;
 
-  margin-top: 25px;
+  margin-bottom: 18px;
 
-  color: #71879f;
-
-  font-size: 9px;
-  font-weight: bold;
-
-  letter-spacing: 1.2px;
-}
-
-
-.status-dot {
-  width: 7px;
-  height: 7px;
+  background: #ffffff;
 
   border-radius: 50%;
 
-  background:
-    #35d07f;
+  border:
+    3px solid
+    rgba(227, 6, 19, 0.95);
 
   box-shadow:
-    0 0 9px
-      rgba(53, 208, 127, 0.8);
-}
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 520px) {
-
-  .login-container {
-    padding:
-      20px 15px;
-  }
-
-
-  .login-card {
-    padding:
-      30px
-      23px
-      24px;
-
-    border-radius:
-      19px;
-  }
-
-
-  .brand-section {
-    flex-direction:
-      column;
-
-    text-align:
-      center;
-
-    gap:
-      13px;
-  }
-
-
-  .brand-name {
-    max-width:
-      100%;
-  }
-
-
-  .project-info {
-    text-align:
-      center;
-  }
-
-
-  .project-info h2 {
-    font-size:
-      23px;
-  }
-}
+    0 0 0 5px
+      rgba(255, 255, 255, 0.035
