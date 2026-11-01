@@ -1,70 +1,166 @@
-```html
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Electrónica AV | Cierre Centralizado</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <link rel="stylesheet" href="style.css">
+  <meta
+    name="theme-color"
+    content="#061426"
+  >
+
+  <title>CETA | Cierre Centralizado</title>
+
+  <link
+    rel="stylesheet"
+    href="centralizado-login.css"
+  >
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
 
+  <!-- Decoración de fondo -->
+  <div class="background-decoration"></div>
+
+
   <main class="login-container">
 
     <section class="login-card">
 
-      <div class="logo">AV</div>
+      <!-- ==================================================
+           MARCA
+      =================================================== -->
 
-      <h1>ELECTRÓNICA AV</h1>
+      <header class="brand-section">
 
-      <p class="subtitle">
-        CIERRE CENTRALIZADO
-      </p>
+        <!--
+          Cuando tengamos el logo real, reemplazaremos
+          este bloque por una imagen.
+        -->
+        <div class="logo">
+          CETA
+        </div>
+
+        <div class="brand-text">
+
+          <h1>CETA</h1>
+
+          <p class="brand-name">
+            ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
+          </p>
+
+        </div>
+
+      </header>
+
+
+      <div class="separator"></div>
+
+
+      <!-- ==================================================
+           PROYECTO
+      =================================================== -->
+
+      <section class="project-info">
+
+        <span class="project-label">
+          CONTROL VEHICULAR
+        </span>
+
+        <h2>
+          Cierre Centralizado
+        </h2>
+
+        <p>
+          Acceso al sistema de control remoto
+          del vehículo.
+        </p>
+
+      </section>
+
+
+      <!-- ==================================================
+           LOGIN
+      =================================================== -->
 
       <form id="loginForm">
 
         <label for="password">
-          Contraseña
+          CONTRASEÑA DE ACCESO
         </label>
 
-        <input
-          type="password"
-          id="password"
-          placeholder="Ingrese la contraseña"
-          autocomplete="current-password"
-          required
-        >
+
+        <div class="password-container">
+
+          <span class="password-icon">
+            🔒
+          </span>
+
+          <input
+            type="password"
+            id="password"
+            placeholder="Ingrese su contraseña"
+            autocomplete="current-password"
+            required
+          >
+
+        </div>
+
 
         <button
           type="submit"
           id="loginButton"
+          class="login-button"
         >
-          INGRESAR
+          INGRESAR AL SISTEMA
         </button>
+
 
         <p id="message"></p>
 
       </form>
 
+
+      <!-- ==================================================
+           VOLVER
+      =================================================== -->
+
       <button
         type="button"
-        class="secondary"
+        class="back-button"
         onclick="window.location.href='index.html'"
       >
-        VOLVER
+        ← VOLVER A MAQUETAS
       </button>
+
+
+      <!-- ==================================================
+           PIE
+      =================================================== -->
+
+      <footer class="login-footer">
+
+        <span class="status-dot"></span>
+
+        <span>
+          SISTEMA DE ACCESO SEGURO
+        </span>
+
+      </footer>
 
     </section>
 
   </main>
 
+
   <script src="app-centralizado.js"></script>
 
 </body>
 </html>
-```
