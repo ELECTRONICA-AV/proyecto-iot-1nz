@@ -1,7 +1,9 @@
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -21,36 +23,58 @@
     href="centralizado-login.css"
   >
 
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
+
 
 <body>
 
+  <!-- =====================================================
+       DECORACIÓN DEL FONDO
+  ====================================================== -->
+
   <div class="background-decoration"></div>
+
+
+  <!-- =====================================================
+       CONTENEDOR PRINCIPAL
+  ====================================================== -->
 
   <main class="login-container">
 
+
     <section class="login-card">
 
-      <!-- ==========================================
-           IDENTIDAD INSTITUCIONAL
-      =========================================== -->
+
+      <!-- =================================================
+           IDENTIDAD INSTITUCIONAL CETA
+      ================================================== -->
 
       <header class="brand-section">
 
-        <div class="logo-container">
+
+        <!-- LOGO -->
+
+        <div class="ceta-logo-wrapper">
 
           <img
             src="img/LogoIns.jpeg"
             alt="CETA - Instituto Tecnológico de Enseñanza Automotriz"
-            class="logo-image"
+            class="ceta-logo"
           >
 
         </div>
 
+
+        <!-- NOMBRE -->
+
         <div class="brand-text">
 
-          <h1>CETA</h1>
+          <h1>
+            CETA
+          </h1>
 
           <p>
             ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
@@ -58,15 +82,20 @@
 
         </div>
 
+
       </header>
 
+
+      <!-- =================================================
+           SEPARADOR
+      ================================================== -->
 
       <div class="separator"></div>
 
 
-      <!-- ==========================================
+      <!-- =================================================
            INFORMACIÓN DEL SISTEMA
-      =========================================== -->
+      ================================================== -->
 
       <section class="project-info">
 
@@ -86,11 +115,12 @@
       </section>
 
 
-      <!-- ==========================================
+      <!-- =================================================
            LOGIN
-      =========================================== -->
+      ================================================== -->
 
       <form id="loginForm">
+
 
         <label for="password">
           CONTRASEÑA DE ACCESO
@@ -99,9 +129,11 @@
 
         <div class="password-container">
 
+
           <span class="password-icon">
             🔒
           </span>
+
 
           <input
             type="password"
@@ -111,8 +143,11 @@
             required
           >
 
+
         </div>
 
+
+        <!-- BOTÓN INGRESAR -->
 
         <button
           type="submit"
@@ -123,14 +158,21 @@
         </button>
 
 
-        <p id="message"></p>
+        <!-- MENSAJE LOGIN -->
+
+        <p
+          id="message"
+          role="status"
+          aria-live="polite"
+        ></p>
+
 
       </form>
 
 
-      <!-- ==========================================
-           VOLVER
-      =========================================== -->
+      <!-- =================================================
+           VOLVER AL SELECTOR DE MAQUETAS
+      ================================================== -->
 
       <button
         type="button"
@@ -141,9 +183,9 @@
       </button>
 
 
-      <!-- ==========================================
-           ESTADO
-      =========================================== -->
+      <!-- =================================================
+           ESTADO DEL SISTEMA
+      ================================================== -->
 
       <footer class="login-footer">
 
@@ -155,12 +197,20 @@
 
       </footer>
 
+
     </section>
+
 
   </main>
 
 
+  <!-- =====================================================
+       LÓGICA DEL LOGIN
+  ====================================================== -->
+
   <script src="app-centralizado.js"></script>
 
+
 </body>
+
 </html>
