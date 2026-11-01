@@ -23,7 +23,7 @@ const logoutButton =
 
 /*
 --------------------------------------------------
-VERIFICAR SESIÓN
+VERIFICAR SESION
 --------------------------------------------------
 */
 
@@ -37,15 +37,21 @@ async function verifySession() {
 
   if (error || !session) {
 
-    window.location.replace("index.html");
+    window.location.replace(
+      "index-1nz.html"
+    );
 
     return;
   }
 
 
-  loadingScreen.classList.add("hidden");
+  loadingScreen.classList.add(
+    "hidden"
+  );
 
-  dashboard.classList.remove("hidden");
+  dashboard.classList.remove(
+    "hidden"
+  );
 }
 
 
@@ -54,7 +60,7 @@ verifySession();
 
 /*
 --------------------------------------------------
-CERRAR SESIÓN
+CERRAR SESION
 --------------------------------------------------
 */
 
@@ -77,7 +83,7 @@ logoutButton.addEventListener(
 
 /*
 --------------------------------------------------
-OBTENER SESIÓN
+OBTENER SESION
 --------------------------------------------------
 */
 
@@ -92,7 +98,7 @@ async function getSession() {
   if (error || !session) {
 
     window.location.replace(
-      "index.html"
+      "index-1nz.html"
     );
 
     return null;
@@ -107,18 +113,6 @@ async function getSession() {
 --------------------------------------------------
 LLAMAR VEHICLE-API
 --------------------------------------------------
-
-Dashboard
-   ↓
-Supabase
-   ↓
-vehicle-api
-   ↓
-Blynk
-   ↓
-ESP32
-
---------------------------------------------------
 */
 
 async function vehicleApi(action) {
@@ -130,7 +124,7 @@ async function vehicleApi(action) {
   if (!session) {
 
     throw new Error(
-      "Sesión no disponible"
+      "Sesion no disponible"
     );
   }
 
@@ -170,7 +164,7 @@ async function vehicleApi(action) {
   } catch (error) {
 
     throw new Error(
-      "Respuesta inválida del servidor"
+      "Respuesta invalida del servidor"
     );
   }
 
@@ -200,7 +194,7 @@ async function vehicleApi(action) {
 
 /*
 --------------------------------------------------
-ACTUALIZAR ÚLTIMA COMUNICACIÓN
+ACTUALIZAR ULTIMA COMUNICACION
 --------------------------------------------------
 */
 
@@ -222,7 +216,7 @@ function updateLastCommunication() {
 
 /*
 ==================================================
-BATERÍA
+BATERIA
 ==================================================
 */
 
@@ -269,7 +263,7 @@ document
       } catch (error) {
 
         console.error(
-          "Error consultando batería:",
+          "Error consultando bateria:",
           error
         );
 
@@ -279,7 +273,7 @@ document
 
 
         alert(
-          "No se pudo obtener el voltaje de batería.\n\n" +
+          "No se pudo obtener el voltaje de bateria.\n\n" +
           error.message
         );
 
@@ -308,7 +302,7 @@ document
     () => {
 
       alert(
-        "La lectura de temperatura se conectará al ESP32 más adelante."
+        "La lectura de temperatura se conectara al ESP32 mas adelante."
       );
     }
   );
@@ -324,11 +318,79 @@ document
   .getElementById("fuelButton")
   .addEventListener(
     "click",
-    () => {
+    async () => {
 
-      alert(
-        "La lectura de combustible se conectará al ESP32 más adelante."
-      );
+      const button =
+        document.getElementById(
+          "fuelButton"
+        );
+
+      const fuelValue =
+        document.getElementById(
+          "fuelValue"
+        );
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "CONSULTANDO...";
+
+
+      try {
+
+        const result =
+          await vehicleApi(
+            "fuel"
+          );
+
+
+        const fuel =
+          Number(
+            result.fuel
+          );
+
+
+        if (!Number.isFinite(fuel)) {
+
+          throw new Error(
+            "Valor de combustible invalido"
+          );
+        }
+
+
+        fuelValue.textContent =
+          Math.round(fuel);
+
+
+        updateLastCommunication();
+
+
+      } catch (error) {
+
+        console.error(
+          "Error consultando combustible:",
+          error
+        );
+
+
+        fuelValue.textContent =
+          "--";
+
+
+        alert(
+          "No se pudo obtener el nivel de combustible.\n\n" +
+          error.message
+        );
+
+
+      } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+          "CONSULTAR";
+      }
     }
   );
 
@@ -336,13 +398,6 @@ document
 /*
 ==================================================
 ENCENDER MOTOR
-==================================================
-
-SIMULACIÓN ACTUAL:
-
-GPIO26 = LED IGN
-GPIO33 = LED START
-
 ==================================================
 */
 
@@ -430,23 +485,6 @@ document
 ==================================================
 APAGAR MOTOR
 ==================================================
-
-SIMULACIÓN ACTUAL:
-
-Dashboard
-   ↓
-action = stop
-   ↓
-Supabase
-   ↓
-Blynk V6 = 1
-   ↓
-ESP32
-   ↓
-START OFF
-IGN OFF
-
-==================================================
 */
 
 document
@@ -533,9 +571,6 @@ document
 ==================================================
 INMOVILIZADOR
 ==================================================
-
-Todavía NO habilitado.
-==================================================
 */
 
 document
@@ -553,7 +588,7 @@ document
       if (confirmed) {
 
         alert(
-          "El inmovilizador todavía no está habilitado."
+          "El inmovilizador todavia no esta habilitado."
         );
       }
     }
