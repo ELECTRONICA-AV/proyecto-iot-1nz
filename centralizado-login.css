@@ -2,27 +2,20 @@
 /* =========================================================
    CETA
    ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
-
    LOGIN - CIERRE CENTRALIZADO
 ========================================================= */
 
 
 /* =========================================================
-   CONFIGURACIÓN GENERAL
+   VARIABLES
 ========================================================= */
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 
 :root {
   --navy-950: #020914;
   --navy-900: #04101f;
   --navy-850: #07182b;
   --navy-800: #0a2038;
+  --navy-700: #102b49;
 
   --blue: #123f88;
   --blue-light: #2d7eea;
@@ -33,9 +26,20 @@
 
   --white: #ffffff;
   --text: #eef5ff;
-  --muted: #8fa5bf;
+  --muted: #91a6bd;
 
   --border: rgba(100, 160, 220, 0.22);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 
@@ -58,8 +62,8 @@ body {
     radial-gradient(
       circle at 50% 0%,
       #12345b 0%,
-      #07182b 28%,
-      #04101f 58%,
+      #07182b 30%,
+      #04101f 60%,
       #020914 100%
     );
 
@@ -68,7 +72,7 @@ body {
 
 
 /* =========================================================
-   DECORACIÓN DEL FONDO
+   FONDO DECORATIVO
 ========================================================= */
 
 body::before {
@@ -135,10 +139,14 @@ body::after {
 }
 
 
+/* Cuadrícula técnica */
+
 .background-decoration {
   position: fixed;
 
   inset: 0;
+
+  z-index: 0;
 
   pointer-events: none;
 
@@ -155,8 +163,6 @@ body::after {
 
   background-size:
     45px 45px;
-
-  z-index: 0;
 }
 
 
@@ -181,7 +187,7 @@ body::after {
 
 
 /* =========================================================
-   TARJETA DE LOGIN
+   TARJETA
 ========================================================= */
 
 .login-card {
@@ -191,7 +197,7 @@ body::after {
   max-width: 460px;
 
   padding:
-    36px
+    34px
     38px
     28px;
 
@@ -209,16 +215,14 @@ body::after {
   border-radius: 24px;
 
   box-shadow:
-    0 30px 80px
-      rgba(0, 0, 0, 0.58),
-    0 0 45px
-      rgba(18, 63, 136, 0.10);
+    0 30px 80px rgba(0, 0, 0, 0.58),
+    0 0 45px rgba(18, 63, 136, 0.10);
 
   overflow: hidden;
 }
 
 
-/* Línea superior rojo → azul */
+/* Línea superior institucional */
 
 .login-card::before {
   content: "";
@@ -235,33 +239,37 @@ body::after {
     linear-gradient(
       90deg,
       var(--red),
-      var(--red-light) 40%,
+      var(--red-light) 42%,
       var(--blue-light)
     );
+
+  z-index: 3;
 }
 
 
-/* Brillo interior */
+/* Brillo azul interno */
 
 .login-card::after {
   content: "";
 
   position: absolute;
 
-  width: 180px;
-  height: 180px;
+  top: -110px;
+  right: -110px;
 
-  top: -100px;
-  right: -100px;
+  width: 220px;
+  height: 220px;
 
   border-radius: 50%;
 
   background:
     rgba(45, 126, 234, 0.08);
 
-  filter: blur(15px);
+  filter: blur(18px);
 
   pointer-events: none;
+
+  z-index: 0;
 }
 
 
@@ -272,10 +280,11 @@ body::after {
 .brand-section {
   position: relative;
 
-  z-index: 1;
+  z-index: 2;
+
+  width: 100%;
 
   display: flex;
-
   flex-direction: column;
 
   align-items: center;
@@ -286,29 +295,711 @@ body::after {
 
 /* =========================================================
    LOGO CETA
+
+   Estas son las ÚNICAS clases utilizadas para el logo.
 ========================================================= */
 
-.logo-container {
-  width: 150px;
-  height: 150px;
+.ceta-logo-wrapper {
+  position: relative;
+
+  width: 138px;
+  height: 138px;
+
+  min-width: 138px;
+  min-height: 138px;
+
+  max-width: 138px;
+  max-height: 138px;
 
   display: flex;
 
   justify-content: center;
   align-items: center;
 
-  padding: 6px;
+  margin:
+    0
+    auto
+    18px;
 
-  margin-bottom: 18px;
+  padding: 5px;
 
   background: #ffffff;
 
-  border-radius: 50%;
-
   border:
     3px solid
-    rgba(227, 6, 19, 0.95);
+    var(--red);
+
+  border-radius: 50%;
+
+  overflow: hidden;
 
   box-shadow:
-    0 0 0 5px
-      rgba(255, 255, 255, 0.035
+    0 0 0 5px rgba(255, 255, 255, 0.035),
+    0 12px 35px rgba(0, 0, 0, 0.40),
+    0 0 26px rgba(227, 6, 19, 0.15);
+
+  flex-shrink: 0;
+}
+
+
+.ceta-logo {
+  position: static !important;
+
+  display: block !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  min-width: 0 !important;
+  min-height: 0 !important;
+
+  max-width: 100% !important;
+  max-height: 100% !important;
+
+  margin: 0 !important;
+  padding: 2px !important;
+
+  object-fit: contain !important;
+  object-position: center !important;
+
+  border-radius: 50% !important;
+
+  transform: none !important;
+
+  flex: none !important;
+}
+
+
+/* =========================================================
+   NOMBRE CETA
+========================================================= */
+
+.brand-text {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+}
+
+
+.brand-text h1 {
+  margin: 0;
+
+  color: var(--white);
+
+  font-size: 34px;
+  font-weight: 900;
+
+  line-height: 1;
+
+  letter-spacing: 5px;
+}
+
+
+.brand-text p {
+  max-width: 350px;
+
+  margin:
+    9px
+    auto
+    0;
+
+  color: #b2c3d6;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  line-height: 1.6;
+
+  letter-spacing: 1.5px;
+}
+
+
+/* Detalle rojo debajo del nombre */
+
+.brand-text::after {
+  content: "";
+
+  display: block;
+
+  width: 65px;
+  height: 3px;
+
+  margin:
+    16px
+    auto
+    0;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--red),
+      var(--red-light)
+    );
+
+  box-shadow:
+    0 0 12px
+      rgba(227, 6, 19, 0.45);
+}
+
+
+/* =========================================================
+   SEPARADOR
+========================================================= */
+
+.separator {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+  height: 1px;
+
+  margin:
+    27px
+    0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(92, 146, 201, 0.50),
+      transparent
+    );
+}
+
+
+/* =========================================================
+   INFORMACIÓN DEL PROYECTO
+========================================================= */
+
+.project-info {
+  position: relative;
+
+  z-index: 2;
+
+  margin-bottom: 29px;
+}
+
+
+.project-label {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color: var(--red-light);
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: 2px;
+}
+
+
+.project-info h2 {
+  margin-bottom: 8px;
+
+  color: var(--white);
+
+  font-size: 25px;
+  font-weight: 800;
+
+  line-height: 1.2;
+}
+
+
+.project-info p {
+  color: var(--muted);
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   FORMULARIO
+========================================================= */
+
+form {
+  position: relative;
+
+  z-index: 2;
+}
+
+
+label {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #c7d7e9;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.3px;
+}
+
+
+/* =========================================================
+   CONTRASEÑA
+========================================================= */
+
+.password-container {
+  position: relative;
+
+  width: 100%;
+}
+
+
+.password-icon {
+  position: absolute;
+
+  left: 16px;
+  top: 50%;
+
+  z-index: 2;
+
+  transform:
+    translateY(-50%);
+
+  font-size: 16px;
+
+  pointer-events: none;
+}
+
+
+input {
+  display: block;
+
+  width: 100%;
+
+  padding:
+    16px
+    16px
+    16px
+    48px;
+
+  border:
+    1px solid
+    #294766;
+
+  border-radius: 12px;
+
+  background:
+    rgba(2, 9, 20, 0.82);
+
+  color: var(--white);
+
+  font-family: inherit;
+  font-size: 15px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+
+input::placeholder {
+  color: #647b94;
+}
+
+
+input:hover {
+  border-color: #365d84;
+}
+
+
+input:focus {
+  border-color:
+    var(--blue-light);
+
+  background:
+    rgba(5, 18, 35, 0.96);
+
+  box-shadow:
+    0 0 0 3px
+      rgba(45, 126, 234, 0.13);
+}
+
+
+/* =========================================================
+   BOTÓN INGRESAR
+========================================================= */
+
+.login-button {
+  position: relative;
+
+  width: 100%;
+
+  margin-top: 22px;
+
+  padding: 16px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--red),
+      var(--red-dark)
+    );
+
+  color: var(--white);
+
+  font-family: inherit;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  letter-spacing: 1.3px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 12px 30px
+      rgba(227, 6, 19, 0.24);
+
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+
+.login-button:hover {
+  filter: brightness(1.13);
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 16px 35px
+      rgba(227, 6, 19, 0.34);
+}
+
+
+.login-button:active {
+  transform:
+    translateY(1px);
+}
+
+
+.login-button:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   MENSAJE DE LOGIN
+========================================================= */
+
+#message {
+  min-height: 20px;
+
+  margin-top: 16px;
+
+  text-align: center;
+
+  color: #ff6b6b;
+
+  font-size: 13px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   BOTÓN VOLVER
+========================================================= */
+
+.back-button {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  margin-top: 8px;
+
+  padding: 14px;
+
+  border:
+    1px solid
+    #294766;
+
+  border-radius: 12px;
+
+  background:
+    rgba(4, 16, 31, 0.35);
+
+  color: #aebfd2;
+
+  font-family: inherit;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+
+.back-button:hover {
+  background:
+    rgba(45, 126, 234, 0.08);
+
+  border-color:
+    #3e6c99;
+
+  color:
+    var(--white);
+
+  transform:
+    translateY(-1px);
+}
+
+
+.back-button:active {
+  transform:
+    translateY(1px);
+}
+
+
+/* =========================================================
+   PIE DE PÁGINA
+========================================================= */
+
+.login-footer {
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 25px;
+
+  padding-top: 20px;
+
+  border-top:
+    1px solid
+    rgba(92, 146, 201, 0.12);
+
+  color: #71879f;
+
+  font-size: 9px;
+  font-weight: bold;
+
+  letter-spacing: 1.2px;
+}
+
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #35d07f;
+
+  box-shadow:
+    0 0 9px
+      rgba(53, 208, 127, 0.85);
+}
+
+
+/* =========================================================
+   SELECCIÓN
+========================================================= */
+
+::selection {
+  background:
+    rgba(227, 6, 19, 0.75);
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   TABLET Y CELULAR
+========================================================= */
+
+@media (max-width: 520px) {
+
+  body::before {
+    width: 190px;
+    height: 190px;
+  }
+
+
+  body::after {
+    width: 210px;
+    height: 210px;
+  }
+
+
+  .login-container {
+    padding:
+      20px
+      15px;
+  }
+
+
+  .login-card {
+    max-width: 420px;
+
+    padding:
+      28px
+      23px
+      23px;
+
+    border-radius: 19px;
+  }
+
+
+  .ceta-logo-wrapper {
+    width: 118px;
+    height: 118px;
+
+    min-width: 118px;
+    min-height: 118px;
+
+    max-width: 118px;
+    max-height: 118px;
+
+    margin-bottom: 16px;
+  }
+
+
+  .brand-text h1 {
+    font-size: 30px;
+
+    letter-spacing: 4px;
+  }
+
+
+  .brand-text p {
+    max-width: 280px;
+
+    font-size: 9px;
+
+    letter-spacing: 1.1px;
+  }
+
+
+  .separator {
+    margin:
+      23px
+      0;
+  }
+
+
+  .project-info {
+    margin-bottom: 25px;
+
+    text-align: center;
+  }
+
+
+  .project-info h2 {
+    font-size: 23px;
+  }
+
+
+  .project-info p {
+    font-size: 13px;
+  }
+
+
+  input {
+    padding:
+      15px
+      15px
+      15px
+      46px;
+  }
+
+
+  .login-button {
+    padding: 15px;
+  }
+}
+
+
+/* =========================================================
+   PANTALLAS PEQUEÑAS
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .login-card {
+    padding:
+      25px
+      18px
+      22px;
+  }
+
+
+  .ceta-logo-wrapper {
+    width: 105px;
+    height: 105px;
+
+    min-width: 105px;
+    min-height: 105px;
+
+    max-width: 105px;
+    max-height: 105px;
+  }
+
+
+  .brand-text h1 {
+    font-size: 27px;
+
+    letter-spacing: 3px;
+  }
+
+
+  .brand-text p {
+    font-size: 8px;
+  }
+
+
+  .project-info h2 {
+    font-size: 21px;
+  }
+
+
+  .project-info p {
+    font-size: 12px;
+  }
+}
