@@ -1,33 +1,33 @@
 :root {
 
-  --background: #030811;
-  --background-secondary: #071426;
+  --navy: #102b50;
+  --navy-dark: #0a203c;
 
-  --surface: #0b1727;
-  --surface-secondary: #0f1d30;
+  --blue: #1856a8;
+  --blue-light: #2e73c9;
+  --blue-pale: #eaf2fc;
 
-  --border: #1d3551;
-  --border-light: #294968;
+  --red: #d71920;
+  --red-pale: #fff0f1;
 
-  --blue: #164b9b;
-  --blue-bright: #2878e5;
-  --blue-light: #76aaf0;
+  --green: #16864b;
 
-  --red: #e30613;
-  --red-light: #ff4650;
+  --background: #f2f5f9;
+  --background-blue: #eaf0f7;
 
-  --green: #22c55e;
+  --surface: #ffffff;
 
-  --white: #f7f9fc;
-  --text: #dce6f2;
+  --border: #dce3eb;
+  --border-dark: #cbd5e1;
 
-  --muted: #8497ae;
-  --muted-dark: #536981;
+  --text: #182b40;
+  --text-secondary: #53677c;
+  --muted: #8291a1;
 }
 
 
 /* =========================================================
-   BASE
+   RESET
    ========================================================= */
 
 * {
@@ -47,193 +47,96 @@ body {
   min-height: 100vh;
 
   font-family:
-    Inter,
     "Segoe UI",
     Arial,
     Helvetica,
     sans-serif;
 
+  color: var(--text);
+
   background:
-    radial-gradient(
-      circle at 10% 0%,
-      rgba(22, 75, 155, 0.28),
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at 95% 100%,
-      rgba(227, 6, 19, 0.11),
-      transparent 30%
-    ),
     linear-gradient(
-      145deg,
-      #071426 0%,
-      #040a13 50%,
-      #02050a 100%
+      180deg,
+      #f8fafc 0%,
+      #eef3f8 55%,
+      #e9eff6 100%
     );
-
-  color: var(--white);
-
-  overflow-x: hidden;
 }
 
 
 /* =========================================================
-   FONDO
+   HEADER
    ========================================================= */
 
-.background-grid {
-
-  position: fixed;
-
-  inset: 0;
-
-  pointer-events: none;
-
-  opacity: 0.13;
-
-  background-image:
-    linear-gradient(
-      rgba(82, 125, 176, 0.12) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(82, 125, 176, 0.12) 1px,
-      transparent 1px
-    );
-
-  background-size:
-    45px 45px;
-
-  mask-image:
-    linear-gradient(
-      to bottom,
-      black,
-      transparent 85%
-    );
-}
-
-
-.glow {
-
-  position: fixed;
-
-  border-radius: 50%;
-
-  filter: blur(120px);
-
-  pointer-events: none;
-}
-
-
-.glow-blue {
-
-  width: 500px;
-  height: 500px;
-
-  left: -260px;
-  top: -260px;
+.main-header {
 
   background:
-    rgba(25, 83, 170, 0.20);
+    rgba(255, 255, 255, 0.96);
+
+  border-bottom:
+    1px solid var(--border);
 }
 
 
-.glow-red {
-
-  width: 400px;
-  height: 400px;
-
-  right: -220px;
-  bottom: -220px;
-
-  background:
-    rgba(227, 6, 19, 0.10);
-}
-
-
-/* =========================================================
-   CONTENEDOR
-   ========================================================= */
-
-.main-container {
-
-  position: relative;
-
-  z-index: 1;
+.header-container {
 
   width:
     min(
-      1050px,
+      1100px,
       calc(100% - 40px)
     );
 
-  min-height: 100vh;
+  min-height: 118px;
 
   margin: auto;
 
-  padding:
-    35px 0
-    25px;
-}
-
-
-/* =========================================================
-   CABECERA
-   ========================================================= */
-
-.institution-header {
-
   display: flex;
 
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 
   gap: 30px;
-
-  padding-bottom: 25px;
-
-  border-bottom:
-    1px solid
-    rgba(52, 82, 115, 0.42);
 }
 
 
-.institution-identity {
+.brand {
 
   display: flex;
 
   align-items: center;
 
-  gap: 17px;
+  gap: 20px;
 }
 
 
-.logo-container {
+.logo-box {
 
-  width: 78px;
-  height: 78px;
+  width: 88px;
+  height: 88px;
 
   flex:
-    0 0 78px;
+    0 0 88px;
 
   display: grid;
 
   place-items: center;
 
-  padding: 5px;
+  padding: 4px;
 
   background: white;
+
+  border:
+    1px solid #e3e8ee;
 
   border-radius: 50%;
 
   box-shadow:
-    0 12px 35px
-    rgba(0, 0, 0, 0.35);
+    0 5px 18px
+    rgba(16, 43, 80, 0.08);
 }
 
 
-.institution-logo {
+.logo-box img {
 
   width: 100%;
   height: 100%;
@@ -242,86 +145,76 @@ body {
 }
 
 
-.institution-code {
+.brand-name {
 
   display: block;
 
   margin-bottom: 5px;
 
-  color: var(--blue-light);
+  color: var(--blue);
 
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 900;
 
   letter-spacing: 3px;
 }
 
 
-.institution-text h1 {
+.brand-text h1 {
 
-  max-width: 500px;
+  color: var(--navy);
 
-  font-size: 18px;
-  font-weight: 850;
+  font-size: 19px;
+  font-weight: 800;
 
   line-height: 1.25;
 
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
 }
 
 
-.institution-text p {
+.brand-text p {
 
   margin-top: 6px;
 
   color: var(--muted);
 
-  font-size: 10px;
+  font-size: 11px;
 }
 
 
-/* =========================================================
-   BADGE
-   ========================================================= */
-
-.system-badge {
+.header-label {
 
   display: flex;
 
   align-items: center;
 
-  gap: 10px;
+  gap: 11px;
 
   padding:
     11px 15px;
 
-  background:
-    rgba(11, 25, 43, 0.72);
+  background: #f7f9fc;
 
   border:
-    1px solid
-    var(--border);
+    1px solid var(--border);
 
-  border-radius: 11px;
+  border-radius: 8px;
 }
 
 
-.system-dot {
+.header-dot {
 
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
 
   background: var(--green);
 
   border-radius: 50%;
-
-  box-shadow:
-    0 0 12px
-    rgba(34, 197, 94, 0.55);
 }
 
 
-.system-badge div {
+.header-label div {
 
   display: flex;
 
@@ -331,22 +224,71 @@ body {
 }
 
 
-.system-badge small {
+.header-label small {
 
-  color: var(--muted-dark);
+  color: var(--muted);
 
   font-size: 7px;
-  font-weight: 900;
 
-  letter-spacing: 1.2px;
+  letter-spacing: 1.3px;
 }
 
 
-.system-badge strong {
+.header-label strong {
+
+  color: var(--navy);
 
   font-size: 9px;
 
   letter-spacing: 0.7px;
+}
+
+
+/* =========================================================
+   LINEA CETA
+   ========================================================= */
+
+.institution-line {
+
+  display: flex;
+
+  height: 4px;
+}
+
+
+.line-blue {
+
+  flex: 1;
+
+  background:
+    var(--blue);
+}
+
+
+.line-red {
+
+  width: 24%;
+
+  background:
+    var(--red);
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+main {
+
+  width:
+    min(
+      1100px,
+      calc(100% - 40px)
+    );
+
+  margin: auto;
+
+  padding-bottom: 50px;
 }
 
 
@@ -356,341 +298,403 @@ body {
 
 .hero {
 
+  min-height: 235px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 40px;
+
   padding:
-    48px 4px
-    30px;
+    42px 25px;
+
+  position: relative;
 }
 
 
-.eyebrow {
+.section-tag {
 
-  color: var(--blue-light);
+  display: inline-block;
+
+  margin-bottom: 10px;
+
+  color: var(--blue);
 
   font-size: 9px;
-  font-weight: 900;
+  font-weight: 800;
 
-  letter-spacing: 2.2px;
+  letter-spacing: 2px;
 }
 
 
 .hero h2 {
 
-  margin-top: 9px;
+  color: var(--navy);
 
   font-size:
     clamp(
-      30px,
+      34px,
       5vw,
-      44px
+      48px
     );
 
-  font-weight: 750;
+  line-height: 1.05;
 
-  letter-spacing: -1.2px;
+  letter-spacing: -1.5px;
 }
 
 
 .hero h2 span {
 
-  color: var(--blue-light);
+  color: var(--blue);
 }
 
 
-.hero-description {
+.hero-content p {
 
-  max-width: 570px;
+  max-width: 530px;
 
-  margin-top: 10px;
+  margin-top: 15px;
 
-  color: var(--muted);
+  color: var(--text-secondary);
 
-  font-size: 12px;
+  font-size: 13px;
 
   line-height: 1.6;
 }
 
 
+.hero-decoration {
+
+  min-width: 185px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  color: #c8d5e3;
+}
+
+
+.hero-decoration > span {
+
+  color:
+    rgba(24, 86, 168, 0.10);
+
+  font-size: 78px;
+  font-weight: 900;
+
+  line-height: 1;
+}
+
+
+.hero-decoration small {
+
+  color: #8ca0b5;
+
+  font-size: 8px;
+  font-weight: 800;
+
+  line-height: 1.5;
+
+  letter-spacing: 1px;
+}
+
+
 /* =========================================================
-   PROYECTOS
+   SELECTOR
    ========================================================= */
 
-.projects {
+.selector-section {
+
+  padding:
+    30px;
+
+  background: white;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 15px;
+
+  box-shadow:
+    0 12px 35px
+    rgba(32, 61, 91, 0.07);
+}
+
+
+.selector-heading {
+
+  display: flex;
+
+  justify-content: space-between;
+  align-items: flex-end;
+
+  gap: 20px;
+
+  margin-bottom: 22px;
+
+  padding-bottom: 17px;
+
+  border-bottom:
+    1px solid #e8edf2;
+}
+
+
+.selector-heading span {
+
+  color: var(--blue);
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: 1.8px;
+}
+
+
+.selector-heading h3 {
+
+  margin-top: 4px;
+
+  color: var(--navy);
+
+  font-size: 20px;
+}
+
+
+.project-count {
+
+  padding:
+    6px 9px;
+
+  color: #73869a;
+
+  background: #f4f7fa;
+
+  border:
+    1px solid #e2e8ee;
+
+  border-radius: 5px;
+
+  font-size: 7px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   TARJETA DE MAQUETA
+   ========================================================= */
+
+.model-card {
 
   display: grid;
 
   grid-template-columns:
-    repeat(2, 1fr);
+    55px
+    minmax(260px, 1.5fr)
+    minmax(190px, 1fr)
+    170px;
+
+  align-items: center;
+
+  gap: 20px;
+
+  min-height: 130px;
+
+  margin-top: 12px;
+
+  padding:
+    20px 22px;
+
+  background:
+    #ffffff;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+
+.model-card:hover {
+
+  transform:
+    translateY(-2px);
+
+  border-color:
+    #b9cbe0;
+
+  box-shadow:
+    0 10px 25px
+    rgba(28, 60, 94, 0.09);
+}
+
+
+.model-number {
+
+  align-self: flex-start;
+
+  color: #bdc8d4;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   MAQUETA INFO
+   ========================================================= */
+
+.model-main {
+
+  display: flex;
+
+  align-items: center;
 
   gap: 18px;
 }
 
 
-.project-card {
+.model-icon {
 
-  position: relative;
+  width: 58px;
+  height: 58px;
 
-  min-height: 350px;
-
-  display: flex;
-
-  flex-direction: column;
-
-  overflow: hidden;
-
-  padding: 25px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(15, 30, 50, 0.97),
-      rgba(7, 17, 30, 0.98)
-    );
-
-  border:
-    1px solid
-    rgba(52, 83, 118, 0.70);
-
-  border-radius: 19px;
-
-  box-shadow:
-    0 18px 50px
-    rgba(0, 0, 0, 0.23);
-
-  cursor: pointer;
-
-  outline: none;
-
-  transition:
-    transform 0.22s ease,
-    border-color 0.22s ease,
-    box-shadow 0.22s ease;
-}
-
-
-.project-card::before {
-
-  content: "";
-
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 2px;
-}
-
-
-.project-primary::before {
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--blue-bright),
-      transparent 70%
-    );
-}
-
-
-.project-secondary::before {
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--red),
-      transparent 70%
-    );
-}
-
-
-.project-card:hover,
-.project-card:focus {
-
-  transform:
-    translateY(-5px);
-
-  border-color:
-    rgba(75, 123, 177, 0.9);
-
-  box-shadow:
-    0 25px 65px
-    rgba(0, 0, 0, 0.34);
-}
-
-
-/* =========================================================
-   PARTE SUPERIOR DE TARJETA
-   ========================================================= */
-
-.project-top {
-
-  display: flex;
-
-  justify-content: space-between;
-  align-items: center;
-
-  margin-bottom: 35px;
-}
-
-
-.project-icon {
-
-  width: 50px;
-  height: 50px;
+  flex:
+    0 0 58px;
 
   display: grid;
 
   place-items: center;
 
-  border-radius: 12px;
-
-  font-size: 23px;
-}
-
-
-.engine-icon {
-
-  color: var(--blue-light);
+  color: var(--blue);
 
   background:
-    rgba(40, 120, 229, 0.10);
+    var(--blue-pale);
 
-  border:
-    1px solid
-    rgba(40, 120, 229, 0.24);
+  border-radius: 9px;
 }
 
 
-.lock-icon {
+.model-icon.red {
 
-  color: var(--red-light);
+  color: var(--red);
 
   background:
-    rgba(227, 6, 19, 0.08);
-
-  border:
-    1px solid
-    rgba(227, 6, 19, 0.22);
+    var(--red-pale);
 }
 
 
-.project-number {
+.model-icon svg {
 
-  color:
-    rgba(255, 255, 255, 0.08);
+  width: 27px;
+  height: 27px;
 
-  font-size: 30px;
-  font-weight: 900;
+  fill: currentColor;
 }
 
 
-/* =========================================================
-   CONTENIDO
-   ========================================================= */
+.model-type {
 
-.project-content {
+  color: var(--blue);
 
-  flex: 1;
-}
-
-
-.project-category {
-
-  color: var(--muted-dark);
-
-  font-size: 8px;
+  font-size: 7px;
   font-weight: 900;
 
-  letter-spacing: 1.7px;
+  letter-spacing: 1.4px;
 }
 
 
-.project-content h3 {
+.model-info h4 {
+
+  margin-top: 5px;
+
+  color: var(--navy);
+
+  font-size: 20px;
+}
+
+
+.model-info p {
+
+  max-width: 420px;
 
   margin-top: 7px;
 
-  font-size: 25px;
+  color: var(--text-secondary);
 
-  letter-spacing: -0.5px;
-}
+  font-size: 10px;
 
-
-.project-description {
-
-  max-width: 380px;
-
-  margin-top: 10px;
-
-  color: var(--muted);
-
-  font-size: 11px;
-
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 
 /* =========================================================
-   FUNCIONES
+   FEATURES
    ========================================================= */
 
-.features {
+.model-features {
 
   display: flex;
 
   flex-wrap: wrap;
 
   gap: 6px;
-
-  margin:
-    23px 0;
 }
 
 
-.features span {
+.model-features span {
 
   padding:
     6px 8px;
 
-  background:
-    rgba(25, 51, 81, 0.52);
+  color: #62778d;
+
+  background: #f5f7fa;
 
   border:
-    1px solid
-    rgba(47, 77, 111, 0.60);
+    1px solid #e1e7ed;
 
-  border-radius: 6px;
-
-  color: #8196ad;
+  border-radius: 5px;
 
   font-size: 7px;
-  font-weight: 900;
-
-  letter-spacing: 0.7px;
+  font-weight: 700;
 }
 
 
 /* =========================================================
-   PIE DE TARJETA
+   ACCION
    ========================================================= */
 
-.project-footer {
+.model-action {
 
   display: flex;
 
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
 
-  gap: 15px;
+  align-items: flex-end;
 
-  padding-top: 18px;
-
-  border-top:
-    1px solid
-    rgba(43, 68, 96, 0.50);
+  gap: 12px;
 }
 
 
-.availability {
+.available {
 
   display: flex;
 
@@ -698,47 +702,45 @@ body {
 
   gap: 6px;
 
-  color: #729482;
+  color: var(--green);
 
-  font-size: 7px;
-  font-weight: 900;
-
-  letter-spacing: 0.7px;
+  font-size: 8px;
+  font-weight: 700;
 }
 
 
-.availability-dot {
+.available i {
 
   width: 6px;
   height: 6px;
 
-  background: var(--green);
+  background:
+    var(--green);
 
   border-radius: 50%;
 }
 
 
-.open-project {
+.model-action button {
+
+  width: 140px;
 
   display: flex;
 
   align-items: center;
-
-  gap: 10px;
+  justify-content: space-between;
 
   padding:
-    9px 12px;
+    11px 13px;
 
-  border:
-    1px solid
-    var(--border-light);
-
-  border-radius: 8px;
+  color: white;
 
   background:
-    rgba(13, 31, 51, 0.75);
+    var(--navy);
 
-  color: var(--text);
+  border: none;
+
+  border-radius: 7px;
 
   font-size: 8px;
   font-weight: 900;
@@ -748,91 +750,85 @@ body {
   cursor: pointer;
 
   transition:
-    background 0.2s ease,
-    border-color 0.2s ease;
+    background 0.2s ease;
 }
 
 
-.open-project span {
-
-  color: var(--blue-light);
-
-  font-size: 15px;
-}
-
-
-.project-card:hover
-.open-project {
+.model-action button:hover {
 
   background:
-    rgba(19, 47, 77, 0.90);
+    var(--blue);
+}
 
-  border-color:
-    var(--blue-bright);
+
+.model-action button span {
+
+  font-size: 15px;
 }
 
 
 /* =========================================================
-   INFORMACION PLATAFORMA
+   PANEL INSTITUCIONAL
    ========================================================= */
 
-.platform-info {
+.institution-panel {
 
   display: grid;
 
   grid-template-columns:
-    1fr auto 1fr auto 1fr;
-
-  align-items: center;
+    repeat(3, 1fr);
 
   margin-top: 22px;
 
-  padding:
-    18px 22px;
+  overflow: hidden;
 
   background:
-    rgba(8, 20, 35, 0.60);
+    rgba(255, 255, 255, 0.62);
 
   border:
-    1px solid
-    rgba(39, 65, 94, 0.45);
+    1px solid var(--border);
 
-  border-radius: 13px;
+  border-radius: 11px;
 }
 
 
-.info-item {
+.institution-item {
+
+  min-height: 92px;
 
   display: flex;
 
-  justify-content: center;
   align-items: center;
 
-  gap: 10px;
+  gap: 13px;
+
+  padding:
+    20px;
 }
 
 
-.info-symbol {
+.institution-item +
+.institution-item {
 
-  color: var(--blue-light);
-
-  font-size: 15px;
+  border-left:
+    1px solid var(--border);
 }
 
 
-.info-item div:last-child {
+.institution-icon {
 
-  display: flex;
+  color: #a7b5c4;
 
-  flex-direction: column;
-
-  gap: 3px;
+  font-size: 10px;
+  font-weight: 900;
 }
 
 
-.info-item strong {
+.institution-item strong {
 
-  color: #9eb0c4;
+  display: block;
+
+  color: var(--navy);
 
   font-size: 8px;
 
@@ -840,21 +836,15 @@ body {
 }
 
 
-.info-item span {
+.institution-item p {
 
-  color: var(--muted-dark);
+  margin-top: 4px;
+
+  color: var(--muted);
 
   font-size: 8px;
-}
 
-
-.info-divider {
-
-  width: 1px;
-  height: 28px;
-
-  background:
-    rgba(47, 73, 102, 0.55);
+  line-height: 1.5;
 }
 
 
@@ -864,22 +854,62 @@ body {
 
 footer {
 
+  background:
+    var(--navy-dark);
+
+  border-top:
+    4px solid
+    var(--blue);
+}
+
+
+.footer-container {
+
+  width:
+    min(
+      1100px,
+      calc(100% - 40px)
+    );
+
+  min-height: 90px;
+
+  margin: auto;
+
   display: flex;
 
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 
-  gap: 20px;
-
-  padding:
-    25px 5px
-    5px;
-
-  color: var(--muted-dark);
+  gap: 30px;
 }
 
 
 .footer-brand {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+.footer-brand img {
+
+  width: 48px;
+  height: 48px;
+
+  padding: 2px;
+
+  object-fit: contain;
+
+  background: white;
+
+  border-radius: 50%;
+}
+
+
+.footer-brand div {
 
   display: flex;
 
@@ -891,9 +921,9 @@ footer {
 
 .footer-brand strong {
 
-  color: var(--blue-light);
+  color: white;
 
-  font-size: 9px;
+  font-size: 10px;
 
   letter-spacing: 2px;
 }
@@ -901,13 +931,17 @@ footer {
 
 .footer-brand span {
 
-  font-size: 6px;
+  color: #8fa5bc;
 
-  letter-spacing: 0.8px;
+  font-size: 7px;
+
+  letter-spacing: 0.7px;
 }
 
 
-.footer-project {
+.footer-text {
+
+  color: #7189a1;
 
   font-size: 7px;
   font-weight: 800;
@@ -920,37 +954,30 @@ footer {
    TABLET
    ========================================================= */
 
-@media (max-width: 750px) {
+@media (max-width: 900px) {
 
-  .main-container {
-
-    width:
-      calc(100% - 24px);
-  }
-
-
-  .projects {
-
-    grid-template-columns: 1fr;
-  }
-
-
-  .project-card {
-
-    min-height: 330px;
-  }
-
-
-  .platform-info {
+  .model-card {
 
     grid-template-columns:
-      repeat(3, 1fr);
+      40px
+      1fr
+      160px;
   }
 
 
-  .info-divider {
+  .model-features {
 
-    display: none;
+    grid-column:
+      2 / 3;
+  }
+
+
+  .model-action {
+
+    grid-column: 3;
+
+    grid-row:
+      1 / 3;
   }
 
 }
@@ -960,103 +987,177 @@ footer {
    MOVIL
    ========================================================= */
 
-@media (max-width: 520px) {
+@media (max-width: 650px) {
 
-  .main-container {
+  .header-container {
 
     width:
-      calc(100% - 20px);
+      calc(100% - 24px);
 
-    padding-top: 20px;
+    min-height: 100px;
   }
 
 
-  .institution-header {
+  .logo-box {
 
-    align-items: flex-start;
+    width: 67px;
+    height: 67px;
 
-    gap: 15px;
+    flex-basis: 67px;
   }
 
 
-  .logo-container {
+  .brand {
 
-    width: 65px;
-    height: 65px;
-
-    flex-basis: 65px;
+    gap: 13px;
   }
 
 
-  .institution-text h1 {
+  .brand-text h1 {
 
     font-size: 13px;
   }
 
 
-  .institution-text p {
-
-    font-size: 8px;
-
-    line-height: 1.4;
-  }
-
-
-  .system-badge {
+  .brand-text p {
 
     display: none;
   }
 
 
+  .header-label {
+
+    display: none;
+  }
+
+
+  main {
+
+    width:
+      calc(100% - 20px);
+  }
+
+
   .hero {
 
+    min-height: 190px;
+
     padding:
-      38px 3px
-      25px;
+      32px 8px;
+  }
+
+
+  .hero-decoration {
+
+    display: none;
   }
 
 
   .hero h2 {
 
-    font-size: 31px;
+    font-size: 34px;
   }
 
 
-  .project-card {
-
-    min-height: 340px;
-
-    padding: 21px;
-  }
-
-
-  .project-content h3 {
-
-    font-size: 22px;
-  }
-
-
-  .platform-info {
-
-    grid-template-columns: 1fr;
-
-    gap: 17px;
+  .selector-section {
 
     padding:
-      18px;
+      20px 14px;
   }
 
 
-  .info-item {
+  .project-count {
 
-    justify-content:
-      flex-start;
+    display: none;
   }
 
 
-  footer {
+  .model-card {
 
-    padding-bottom: 18px;
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 16px;
+
+    padding:
+      20px;
+
+    margin-top: 14px;
+  }
+
+
+  .model-number {
+
+    position: absolute;
+
+    right: 18px;
+  }
+
+
+  .model-main {
+
+    padding-right: 25px;
+  }
+
+
+  .model-info h4 {
+
+    font-size: 18px;
+  }
+
+
+  .model-action {
+
+    width: 100%;
+
+    flex-direction: row;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding-top: 13px;
+
+    border-top:
+      1px solid var(--border);
+  }
+
+
+  .model-action button {
+
+    width: 125px;
+  }
+
+
+  .institution-panel {
+
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .institution-item +
+  .institution-item {
+
+    border-left: none;
+
+    border-top:
+      1px solid var(--border);
+  }
+
+
+  .footer-container {
+
+    width:
+      calc(100% - 24px);
+  }
+
+
+  .footer-text {
+
+    display: none;
   }
 
 }
@@ -1066,38 +1167,42 @@ footer {
    MOVIL PEQUEÑO
    ========================================================= */
 
-@media (max-width: 370px) {
+@media (max-width: 400px) {
 
-  .institution-code {
-
-    font-size: 9px;
-  }
-
-
-  .institution-text h1 {
-
-    font-size: 11px;
-  }
-
-
-  .project-footer {
+  .model-main {
 
     align-items:
-      flex-end;
+      flex-start;
   }
 
 
-  .availability {
+  .model-icon {
 
-    max-width: 90px;
+    width: 48px;
+    height: 48px;
 
-    line-height: 1.4;
+    flex-basis: 48px;
   }
 
 
-  .footer-project {
+  .model-icon svg {
 
-    display: none;
+    width: 23px;
+    height: 23px;
+  }
+
+
+  .model-action {
+
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+
+  .model-action button {
+
+    width: 100%;
   }
 
 }
