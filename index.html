@@ -1,50 +1,444 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Electrónica AV | Control Vehicular</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <link rel="stylesheet" href="style.css">
+  <meta
+    name="theme-color"
+    content="#071426"
+  >
+
+  <title>
+    CETA | Sistemas IoT Automotrices
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
 </head>
+
 
 <body>
 
-  <main class="login-container">
+  <!-- =================================================== -->
+  <!-- FONDO DECORATIVO                                    -->
+  <!-- =================================================== -->
 
-    <section class="login-card">
+  <div class="background-grid"></div>
 
-      <div class="logo">AV</div>
+  <div class="glow glow-blue"></div>
 
-      <h1>ELECTRÓNICA AV</h1>
-      <p class="subtitle">CONTROL VEHICULAR</p>
+  <div class="glow glow-red"></div>
 
-      <h2>Seleccione una maqueta</h2>
 
-      <div class="project-selector">
+  <!-- =================================================== -->
+  <!-- CONTENIDO PRINCIPAL                                 -->
+  <!-- =================================================== -->
 
-        <button
-          type="button"
-          class="project-button"
-          onclick="window.location.href='index-1nz.html'"
-        >
-          TOYOTA 1NZ
-        </button>
+  <main class="main-container">
 
-        <button
-          type="button"
-          class="project-button"
-          onclick="window.location.href='index-centralizado.html'"
-        >
-          CIERRE CENTRALIZADO
-        </button>
+
+    <!-- ================================================= -->
+    <!-- CABECERA INSTITUCIONAL                            -->
+    <!-- ================================================= -->
+
+    <header class="institution-header">
+
+      <div class="institution-identity">
+
+        <div class="logo-container">
+
+          <img
+            src="ceta-logo.png"
+            alt="Logo CETA"
+            class="institution-logo"
+          >
+
+        </div>
+
+
+        <div class="institution-text">
+
+          <span class="institution-code">
+            CETA
+          </span>
+
+          <h1>
+            ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
+          </h1>
+
+          <p>
+            Plataforma de sistemas electrónicos e IoT vehicular
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="system-badge">
+
+        <span class="system-dot"></span>
+
+        <div>
+
+          <small>
+            PLATAFORMA
+          </small>
+
+          <strong>
+            IoT VEHICULAR
+          </strong>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- ================================================= -->
+    <!-- PRESENTACION                                      -->
+    <!-- ================================================= -->
+
+    <section class="hero">
+
+      <p class="eyebrow">
+        CONTROL · MONITOREO · AUTOMATIZACIÓN
+      </p>
+
+      <h2>
+        Seleccione un
+        <span>proyecto</span>
+      </h2>
+
+      <p class="hero-description">
+        Acceda al sistema de control correspondiente
+        al módulo o vehículo que desea supervisar.
+      </p>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- PROYECTOS                                         -->
+    <!-- ================================================= -->
+
+    <section class="projects">
+
+
+      <!-- ================================================= -->
+      <!-- TOYOTA 1NZ-FE                                    -->
+      <!-- ================================================= -->
+
+      <article
+        class="project-card project-primary"
+        onclick="window.location.href='index-1nz.html'"
+        tabindex="0"
+        role="button"
+        aria-label="Abrir proyecto Toyota 1NZ-FE"
+        onkeydown="
+          if(event.key === 'Enter' || event.key === ' ') {
+            window.location.href='index-1nz.html';
+          }
+        "
+      >
+
+        <div class="project-top">
+
+          <div class="project-icon engine-icon">
+            ⚙
+          </div>
+
+          <span class="project-number">
+            01
+          </span>
+
+        </div>
+
+
+        <div class="project-content">
+
+          <p class="project-category">
+            SISTEMA IoT VEHICULAR
+          </p>
+
+          <h3>
+            Toyota 1NZ-FE
+          </h3>
+
+          <p class="project-description">
+            Monitoreo y control remoto del sistema
+            electrónico del vehículo.
+          </p>
+
+        </div>
+
+
+        <div class="features">
+
+          <span>
+            TELEMETRÍA
+          </span>
+
+          <span>
+            ARRANQUE
+          </span>
+
+          <span>
+            SEGURIDAD
+          </span>
+
+        </div>
+
+
+        <div class="project-footer">
+
+          <div class="availability">
+
+            <span class="availability-dot"></span>
+
+            SISTEMA DISPONIBLE
+
+          </div>
+
+
+          <button
+            type="button"
+            class="open-project"
+            onclick="
+              event.stopPropagation();
+              window.location.href='index-1nz.html';
+            "
+          >
+            ACCEDER
+
+            <span>
+              →
+            </span>
+
+          </button>
+
+        </div>
+
+      </article>
+
+
+      <!-- ================================================= -->
+      <!-- CIERRE CENTRALIZADO                               -->
+      <!-- ================================================= -->
+
+      <article
+        class="project-card project-secondary"
+        onclick="window.location.href='index-centralizado.html'"
+        tabindex="0"
+        role="button"
+        aria-label="Abrir proyecto Cierre Centralizado"
+        onkeydown="
+          if(event.key === 'Enter' || event.key === ' ') {
+            window.location.href='index-centralizado.html';
+          }
+        "
+      >
+
+        <div class="project-top">
+
+          <div class="project-icon lock-icon">
+            ◆
+          </div>
+
+          <span class="project-number">
+            02
+          </span>
+
+        </div>
+
+
+        <div class="project-content">
+
+          <p class="project-category">
+            SISTEMA DE SEGURIDAD
+          </p>
+
+          <h3>
+            Cierre Centralizado
+          </h3>
+
+          <p class="project-description">
+            Control electrónico del sistema de
+            apertura y cierre centralizado.
+          </p>
+
+        </div>
+
+
+        <div class="features">
+
+          <span>
+            CONTROL
+          </span>
+
+          <span>
+            ACCESO
+          </span>
+
+          <span>
+            SEGURIDAD
+          </span>
+
+        </div>
+
+
+        <div class="project-footer">
+
+          <div class="availability">
+
+            <span class="availability-dot"></span>
+
+            SISTEMA DISPONIBLE
+
+          </div>
+
+
+          <button
+            type="button"
+            class="open-project"
+            onclick="
+              event.stopPropagation();
+              window.location.href='index-centralizado.html';
+            "
+          >
+
+            ACCEDER
+
+            <span>
+              →
+            </span>
+
+          </button>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- INFORMACION INFERIOR                              -->
+    <!-- ================================================= -->
+
+    <section class="platform-info">
+
+      <div class="info-item">
+
+        <div class="info-symbol">
+          ◈
+        </div>
+
+        <div>
+
+          <strong>
+            CONTROL REMOTO
+          </strong>
+
+          <span>
+            Acceso desde Internet
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="info-divider"></div>
+
+
+      <div class="info-item">
+
+        <div class="info-symbol">
+          ◉
+        </div>
+
+        <div>
+
+          <strong>
+            MONITOREO
+          </strong>
+
+          <span>
+            Información del vehículo
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="info-divider"></div>
+
+
+      <div class="info-item">
+
+        <div class="info-symbol">
+          ◆
+        </div>
+
+        <div>
+
+          <strong>
+            ACCESO SEGURO
+          </strong>
+
+          <span>
+            Autenticación protegida
+          </span>
+
+        </div>
 
       </div>
 
     </section>
 
+
+    <!-- ================================================= -->
+    <!-- FOOTER                                            -->
+    <!-- ================================================= -->
+
+    <footer>
+
+      <div class="footer-brand">
+
+        <strong>
+          CETA
+        </strong>
+
+        <span>
+          ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
+        </span>
+
+      </div>
+
+
+      <div class="footer-project">
+
+        PROYECTO IoT AUTOMOTRIZ
+
+      </div>
+
+    </footer>
+
   </main>
 
 </body>
+
 </html>
