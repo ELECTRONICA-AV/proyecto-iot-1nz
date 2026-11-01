@@ -1,123 +1,424 @@
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Electrónica AV | Cierre Centralizado</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <link rel="stylesheet" href="dashboard-centralizado.css">
+  <meta
+    name="theme-color"
+    content="#061426"
+  >
+
+  <title>CETA | Cierre Centralizado</title>
+
+  <link
+    rel="stylesheet"
+    href="dashboard-centralizado.css"
+  >
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
+
 
 <body>
 
-  <!-- Pantalla mientras comprobamos la sesión -->
-  <div id="loadingScreen" class="loading-screen">
+  <!-- Fondo decorativo -->
+  <div class="background-decoration"></div>
+
+
+  <!-- =====================================================
+       PANTALLA DE CARGA
+  ====================================================== -->
+
+  <div
+    id="loadingScreen"
+    class="loading-screen"
+  >
+
+    <div class="loading-logo-wrapper">
+
+      <img
+        src="img/LogoIns.jpeg"
+        alt="CETA"
+        class="loading-logo"
+      >
+
+    </div>
+
     <div class="loader"></div>
-    <p>Verificando acceso...</p>
+
+    <p>
+      VERIFICANDO ACCESO...
+    </p>
+
   </div>
 
 
-  <!-- Dashboard -->
-  <main id="dashboard" class="dashboard hidden">
+  <!-- =====================================================
+       DASHBOARD
+  ====================================================== -->
+
+  <main
+    id="dashboard"
+    class="dashboard hidden"
+  >
+
+
+    <!-- ===================================================
+         CABECERA CETA
+    ==================================================== -->
 
     <header class="topbar">
 
-      <div>
-        <p class="brand">ELECTRÓNICA AV</p>
-        <h1>Cierre Centralizado</h1>
+
+      <div class="brand-area">
+
+        <div class="header-logo-wrapper">
+
+          <img
+            src="img/LogoIns.jpeg"
+            alt="CETA"
+            class="header-logo"
+          >
+
+        </div>
+
+
+        <div class="header-brand">
+
+          <div class="brand-title">
+
+            <h1>
+              CETA
+            </h1>
+
+            <span class="brand-line"></span>
+
+          </div>
+
+          <p>
+            ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
+          </p>
+
+        </div>
+
       </div>
 
-      <div class="connection">
-        <span class="status-dot ready"></span>
-        <span>ACCESO AUTORIZADO</span>
+
+      <!-- Estado de acceso -->
+
+      <div class="system-status">
+
+        <span class="status-dot"></span>
+
+        <div>
+
+          <small>
+            SISTEMA
+          </small>
+
+          <strong>
+            ACCESO AUTORIZADO
+          </strong>
+
+        </div>
+
       </div>
+
 
     </header>
 
 
-    <section class="control-panel">
+    <!-- ===================================================
+         PRESENTACIÓN DEL SISTEMA
+    ==================================================== -->
 
-      <div class="section-title">
-        <p>CONTROL REMOTO</p>
-        <h2>Control de puertas</h2>
-      </div>
-
-
-      <div class="lock-controls">
-
-        <button
-          id="openButton"
-          class="control-button open"
-          type="button"
-        >
-          <span class="button-icon">🔓</span>
-          <span>ABRIR</span>
-        </button>
+    <section class="system-heading">
 
 
-        <button
-          id="closeButton"
-          class="control-button close"
-          type="button"
-        >
-          <span class="button-icon">🔒</span>
-          <span>CERRAR</span>
-        </button>
+      <div>
 
-      </div>
-
-
-      <div class="status-card">
-
-        <span class="status-label">
-          Último comando
+        <span class="eyebrow">
+          CONTROL VEHICULAR
         </span>
 
-        <strong id="lastCommand">
-          Ninguno
-        </strong>
+        <h2>
+          Cierre Centralizado
+        </h2>
+
+        <p>
+          Sistema de apertura y cierre remoto
+          de puertas.
+        </p>
 
       </div>
 
 
-      <p class="safety-note">
-        Los comandos requieren confirmación antes de ser enviados al vehículo.
-      </p>
+      <div class="security-badge">
+
+        <span class="security-icon">
+          🔐
+        </span>
+
+        <div>
+
+          <small>
+            ACCESO
+          </small>
+
+          <strong>
+            PROTEGIDO
+          </strong>
+
+        </div>
+
+      </div>
+
 
     </section>
 
 
-    <footer>
+    <!-- ===================================================
+         PANEL DE CONTROL
+    ==================================================== -->
 
-      <div>
-        <span class="footer-label">
-          Última comunicación
+    <section class="control-panel">
+
+
+      <!-- Encabezado -->
+
+      <div class="panel-heading">
+
+        <div>
+
+          <span class="panel-label">
+            CONTROL REMOTO
+          </span>
+
+          <h3>
+            Control de puertas
+          </h3>
+
+        </div>
+
+
+        <div class="connection-indicator">
+
+          <span class="connection-dot"></span>
+
+          <span>
+            SISTEMA LISTO
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           BOTONES ABRIR / CERRAR
+      ================================================== -->
+
+      <div class="lock-controls">
+
+
+        <!-- ABRIR -->
+
+        <button
+          id="openButton"
+          class="control-button open-button"
+          type="button"
+        >
+
+          <span class="button-top-label">
+            APERTURA
+          </span>
+
+          <span class="lock-icon">
+            🔓
+          </span>
+
+          <span class="button-title">
+            ABRIR
+          </span>
+
+          <span class="button-description">
+            Desbloquear puertas
+          </span>
+
+        </button>
+
+
+        <!-- CERRAR -->
+
+        <button
+          id="closeButton"
+          class="control-button close-button"
+          type="button"
+        >
+
+          <span class="button-top-label">
+            SEGURIDAD
+          </span>
+
+          <span class="lock-icon">
+            🔒
+          </span>
+
+          <span class="button-title">
+            CERRAR
+          </span>
+
+          <span class="button-description">
+            Bloquear puertas
+          </span>
+
+        </button>
+
+
+      </div>
+
+
+      <!-- =================================================
+           INFORMACIÓN
+      ================================================== -->
+
+      <div class="information-grid">
+
+
+        <!-- Último comando -->
+
+        <article class="information-card">
+
+          <div class="information-icon">
+            ↗
+          </div>
+
+          <div>
+
+            <span>
+              ÚLTIMO COMANDO
+            </span>
+
+            <strong id="lastCommand">
+              Ninguno
+            </strong>
+
+          </div>
+
+        </article>
+
+
+        <!-- Última comunicación -->
+
+        <article class="information-card">
+
+          <div class="information-icon">
+            ◷
+          </div>
+
+          <div>
+
+            <span>
+              ÚLTIMA COMUNICACIÓN
+            </span>
+
+            <strong id="lastCommunication">
+              --
+            </strong>
+
+          </div>
+
+        </article>
+
+
+      </div>
+
+
+      <!-- =================================================
+           AVISO DE SEGURIDAD
+      ================================================== -->
+
+      <div class="safety-message">
+
+        <span class="safety-icon">
+          🛡️
         </span>
 
-        <strong id="lastCommunication">
-          --
-        </strong>
+        <div>
+
+          <strong>
+            CONTROL PROTEGIDO
+          </strong>
+
+          <p>
+            Los comandos de apertura y cierre requieren
+            confirmación antes de ser enviados al vehículo.
+          </p>
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+
+    <!-- ===================================================
+         PIE DE PÁGINA
+    ==================================================== -->
+
+    <footer class="dashboard-footer">
+
+
+      <div class="footer-brand">
+
+        <span class="footer-dot"></span>
+
+        <div>
+
+          <strong>
+            CETA
+          </strong>
+
+          <span>
+            ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
+          </span>
+
+        </div>
+
       </div>
 
 
       <button
         id="logoutButton"
-        class="logout"
+        class="logout-button"
         type="button"
       >
         CERRAR SESIÓN
       </button>
 
+
     </footer>
+
 
   </main>
 
 
+  <!-- =====================================================
+       LÓGICA DEL DASHBOARD
+  ====================================================== -->
+
   <script src="dashboard-centralizado.js"></script>
 
 </body>
+
 </html>
