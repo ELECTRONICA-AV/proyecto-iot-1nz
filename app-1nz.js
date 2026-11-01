@@ -6,25 +6,31 @@ const SUPABASE_KEY =
 
 
 // ======================================================
-// TOYOTA 1NZ
+// TOYOTA 1NZ-FE
 // ======================================================
 
-const VEHICLE_CODE = "1NZ";
-const VEHICLE_NAME = "Toyota 1NZ";
+const VEHICLE_CODE =
+  "1NZ";
 
-// Cuenta de Supabase correspondiente al Toyota 1NZ.
-// El usuario solamente escribe la contraseña.
-const VEHICLE_EMAIL = "zetaandrew45@gmail.com";
+const VEHICLE_NAME =
+  "Toyota 1NZ-FE";
+
+
+// Cuenta interna correspondiente al Toyota 1NZ-FE.
+// No se muestra al usuario.
+const VEHICLE_EMAIL =
+  "zetaandrew45@gmail.com";
 
 
 // ======================================================
 // SUPABASE
 // ======================================================
 
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
 // ======================================================
@@ -32,13 +38,86 @@ const supabaseClient = supabase.createClient(
 // ======================================================
 
 const loginForm =
-  document.getElementById("loginForm");
+  document.getElementById(
+    "loginForm"
+  );
 
 const loginButton =
-  document.getElementById("loginButton");
+  document.getElementById(
+    "loginButton"
+  );
+
+const passwordInput =
+  document.getElementById(
+    "password"
+  );
+
+const togglePassword =
+  document.getElementById(
+    "togglePassword"
+  );
+
+const backButton =
+  document.getElementById(
+    "backButton"
+  );
 
 const message =
-  document.getElementById("message");
+  document.getElementById(
+    "message"
+  );
+
+
+// ======================================================
+// MOSTRAR / OCULTAR CONTRASEÑA
+// ======================================================
+
+togglePassword.addEventListener(
+  "click",
+  () => {
+
+    const hidden =
+      passwordInput.type ===
+      "password";
+
+
+    passwordInput.type =
+      hidden
+        ? "text"
+        : "password";
+
+
+    togglePassword.textContent =
+      hidden
+        ? "OCULTAR"
+        : "VER";
+
+
+    togglePassword.setAttribute(
+      "aria-label",
+      hidden
+        ? "Ocultar contraseña"
+        : "Mostrar contraseña"
+    );
+
+
+    passwordInput.focus();
+  }
+);
+
+
+// ======================================================
+// VOLVER A SELECCION
+// ======================================================
+
+backButton.addEventListener(
+  "click",
+  () => {
+
+    window.location.href =
+      "index.html";
+  }
+);
 
 
 // ======================================================
@@ -51,23 +130,83 @@ loginForm.addEventListener(
 
     event.preventDefault();
 
+
     const password =
-      document.getElementById("password").value;
+      passwordInput.value;
 
-    message.style.color = "#ff6b6b";
-    message.textContent = "";
 
-    loginButton.disabled = true;
-    loginButton.textContent = "VERIFICANDO...";
+    // --------------------------------------------------
+    // LIMPIAR MENSAJE
+    // --------------------------------------------------
+
+    message.classList.remove(
+      "success",
+      "error"
+    );
+
+    message.textContent =
+      "";
+
+
+    // --------------------------------------------------
+    // VALIDACION BASICA
+    // --------------------------------------------------
+
+    if (!password) {
+
+      message.classList.add(
+        "error"
+      );
+
+      message.textContent =
+        "Ingrese la contraseña.";
+
+      passwordInput.focus();
+
+      return;
+    }
+
+
+    // --------------------------------------------------
+    // ESTADO DE CARGA
+    // --------------------------------------------------
+
+    loginButton.disabled =
+      true;
+
+    togglePassword.disabled =
+      true;
+
+    loginButton.innerHTML =
+      `
+        <span>VERIFICANDO ACCESO...</span>
+        <span class="button-arrow">•••</span>
+      `;
+
 
     try {
 
-      const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
-          email: VEHICLE_EMAIL,
-          password: password
-        });
+      // ------------------------------------------------
+      // AUTENTICACION SUPABASE
+      // ------------------------------------------------
 
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth
+          .signInWithPassword({
+            email:
+              VEHICLE_EMAIL,
+
+            password:
+              password
+          });
+
+
+      // ------------------------------------------------
+      // ACCESO RECHAZADO
+      // ------------------------------------------------
 
       if (error) {
 
@@ -76,12 +215,24 @@ loginForm.addEventListener(
           error
         );
 
+
+        message.classList.add(
+          "error"
+        );
+
         message.textContent =
           "Contraseña incorrecta.";
+
+
+        passwordInput.select();
 
         return;
       }
 
+
+      // ------------------------------------------------
+      // ACCESO AUTORIZADO
+      // ------------------------------------------------
 
       console.log(
         "Acceso autorizado:",
@@ -90,43 +241,91 @@ loginForm.addEventListener(
       );
 
 
-      // Identifica qué maqueta inició sesión.
       sessionStorage.setItem(
         "vehicleCode",
         VEHICLE_CODE
       );
 
 
-      message.style.color = "#55d98b";
+      message.classList.add(
+        "success"
+      );
+
 
       message.textContent =
-        "Acceso autorizado. Abriendo panel...";
+        "Acceso autorizado. Abriendo panel de control...";
 
 
-      setTimeout(() => {
+      loginButton.innerHTML =
+        `
+          <span>ACCESO AUTORIZADO</span>
+          <span class="button-arrow">✓</span>
+        `;
 
-        window.location.href =
-          "dashboard.html";
 
-      }, 700);
+      // ------------------------------------------------
+      // ABRIR DASHBOARD
+      // ------------------------------------------------
+
+      setTimeout(
+        () => {
+
+          window.location.href =
+            "dashboard.html";
+
+        },
+        650
+      );
 
 
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        "Error de conexión:",
+        error
+      );
 
-      message.style.color = "#ff6b6b";
+
+      message.classList.add(
+        "error"
+      );
+
 
       message.textContent =
         "No se pudo conectar con el servidor.";
 
+
     } finally {
 
-      loginButton.disabled = false;
-      loginButton.textContent = "INGRESAR";
+      // Solo restauramos los controles si seguimos
+      // en esta pagina.
 
+      setTimeout(
+        () => {
+
+          if (
+            window.location.pathname
+              .includes(
+                "index-1nz"
+              )
+          ) {
+
+            loginButton.disabled =
+              false;
+
+            togglePassword.disabled =
+              false;
+
+            loginButton.innerHTML =
+              `
+                <span>INGRESAR AL SISTEMA</span>
+                <span class="button-arrow">→</span>
+              `;
+          }
+
+        },
+        800
+      );
     }
-
   }
 );
-
