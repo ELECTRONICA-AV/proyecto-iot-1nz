@@ -26,13 +26,19 @@ const startButton =
 const stopButton =
   document.getElementById("stopButton");
 
+const immobilizerButton =
+  document.getElementById("immobilizerButton");
+
 
 // ==========================================================
-// ESTADO LOCAL DEL MOTOR
+// ESTADO LOCAL
 // ==========================================================
 
 let engineOn = null;
 let engineCommandRunning = false;
+
+let immobilizerOn = null;
+let immobilizerCommandRunning = false;
 
 
 /*
@@ -69,10 +75,12 @@ async function verifySession() {
 
 
   // --------------------------------------------------------
-  // CONSULTAR ESTADO DEL MOTOR AL ABRIR EL DASHBOARD
+  // CONSULTAR ESTADOS AL ABRIR EL DASHBOARD
   // --------------------------------------------------------
 
   await refreshEngineState();
+
+  await refreshImmobilizerState();
 }
 
 
@@ -243,9 +251,6 @@ CONTROL VISUAL DEL ESTADO DEL MOTOR
 
 function updateEngineButtons() {
 
-  // Mientras se envia una orden,
-  // ambos botones permanecen bloqueados.
-
   if (engineCommandRunning) {
 
     startButton.disabled = true;
@@ -255,9 +260,7 @@ function updateEngineButtons() {
   }
 
 
-  // --------------------------------------------------------
   // MOTOR ENCENDIDO
-  // --------------------------------------------------------
 
   if (engineOn === true) {
 
@@ -268,9 +271,7 @@ function updateEngineButtons() {
   }
 
 
-  // --------------------------------------------------------
   // MOTOR APAGADO
-  // --------------------------------------------------------
 
   if (engineOn === false) {
 
@@ -281,12 +282,7 @@ function updateEngineButtons() {
   }
 
 
-  // --------------------------------------------------------
   // ESTADO DESCONOCIDO
-  //
-  // Por seguridad no permitimos enviar comandos hasta
-  // conocer V4.
-  // --------------------------------------------------------
 
   startButton.disabled = true;
   stopButton.disabled = true;
@@ -300,9 +296,6 @@ CONSULTAR ESTADO DEL MOTOR
 */
 
 async function refreshEngineState() {
-
-  // Mientras consultamos V4,
-  // no permitimos comandos de motor.
 
   engineOn = null;
 
@@ -342,9 +335,130 @@ async function refreshEngineState() {
 
     engineOn = null;
 
+
   } finally {
 
     updateEngineButtons();
+  }
+}
+
+
+/*
+==================================================
+CONTROL VISUAL DEL INMOVILIZADOR
+==================================================
+*/
+
+function updateImmobilizerButton() {
+
+  if (!immobilizerButton) {
+    return;
+  }
+
+
+  // --------------------------------------------------------
+  // ORDEN EN PROCESO
+  // --------------------------------------------------------
+
+  if (immobilizerCommandRunning) {
+
+    immobilizerButton.disabled = true;
+
+    immobilizerButton.textContent =
+      "PROCESANDO...";
+
+    return;
+  }
+
+
+  immobilizerButton.disabled = false;
+
+
+  // --------------------------------------------------------
+  // INMOVILIZADOR ACTIVADO
+  // --------------------------------------------------------
+
+  if (immobilizerOn === true) {
+
+    immobilizerButton.textContent =
+      "DESACTIVAR INMOVILIZADOR";
+
+    return;
+  }
+
+
+  // --------------------------------------------------------
+  // INMOVILIZADOR DESACTIVADO
+  // --------------------------------------------------------
+
+  if (immobilizerOn === false) {
+
+    immobilizerButton.textContent =
+      "ACTIVAR INMOVILIZADOR";
+
+    return;
+  }
+
+
+  // --------------------------------------------------------
+  // ESTADO DESCONOCIDO
+  // --------------------------------------------------------
+
+  immobilizerButton.textContent =
+    "CONSULTAR INMOVILIZADOR";
+}
+
+
+/*
+==================================================
+CONSULTAR ESTADO DEL INMOVILIZADOR
+==================================================
+*/
+
+async function refreshImmobilizerState() {
+
+  immobilizerOn = null;
+
+  updateImmobilizerButton();
+
+
+  try {
+
+    const result =
+      await vehicleApi(
+        "immobilizer-status"
+      );
+
+
+    immobilizerOn =
+      result.immobilizerOn === true;
+
+
+    console.log(
+      "Estado inmovilizador:",
+      immobilizerOn
+        ? "ACTIVADO"
+        : "DESACTIVADO"
+    );
+
+
+    updateLastCommunication();
+
+
+  } catch (error) {
+
+    console.error(
+      "Error consultando inmovilizador:",
+      error
+    );
+
+
+    immobilizerOn = null;
+
+
+  } finally {
+
+    updateImmobilizerButton();
   }
 }
 
@@ -612,10 +726,6 @@ startButton.addEventListener(
   "click",
   async () => {
 
-    // --------------------------------------------------------
-    // PROTECCION LOCAL
-    // --------------------------------------------------------
-
     if (engineOn === true) {
 
       alert(
@@ -678,9 +788,6 @@ startButton.addEventListener(
       );
 
 
-      // vehicle-api solo responde correctamente
-      // despues de confirmar V4 = 1.
-
       engineOn = true;
 
 
@@ -706,9 +813,6 @@ startButton.addEventListener(
       );
 
 
-      // Si hubo un error no asumimos el estado.
-      // Volvemos a consultar V4.
-
       engineOn = null;
 
 
@@ -719,9 +823,6 @@ startButton.addEventListener(
 
       engineCommandRunning = false;
 
-
-      // Si el resultado fue incierto,
-      // consultar nuevamente V4.
 
       if (engineOn === null) {
 
@@ -745,10 +846,6 @@ APAGAR MOTOR
 stopButton.addEventListener(
   "click",
   async () => {
-
-    // --------------------------------------------------------
-    // PROTECCION LOCAL
-    // --------------------------------------------------------
 
     if (engineOn === false) {
 
@@ -812,9 +909,6 @@ stopButton.addEventListener(
       );
 
 
-      // vehicle-api confirma V4 = 0
-      // antes de responder correctamente.
-
       engineOn = false;
 
 
@@ -870,23 +964,126 @@ INMOVILIZADOR
 ==================================================
 */
 
-document
-  .getElementById("immobilizerButton")
-  .addEventListener(
-    "click",
-    () => {
+immobilizerButton.addEventListener(
+  "click",
+  async () => {
 
-      const confirmed =
-        confirm(
-          "¿Desea activar el inmovilizador?"
-        );
+    // --------------------------------------------------------
+    // SI NO CONOCEMOS EL ESTADO, PRIMERO CONSULTAR V7
+    // --------------------------------------------------------
 
+    if (immobilizerOn === null) {
 
-      if (confirmed) {
+      await refreshImmobilizerState();
+
+      if (immobilizerOn === null) {
 
         alert(
-          "El inmovilizador todavia no esta habilitado."
+          "No se pudo conocer el estado actual del inmovilizador."
         );
+
+        return;
       }
     }
-  );
+
+
+    // --------------------------------------------------------
+    // PEDIR CONFIRMACION
+    // --------------------------------------------------------
+
+    const mensaje =
+      immobilizerOn
+        ? "¿Desea DESACTIVAR el inmovilizador?"
+        : "¿Desea ACTIVAR el inmovilizador?";
+
+
+    const confirmed =
+      confirm(
+        mensaje
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    immobilizerCommandRunning = true;
+
+    updateImmobilizerButton();
+
+
+    try {
+
+      const result =
+        await vehicleApi(
+          "immobilizer"
+        );
+
+
+      console.log(
+        "Resultado inmovilizador:",
+        result
+      );
+
+
+      // ------------------------------------------------------
+      // SUPABASE DEVUELVE EL NUEVO ESTADO CONFIRMADO DE V7
+      // ------------------------------------------------------
+
+      immobilizerOn =
+        result.immobilizerOn === true;
+
+
+      updateLastCommunication();
+
+
+      if (immobilizerOn) {
+
+        alert(
+          "Inmovilizador ACTIVADO."
+        );
+
+      } else {
+
+        alert(
+          "Inmovilizador DESACTIVADO."
+        );
+      }
+
+
+    } catch (error) {
+
+      console.error(
+        "Error controlando inmovilizador:",
+        error
+      );
+
+
+      alert(
+        "No se pudo cambiar el estado del inmovilizador.\n\n" +
+        error.message
+      );
+
+
+      // No asumimos ningun estado si hubo error.
+
+      immobilizerOn = null;
+
+
+    } finally {
+
+      immobilizerCommandRunning = false;
+
+
+      if (immobilizerOn === null) {
+
+        await refreshImmobilizerState();
+
+      } else {
+
+        updateImmobilizerButton();
+      }
+    }
+  }
+);
