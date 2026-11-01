@@ -20,6 +20,20 @@ const dashboard =
 const logoutButton =
   document.getElementById("logoutButton");
 
+const startButton =
+  document.getElementById("startButton");
+
+const stopButton =
+  document.getElementById("stopButton");
+
+
+// ==========================================================
+// ESTADO LOCAL DEL MOTOR
+// ==========================================================
+
+let engineOn = null;
+let engineCommandRunning = false;
+
 
 /*
 --------------------------------------------------
@@ -52,6 +66,13 @@ async function verifySession() {
   dashboard.classList.remove(
     "hidden"
   );
+
+
+  // --------------------------------------------------------
+  // CONSULTAR ESTADO DEL MOTOR AL ABRIR EL DASHBOARD
+  // --------------------------------------------------------
+
+  await refreshEngineState();
 }
 
 
@@ -210,6 +231,120 @@ function updateLastCommunication() {
 
     element.textContent =
       new Date().toLocaleString();
+  }
+}
+
+
+/*
+==================================================
+CONTROL VISUAL DEL ESTADO DEL MOTOR
+==================================================
+*/
+
+function updateEngineButtons() {
+
+  // Mientras se envia una orden,
+  // ambos botones permanecen bloqueados.
+
+  if (engineCommandRunning) {
+
+    startButton.disabled = true;
+    stopButton.disabled = true;
+
+    return;
+  }
+
+
+  // --------------------------------------------------------
+  // MOTOR ENCENDIDO
+  // --------------------------------------------------------
+
+  if (engineOn === true) {
+
+    startButton.disabled = true;
+    stopButton.disabled = false;
+
+    return;
+  }
+
+
+  // --------------------------------------------------------
+  // MOTOR APAGADO
+  // --------------------------------------------------------
+
+  if (engineOn === false) {
+
+    startButton.disabled = false;
+    stopButton.disabled = true;
+
+    return;
+  }
+
+
+  // --------------------------------------------------------
+  // ESTADO DESCONOCIDO
+  //
+  // Por seguridad no permitimos enviar comandos hasta
+  // conocer V4.
+  // --------------------------------------------------------
+
+  startButton.disabled = true;
+  stopButton.disabled = true;
+}
+
+
+/*
+==================================================
+CONSULTAR ESTADO DEL MOTOR
+==================================================
+*/
+
+async function refreshEngineState() {
+
+  // Mientras consultamos V4,
+  // no permitimos comandos de motor.
+
+  engineOn = null;
+
+  updateEngineButtons();
+
+
+  try {
+
+    const result =
+      await vehicleApi(
+        "engine-status"
+      );
+
+
+    engineOn =
+      result.engineOn === true;
+
+
+    console.log(
+      "Estado motor:",
+      engineOn
+        ? "ENCENDIDO"
+        : "APAGADO"
+    );
+
+
+    updateLastCommunication();
+
+
+  } catch (error) {
+
+    console.error(
+      "Error consultando estado del motor:",
+      error
+    );
+
+
+    engineOn = null;
+
+  } finally {
+
+    updateEngineButtons();
   }
 }
 
@@ -473,84 +608,132 @@ ENCENDER MOTOR
 ==================================================
 */
 
-document
-  .getElementById("startButton")
-  .addEventListener(
-    "click",
-    async () => {
+startButton.addEventListener(
+  "click",
+  async () => {
 
-      const confirmed =
-        confirm(
-          "¿Desea solicitar el encendido del motor?"
+    // --------------------------------------------------------
+    // PROTECCION LOCAL
+    // --------------------------------------------------------
+
+    if (engineOn === true) {
+
+      alert(
+        "El motor ya figura como encendido."
+      );
+
+      updateEngineButtons();
+
+      return;
+    }
+
+
+    if (engineOn === null) {
+
+      alert(
+        "No se conoce el estado actual del motor."
+      );
+
+      await refreshEngineState();
+
+      return;
+    }
+
+
+    const confirmed =
+      confirm(
+        "¿Desea solicitar el encendido del motor?"
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    engineCommandRunning = true;
+
+    updateEngineButtons();
+
+
+    const originalText =
+      startButton.textContent;
+
+
+    startButton.textContent =
+      "ENCENDIENDO...";
+
+
+    try {
+
+      const result =
+        await vehicleApi(
+          "start"
         );
 
 
-      if (!confirmed) {
-        return;
-      }
+      console.log(
+        "Resultado de arranque:",
+        result
+      );
 
 
-      const button =
-        document.getElementById(
-          "startButton"
-        );
+      // vehicle-api solo responde correctamente
+      // despues de confirmar V4 = 1.
+
+      engineOn = true;
 
 
-      button.disabled = true;
-
-      const originalText =
-        button.textContent;
+      updateLastCommunication();
 
 
-      button.textContent =
-        "ENVIANDO...";
+      alert(
+        "Motor marcado como encendido."
+      );
 
 
-      try {
+    } catch (error) {
 
-        const result =
-          await vehicleApi(
-            "start"
-          );
-
-
-        console.log(
-          "Solicitud de arranque:",
-          result
-        );
+      console.error(
+        "Error solicitando arranque:",
+        error
+      );
 
 
-        updateLastCommunication();
+      alert(
+        "No se pudo completar la solicitud de encendido.\n\n" +
+        error.message
+      );
 
 
-        alert(
-          "Solicitud de encendido enviada correctamente."
-        );
+      // Si hubo un error no asumimos el estado.
+      // Volvemos a consultar V4.
+
+      engineOn = null;
 
 
-      } catch (error) {
+    } finally {
 
-        console.error(
-          "Error solicitando arranque:",
-          error
-        );
+      startButton.textContent =
+        originalText;
 
-
-        alert(
-          "No se pudo enviar la solicitud de encendido.\n\n" +
-          error.message
-        );
+      engineCommandRunning = false;
 
 
-      } finally {
+      // Si el resultado fue incierto,
+      // consultar nuevamente V4.
 
-        button.disabled = false;
+      if (engineOn === null) {
 
-        button.textContent =
-          originalText;
+        await refreshEngineState();
+
+      } else {
+
+        updateEngineButtons();
       }
     }
-  );
+  }
+);
 
 
 /*
@@ -559,84 +742,126 @@ APAGAR MOTOR
 ==================================================
 */
 
-document
-  .getElementById("stopButton")
-  .addEventListener(
-    "click",
-    async () => {
+stopButton.addEventListener(
+  "click",
+  async () => {
 
-      const confirmed =
-        confirm(
-          "¿Desea solicitar el apagado del motor?"
+    // --------------------------------------------------------
+    // PROTECCION LOCAL
+    // --------------------------------------------------------
+
+    if (engineOn === false) {
+
+      alert(
+        "El motor ya figura como apagado."
+      );
+
+      updateEngineButtons();
+
+      return;
+    }
+
+
+    if (engineOn === null) {
+
+      alert(
+        "No se conoce el estado actual del motor."
+      );
+
+      await refreshEngineState();
+
+      return;
+    }
+
+
+    const confirmed =
+      confirm(
+        "¿Desea solicitar el apagado del motor?"
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    engineCommandRunning = true;
+
+    updateEngineButtons();
+
+
+    const originalText =
+      stopButton.textContent;
+
+
+    stopButton.textContent =
+      "APAGANDO...";
+
+
+    try {
+
+      const result =
+        await vehicleApi(
+          "stop"
         );
 
 
-      if (!confirmed) {
-        return;
-      }
+      console.log(
+        "Resultado de apagado:",
+        result
+      );
 
 
-      const button =
-        document.getElementById(
-          "stopButton"
-        );
+      // vehicle-api confirma V4 = 0
+      // antes de responder correctamente.
+
+      engineOn = false;
 
 
-      button.disabled = true;
-
-      const originalText =
-        button.textContent;
+      updateLastCommunication();
 
 
-      button.textContent =
-        "APAGANDO...";
+      alert(
+        "Motor marcado como apagado."
+      );
 
 
-      try {
+    } catch (error) {
 
-        const result =
-          await vehicleApi(
-            "stop"
-          );
-
-
-        console.log(
-          "Solicitud de apagado:",
-          result
-        );
+      console.error(
+        "Error solicitando apagado:",
+        error
+      );
 
 
-        updateLastCommunication();
+      alert(
+        "No se pudo completar la solicitud de apagado.\n\n" +
+        error.message
+      );
 
 
-        alert(
-          "Solicitud de apagado enviada correctamente."
-        );
+      engineOn = null;
 
 
-      } catch (error) {
+    } finally {
 
-        console.error(
-          "Error solicitando apagado:",
-          error
-        );
+      stopButton.textContent =
+        originalText;
 
-
-        alert(
-          "No se pudo enviar la solicitud de apagado.\n\n" +
-          error.message
-        );
+      engineCommandRunning = false;
 
 
-      } finally {
+      if (engineOn === null) {
 
-        button.disabled = false;
+        await refreshEngineState();
 
-        button.textContent =
-          originalText;
+      } else {
+
+        updateEngineButtons();
       }
     }
-  );
+  }
+);
 
 
 /*
