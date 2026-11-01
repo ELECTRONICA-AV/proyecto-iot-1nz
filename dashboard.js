@@ -5,11 +5,16 @@ const SUPABASE_KEY =
   "sb_publishable_nYThOTaTkC_grNuhePyGHw_nyYYLypH";
 
 
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
+
+// ==========================================================
+// ELEMENTOS
+// ==========================================================
 
 const loadingScreen =
   document.getElementById("loadingScreen");
@@ -29,6 +34,18 @@ const stopButton =
 const immobilizerButton =
   document.getElementById("immobilizerButton");
 
+const connectionButton =
+  document.getElementById("connectionButton");
+
+const connectionText =
+  document.getElementById("connectionText");
+
+const statusDot =
+  document.getElementById("statusDot");
+
+const engineStatus =
+  document.getElementById("engineStatus");
+
 
 // ==========================================================
 // ESTADO LOCAL
@@ -40,19 +57,20 @@ let engineCommandRunning = false;
 let immobilizerOn = null;
 let immobilizerCommandRunning = false;
 
+let connectionTestRunning = false;
 
-/*
---------------------------------------------------
-VERIFICAR SESION
---------------------------------------------------
-*/
+
+// ==========================================================
+// VERIFICAR SESION
+// ==========================================================
 
 async function verifySession() {
 
   const {
     data: { session },
     error
-  } = await supabaseClient.auth.getSession();
+  } =
+    await supabaseClient.auth.getSession();
 
 
   if (error || !session) {
@@ -75,7 +93,19 @@ async function verifySession() {
 
 
   // --------------------------------------------------------
-  // CONSULTAR ESTADOS AL ABRIR EL DASHBOARD
+  // ESTADO DE CONEXION INICIAL
+  //
+  // NO hacemos prueba V8/V9 automaticamente.
+  // El usuario debe pulsar VERIFICAR CONEXION.
+  // --------------------------------------------------------
+
+  setConnectionState(
+    "unknown"
+  );
+
+
+  // --------------------------------------------------------
+  // CONSULTAR ESTADOS AL ABRIR
   // --------------------------------------------------------
 
   await refreshEngineState();
@@ -87,11 +117,9 @@ async function verifySession() {
 verifySession();
 
 
-/*
---------------------------------------------------
-CERRAR SESION
---------------------------------------------------
-*/
+// ==========================================================
+// CERRAR SESION
+// ==========================================================
 
 logoutButton.addEventListener(
   "click",
@@ -110,18 +138,17 @@ logoutButton.addEventListener(
 );
 
 
-/*
---------------------------------------------------
-OBTENER SESION
---------------------------------------------------
-*/
+// ==========================================================
+// OBTENER SESION
+// ==========================================================
 
 async function getSession() {
 
   const {
     data: { session },
     error
-  } = await supabaseClient.auth.getSession();
+  } =
+    await supabaseClient.auth.getSession();
 
 
   if (error || !session) {
@@ -138,11 +165,9 @@ async function getSession() {
 }
 
 
-/*
---------------------------------------------------
-LLAMAR VEHICLE-API
---------------------------------------------------
-*/
+// ==========================================================
+// LLAMAR VEHICLE-API
+// ==========================================================
 
 async function vehicleApi(action) {
 
@@ -158,28 +183,29 @@ async function vehicleApi(action) {
   }
 
 
-  const response = await fetch(
-    `${SUPABASE_URL}/functions/v1/vehicle-api`,
-    {
-      method: "POST",
+  const response =
+    await fetch(
+      `${SUPABASE_URL}/functions/v1/vehicle-api`,
+      {
+        method: "POST",
 
-      headers: {
+        headers: {
 
-        "Content-Type":
-          "application/json",
+          "Content-Type":
+            "application/json",
 
-        "Authorization":
-          `Bearer ${session.access_token}`,
+          "Authorization":
+            `Bearer ${session.access_token}`,
 
-        "apikey":
-          SUPABASE_KEY
-      },
+          "apikey":
+            SUPABASE_KEY
+        },
 
-      body: JSON.stringify({
-        action: action
-      })
-    }
-  );
+        body: JSON.stringify({
+          action: action
+        })
+      }
+    );
 
 
   let result;
@@ -221,11 +247,9 @@ async function vehicleApi(action) {
 }
 
 
-/*
---------------------------------------------------
-ACTUALIZAR ULTIMA COMUNICACION
---------------------------------------------------
-*/
+// ==========================================================
+// ULTIMA COMUNICACION
+// ==========================================================
 
 function updateLastCommunication() {
 
@@ -235,21 +259,293 @@ function updateLastCommunication() {
     );
 
 
-  if (element) {
-
-    element.textContent =
-      new Date().toLocaleString();
+  if (!element) {
+    return;
   }
+
+
+  element.textContent =
+    new Date().toLocaleString(
+      "es-BO",
+      {
+        dateStyle: "short",
+        timeStyle: "medium"
+      }
+    );
 }
 
 
-/*
-==================================================
-CONTROL VISUAL DEL ESTADO DEL MOTOR
-==================================================
-*/
+// ==========================================================
+// ESTADO VISUAL DE CONEXION
+// ==========================================================
+
+function setConnectionState(state) {
+
+  if (
+    !statusDot ||
+    !connectionText
+  ) {
+    return;
+  }
+
+
+  statusDot.classList.remove(
+    "unknown",
+    "checking",
+    "online",
+    "offline"
+  );
+
+
+  // --------------------------------------------------------
+  // SIN VERIFICAR
+  // --------------------------------------------------------
+
+  if (state === "unknown") {
+
+    statusDot.classList.add(
+      "unknown"
+    );
+
+    connectionText.textContent =
+      "SIN VERIFICAR";
+
+    return;
+  }
+
+
+  // --------------------------------------------------------
+  // VERIFICANDO
+  // --------------------------------------------------------
+
+  if (state === "checking") {
+
+    statusDot.classList.add(
+      "checking"
+    );
+
+    connectionText.textContent =
+      "VERIFICANDO...";
+
+    return;
+  }
+
+
+  // --------------------------------------------------------
+  // CONECTADO
+  // --------------------------------------------------------
+
+  if (state === "online") {
+
+    statusDot.classList.add(
+      "online"
+    );
+
+    connectionText.textContent =
+      "CONECTADO";
+
+    return;
+  }
+
+
+  // --------------------------------------------------------
+  // DESCONECTADO
+  // --------------------------------------------------------
+
+  statusDot.classList.add(
+    "offline"
+  );
+
+  connectionText.textContent =
+    "SIN CONEXIÓN";
+}
+
+
+// ==========================================================
+// PRUEBA REAL DE CONEXION ESP32
+//
+// Dashboard
+//   ↓
+// Supabase
+//   ↓
+// V9 = 0
+// V8 = 1
+//   ↓
+// ESP32
+//   ↓
+// V9 = 1
+//   ↓
+// Supabase
+//   ↓
+// Dashboard
+// ==========================================================
+
+connectionButton.addEventListener(
+  "click",
+  async () => {
+
+    if (connectionTestRunning) {
+      return;
+    }
+
+
+    connectionTestRunning = true;
+
+    connectionButton.disabled = true;
+
+    connectionButton.textContent =
+      "VERIFICANDO...";
+
+    setConnectionState(
+      "checking"
+    );
+
+
+    try {
+
+      const result =
+        await vehicleApi(
+          "connection-test"
+        );
+
+
+      console.log(
+        "Prueba conexion ESP32:",
+        result
+      );
+
+
+      // ----------------------------------------------------
+      // ESP32 RESPONDIO V9 = 1
+      // ----------------------------------------------------
+
+      if (result.connected === true) {
+
+        setConnectionState(
+          "online"
+        );
+
+        updateLastCommunication();
+
+        connectionButton.textContent =
+          "VERIFICAR NUEVAMENTE";
+
+      } else {
+
+        // --------------------------------------------------
+        // SUPABASE FUNCIONO, PERO ESP32 NO RESPONDIO
+        // --------------------------------------------------
+
+        setConnectionState(
+          "offline"
+        );
+
+        connectionButton.textContent =
+          "REINTENTAR CONEXIÓN";
+      }
+
+
+    } catch (error) {
+
+      console.error(
+        "Error verificando conexion:",
+        error
+      );
+
+
+      setConnectionState(
+        "offline"
+      );
+
+
+      connectionButton.textContent =
+        "REINTENTAR CONEXIÓN";
+
+
+      alert(
+        "No se pudo completar la prueba de conexión.\n\n" +
+        error.message
+      );
+
+
+    } finally {
+
+      connectionTestRunning = false;
+
+      connectionButton.disabled = false;
+    }
+  }
+);
+
+
+// ==========================================================
+// ACTUALIZAR VISUALMENTE ESTADO MOTOR
+// ==========================================================
+
+function updateEngineVisual() {
+
+  if (!engineStatus) {
+    return;
+  }
+
+
+  engineStatus.classList.remove(
+    "engine-on",
+    "engine-off"
+  );
+
+
+  // --------------------------------------------------------
+  // ENCENDIDO
+  // --------------------------------------------------------
+
+  if (engineOn === true) {
+
+    engineStatus.textContent =
+      "ENCENDIDO";
+
+    engineStatus.classList.add(
+      "engine-on"
+    );
+
+    return;
+  }
+
+
+  // --------------------------------------------------------
+  // APAGADO
+  // --------------------------------------------------------
+
+  if (engineOn === false) {
+
+    engineStatus.textContent =
+      "APAGADO";
+
+    engineStatus.classList.add(
+      "engine-off"
+    );
+
+    return;
+  }
+
+
+  // --------------------------------------------------------
+  // DESCONOCIDO
+  // --------------------------------------------------------
+
+  engineStatus.textContent =
+    "DESCONOCIDO";
+}
+
+
+// ==========================================================
+// CONTROL VISUAL BOTONES MOTOR
+// ==========================================================
 
 function updateEngineButtons() {
+
+  updateEngineVisual();
+
 
   if (engineCommandRunning) {
 
@@ -289,11 +585,9 @@ function updateEngineButtons() {
 }
 
 
-/*
-==================================================
-CONSULTAR ESTADO DEL MOTOR
-==================================================
-*/
+// ==========================================================
+// CONSULTAR ESTADO MOTOR
+// ==========================================================
 
 async function refreshEngineState() {
 
@@ -343,11 +637,9 @@ async function refreshEngineState() {
 }
 
 
-/*
-==================================================
-CONTROL VISUAL DEL INMOVILIZADOR
-==================================================
-*/
+// ==========================================================
+// CONTROL VISUAL INMOVILIZADOR
+// ==========================================================
 
 function updateImmobilizerButton() {
 
@@ -357,7 +649,7 @@ function updateImmobilizerButton() {
 
 
   // --------------------------------------------------------
-  // ORDEN EN PROCESO
+  // PROCESANDO
   // --------------------------------------------------------
 
   if (immobilizerCommandRunning) {
@@ -375,7 +667,7 @@ function updateImmobilizerButton() {
 
 
   // --------------------------------------------------------
-  // INMOVILIZADOR ACTIVADO
+  // ACTIVADO
   // --------------------------------------------------------
 
   if (immobilizerOn === true) {
@@ -388,7 +680,7 @@ function updateImmobilizerButton() {
 
 
   // --------------------------------------------------------
-  // INMOVILIZADOR DESACTIVADO
+  // DESACTIVADO
   // --------------------------------------------------------
 
   if (immobilizerOn === false) {
@@ -401,7 +693,7 @@ function updateImmobilizerButton() {
 
 
   // --------------------------------------------------------
-  // ESTADO DESCONOCIDO
+  // DESCONOCIDO
   // --------------------------------------------------------
 
   immobilizerButton.textContent =
@@ -409,11 +701,9 @@ function updateImmobilizerButton() {
 }
 
 
-/*
-==================================================
-CONSULTAR ESTADO DEL INMOVILIZADOR
-==================================================
-*/
+// ==========================================================
+// CONSULTAR INMOVILIZADOR
+// ==========================================================
 
 async function refreshImmobilizerState() {
 
@@ -463,11 +753,9 @@ async function refreshImmobilizerState() {
 }
 
 
-/*
-==================================================
-BATERIA
-==================================================
-*/
+// ==========================================================
+// BATERIA
+// ==========================================================
 
 document
   .getElementById("batteryButton")
@@ -500,10 +788,26 @@ document
           );
 
 
-        batteryValue.textContent =
+        const voltage =
           Number(
             result.battery
-          ).toFixed(2);
+          );
+
+
+        if (
+          !Number.isFinite(
+            voltage
+          )
+        ) {
+
+          throw new Error(
+            "Valor de bateria invalido"
+          );
+        }
+
+
+        batteryValue.textContent =
+          voltage.toFixed(2);
 
 
         updateLastCommunication();
@@ -538,11 +842,9 @@ document
   );
 
 
-/*
-==================================================
-TEMPERATURA
-==================================================
-*/
+// ==========================================================
+// TEMPERATURA
+// ==========================================================
 
 document
   .getElementById("temperatureButton")
@@ -629,11 +931,9 @@ document
   );
 
 
-/*
-==================================================
-COMBUSTIBLE
-==================================================
-*/
+// ==========================================================
+// COMBUSTIBLE
+// ==========================================================
 
 document
   .getElementById("fuelButton")
@@ -672,7 +972,11 @@ document
           );
 
 
-        if (!Number.isFinite(fuel)) {
+        if (
+          !Number.isFinite(
+            fuel
+          )
+        ) {
 
           throw new Error(
             "Valor de combustible invalido"
@@ -716,11 +1020,9 @@ document
   );
 
 
-/*
-==================================================
-ENCENDER MOTOR
-==================================================
-*/
+// ==========================================================
+// ENCENDER MOTOR
+// ==========================================================
 
 startButton.addEventListener(
   "click",
@@ -790,6 +1092,7 @@ startButton.addEventListener(
 
       engineOn = true;
 
+      updateEngineVisual();
 
       updateLastCommunication();
 
@@ -837,11 +1140,9 @@ startButton.addEventListener(
 );
 
 
-/*
-==================================================
-APAGAR MOTOR
-==================================================
-*/
+// ==========================================================
+// APAGAR MOTOR
+// ==========================================================
 
 stopButton.addEventListener(
   "click",
@@ -911,6 +1212,7 @@ stopButton.addEventListener(
 
       engineOn = false;
 
+      updateEngineVisual();
 
       updateLastCommunication();
 
@@ -958,23 +1260,22 @@ stopButton.addEventListener(
 );
 
 
-/*
-==================================================
-INMOVILIZADOR
-==================================================
-*/
+// ==========================================================
+// INMOVILIZADOR
+// ==========================================================
 
 immobilizerButton.addEventListener(
   "click",
   async () => {
 
     // --------------------------------------------------------
-    // SI NO CONOCEMOS EL ESTADO, PRIMERO CONSULTAR V7
+    // SI NO CONOCEMOS EL ESTADO, CONSULTAR PRIMERO
     // --------------------------------------------------------
 
     if (immobilizerOn === null) {
 
       await refreshImmobilizerState();
+
 
       if (immobilizerOn === null) {
 
@@ -988,7 +1289,7 @@ immobilizerButton.addEventListener(
 
 
     // --------------------------------------------------------
-    // PEDIR CONFIRMACION
+    // CONFIRMACION
     // --------------------------------------------------------
 
     const mensaje =
@@ -1027,10 +1328,6 @@ immobilizerButton.addEventListener(
       );
 
 
-      // ------------------------------------------------------
-      // SUPABASE DEVUELVE EL NUEVO ESTADO CONFIRMADO DE V7
-      // ------------------------------------------------------
-
       immobilizerOn =
         result.immobilizerOn === true;
 
@@ -1065,8 +1362,6 @@ immobilizerButton.addEventListener(
         error.message
       );
 
-
-      // No asumimos ningun estado si hubo error.
 
       immobilizerOn = null;
 
