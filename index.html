@@ -2,6 +2,7 @@
 <html lang="es">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -11,423 +12,731 @@
 
   <meta
     name="theme-color"
-    content="#f4f7fb"
+    content="#020b17"
   >
 
   <title>
-    CETA | Sistemas Electrónicos Automotrices
+    CETA | Control Vehicular
   </title>
 
   <link
     rel="stylesheet"
     href="style.css"
   >
+
 </head>
 
 
 <body>
 
-  <!-- ================================================== -->
-  <!-- CABECERA INSTITUCIONAL                             -->
-  <!-- ================================================== -->
 
-  <header class="main-header">
+  <!-- ====================================================== -->
+  <!-- FONDO GENERAL                                         -->
+  <!-- ====================================================== -->
 
-    <div class="header-container">
+  <div class="background-effects">
 
-      <div class="brand">
+    <div class="blue-glow glow-left"></div>
 
-        <div class="logo-box">
+    <div class="blue-glow glow-center"></div>
+
+    <div class="red-glow glow-right"></div>
+
+    <div class="background-grid"></div>
+
+  </div>
+
+
+  <!-- ====================================================== -->
+  <!-- DECORACION SUPERIOR                                   -->
+  <!-- ====================================================== -->
+
+  <div class="top-decoration">
+
+    <span class="stripe stripe-red"></span>
+
+    <span class="stripe stripe-blue"></span>
+
+    <span class="stripe stripe-cyan"></span>
+
+  </div>
+
+
+  <!-- ====================================================== -->
+  <!-- CONTENEDOR PRINCIPAL                                  -->
+  <!-- ====================================================== -->
+
+  <div class="page-wrapper">
+
+
+    <!-- ==================================================== -->
+    <!-- CABECERA CETA                                       -->
+    <!-- ==================================================== -->
+
+    <header class="main-header">
+
+
+      <!-- IDENTIDAD -->
+
+      <div class="brand-area">
+
+        <div class="logo-container">
+
           <img
             src="ceta-logo.png"
             alt="Logo CETA"
+            class="ceta-logo"
           >
+
         </div>
+
+
+        <div class="brand-divider"></div>
 
 
         <div class="brand-text">
 
-          <span class="brand-name">
+          <strong class="brand-name">
             CETA
+          </strong>
+
+          <span class="brand-description">
+            ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
           </span>
 
-          <h1>
-            ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
-          </h1>
 
-          <p>
-            Plataforma de proyectos y sistemas electrónicos
-          </p>
+          <div class="brand-line">
+
+            <span class="brand-line-blue"></span>
+
+            <span class="brand-line-cyan"></span>
+
+            <span class="brand-line-red"></span>
+
+          </div>
 
         </div>
 
       </div>
 
 
-      <div class="header-label">
+      <!-- AUTOMOVIL DECORATIVO -->
 
-        <span class="header-dot"></span>
+      <div class="hero-car">
 
-        <div>
-          <small>PLATAFORMA</small>
-          <strong>PROYECTOS IoT</strong>
+        <div class="car-light"></div>
+
+        <img
+          src="car-hero.png"
+          alt=""
+          aria-hidden="true"
+        >
+
+      </div>
+
+    </header>
+
+
+    <!-- LINEA CABECERA -->
+
+    <div class="header-separator"></div>
+
+
+    <!-- ==================================================== -->
+    <!-- TITULO PRINCIPAL                                    -->
+    <!-- ==================================================== -->
+
+    <section class="hero-title">
+
+
+      <!-- CIRCUITO IZQUIERDO -->
+
+      <div class="circuit circuit-left">
+
+        <span></span>
+        <span></span>
+
+        <div class="chip">
+
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+
         </div>
 
       </div>
 
-    </div>
 
-  </header>
+      <!-- TITULO -->
 
+      <div class="hero-title-content">
 
-  <!-- LINEA INSTITUCIONAL -->
-
-  <div class="institution-line">
-    <div class="line-blue"></div>
-    <div class="line-red"></div>
-  </div>
-
-
-  <!-- ================================================== -->
-  <!-- CONTENIDO                                          -->
-  <!-- ================================================== -->
-
-  <main>
-
-
-    <!-- PRESENTACION -->
-
-    <section class="hero">
-
-      <div class="hero-content">
-
-        <span class="section-tag">
-          SISTEMAS AUTOMOTRICES
-        </span>
-
-        <h2>
-          Selección de
-          <span>maqueta</span>
-        </h2>
+        <h1>
+          ELECTRÓNICA AV
+        </h1>
 
         <p>
-          Seleccione el sistema electrónico automotriz
-          al que desea ingresar.
+          CONTROL VEHICULAR
         </p>
 
       </div>
 
 
-      <div class="hero-decoration">
+      <!-- CIRCUITO DERECHO -->
 
-        <span>IoT</span>
+      <div class="circuit circuit-right">
 
-        <small>
-          ELECTRÓNICA<br>
-          AUTOMOTRIZ
-        </small>
+        <span></span>
+        <span></span>
+
+        <i class="circuit-dot"></i>
 
       </div>
+
 
     </section>
 
 
-    <!-- ================================================== -->
-    <!-- SELECTOR                                           -->
-    <!-- ================================================== -->
+    <!-- ==================================================== -->
+    <!-- SELECTOR                                            -->
+    <!-- ==================================================== -->
 
-    <section class="selector-section">
-
-      <div class="selector-heading">
-
-        <div>
-
-          <span>
-            PROYECTOS DISPONIBLES
-          </span>
-
-          <h3>
-            Maquetas de trabajo
-          </h3>
-
-        </div>
+    <main class="projects-section">
 
 
-        <div class="project-count">
-          02 PROYECTOS
-        </div>
+      <div class="section-heading">
+
+        <span class="heading-line"></span>
+
+        <h2>
+          Seleccione una maqueta
+        </h2>
+
+        <span class="heading-line"></span>
 
       </div>
 
 
-      <!-- ================================================= -->
-      <!-- TOYOTA                                            -->
-      <!-- ================================================= -->
+      <!-- ================================================== -->
+      <!-- TARJETAS                                          -->
+      <!-- ================================================== -->
 
-      <article
-        class="model-card"
-        onclick="window.location.href='index-1nz.html'"
-      >
-
-        <div class="model-number">
-          01
-        </div>
+      <div class="projects-grid">
 
 
-        <div class="model-main">
+        <!-- ================================================ -->
+        <!-- TOYOTA 1NZ                                      -->
+        <!-- ================================================ -->
 
-          <div class="model-icon">
-
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                d="M5 11l1.5-4.5A2.2 2.2 0 0 1 8.6 5h6.8a2.2 2.2 0 0 1 2.1 1.5L19 11m-14 0h14a2 2 0 0 1 2 2v4h-2v2h-2v-2H7v2H5v-2H3v-4a2 2 0 0 1 2-2Zm2.5 2.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm9 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"
-              />
-            </svg>
-
-          </div>
-
-
-          <div class="model-info">
-
-            <span class="model-type">
-              SISTEMA IoT VEHICULAR
-            </span>
-
-            <h4>
-              Toyota 1NZ-FE
-            </h4>
-
-            <p>
-              Sistema de monitoreo, control remoto y
-              supervisión electrónica del vehículo.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="model-features">
-
-          <span>Telemetría</span>
-          <span>Control remoto</span>
-          <span>Seguridad</span>
-
-        </div>
-
-
-        <div class="model-action">
-
-          <span class="available">
-            <i></i>
-            Disponible
-          </span>
-
-          <button
-            type="button"
-            onclick="
-              event.stopPropagation();
+        <article
+          class="project-card toyota-card"
+          tabindex="0"
+          role="button"
+          aria-label="Ingresar al sistema Toyota 1NZ-FE"
+          onclick="window.location.href='index-1nz.html'"
+          onkeydown="
+            if (event.key === 'Enter' || event.key === ' ') {
               window.location.href='index-1nz.html';
-            "
-          >
-            INGRESAR
-
-            <span>→</span>
-          </button>
-
-        </div>
-
-      </article>
-
-
-      <!-- ================================================= -->
-      <!-- CIERRE CENTRALIZADO                               -->
-      <!-- ================================================= -->
-
-      <article
-        class="model-card"
-        onclick="window.location.href='index-centralizado.html'"
-      >
-
-        <div class="model-number">
-          02
-        </div>
-
-
-        <div class="model-main">
-
-          <div class="model-icon red">
-
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2Zm-7-2a2 2 0 0 1 4 0v2h-4V6Zm2 10.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"
-              />
-            </svg>
-
-          </div>
-
-
-          <div class="model-info">
-
-            <span class="model-type">
-              SISTEMA DE CONFORT Y SEGURIDAD
-            </span>
-
-            <h4>
-              Cierre Centralizado
-            </h4>
-
-            <p>
-              Control electrónico de apertura y cierre
-              para el sistema centralizado del vehículo.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="model-features">
-
-          <span>Apertura</span>
-          <span>Cierre</span>
-          <span>Control electrónico</span>
-
-        </div>
-
-
-        <div class="model-action">
-
-          <span class="available">
-            <i></i>
-            Disponible
-          </span>
-
-          <button
-            type="button"
-            onclick="
-              event.stopPropagation();
-              window.location.href='index-centralizado.html';
-            "
-          >
-            INGRESAR
-
-            <span>→</span>
-          </button>
-
-        </div>
-
-      </article>
-
-    </section>
-
-
-    <!-- ================================================== -->
-    <!-- INFORMACION INSTITUCIONAL                          -->
-    <!-- ================================================== -->
-
-    <section class="institution-panel">
-
-      <div class="institution-item">
-
-        <span class="institution-icon">
-          01
-        </span>
-
-        <div>
-          <strong>
-            ELECTRÓNICA AUTOMOTRIZ
-          </strong>
-
-          <p>
-            Sistemas electrónicos aplicados al vehículo.
-          </p>
-        </div>
-
-      </div>
-
-
-      <div class="institution-item">
-
-        <span class="institution-icon">
-          02
-        </span>
-
-        <div>
-          <strong>
-            TECNOLOGÍA IoT
-          </strong>
-
-          <p>
-            Comunicación, monitoreo y control remoto.
-          </p>
-        </div>
-
-      </div>
-
-
-      <div class="institution-item">
-
-        <span class="institution-icon">
-          03
-        </span>
-
-        <div>
-          <strong>
-            DESARROLLO PRÁCTICO
-          </strong>
-
-          <p>
-            Integración de electrónica y sistemas automotrices.
-          </p>
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- ================================================== -->
-  <!-- FOOTER                                             -->
-  <!-- ================================================== -->
-
-  <footer>
-
-    <div class="footer-container">
-
-      <div class="footer-brand">
-
-        <img
-          src="ceta-logo.png"
-          alt=""
+            }
+          "
         >
 
+
+          <!-- IMAGEN -->
+
+          <div class="card-image">
+
+            <img
+              src="toyota-1nz.png"
+              alt="Motor Toyota 1NZ-FE"
+            >
+
+          </div>
+
+
+          <!-- DEGRADADO -->
+
+          <div class="card-overlay"></div>
+
+
+          <!-- CONTENIDO -->
+
+          <div class="card-content">
+
+
+            <div class="card-brand">
+
+              <!-- LOGO TOYOTA VECTORIAL SIMPLE -->
+
+              <div class="toyota-symbol">
+
+                <svg
+                  viewBox="0 0 100 70"
+                  aria-hidden="true"
+                >
+
+                  <ellipse
+                    cx="50"
+                    cy="35"
+                    rx="44"
+                    ry="27"
+                  />
+
+                  <ellipse
+                    cx="50"
+                    cy="35"
+                    rx="15"
+                    ry="27"
+                  />
+
+                  <ellipse
+                    cx="50"
+                    cy="27"
+                    rx="31"
+                    ry="12"
+                  />
+
+                </svg>
+
+              </div>
+
+
+              <div class="accent-line cyan"></div>
+
+            </div>
+
+
+            <div class="card-copy">
+
+              <span class="card-category">
+                SISTEMA IoT VEHICULAR
+              </span>
+
+              <h3>
+                TOYOTA 1NZ
+              </h3>
+
+              <p>
+                Sistema de control y monitoreo
+                del motor 1NZ-FE.
+              </p>
+
+            </div>
+
+
+            <div class="card-status">
+
+              <span class="status-dot"></span>
+
+              SISTEMA DISPONIBLE
+
+            </div>
+
+          </div>
+
+
+          <!-- BOTON -->
+
+          <div class="card-action">
+
+            <span>
+              →
+            </span>
+
+          </div>
+
+
+          <!-- BORDE DECORATIVO -->
+
+          <div class="card-corner"></div>
+
+
+        </article>
+
+
+        <!-- ================================================ -->
+        <!-- CIERRE CENTRALIZADO                             -->
+        <!-- ================================================ -->
+
+        <article
+          class="project-card centralizado-card"
+          tabindex="0"
+          role="button"
+          aria-label="Ingresar al sistema de cierre centralizado"
+          onclick="window.location.href='index-centralizado.html'"
+          onkeydown="
+            if (event.key === 'Enter' || event.key === ' ') {
+              window.location.href='index-centralizado.html';
+            }
+          "
+        >
+
+
+          <!-- IMAGEN -->
+
+          <div class="card-image">
+
+            <img
+              src="cierre-centralizado.png"
+              alt="Control de cierre centralizado"
+            >
+
+          </div>
+
+
+          <!-- DEGRADADO -->
+
+          <div class="card-overlay"></div>
+
+
+          <!-- CONTENIDO -->
+
+          <div class="card-content">
+
+
+            <div class="card-brand">
+
+
+              <!-- ICONO VEHICULO + CANDADO -->
+
+              <div class="security-symbol">
+
+                <svg
+                  viewBox="0 0 80 60"
+                  aria-hidden="true"
+                >
+
+                  <path
+                    d="
+                    M8 35
+                    L13 23
+                    C14 20 17 18 21 18
+                    H45
+                    C49 18 52 20 53 23
+                    L58 35
+                    "
+                  />
+
+                  <path
+                    d="
+                    M8 35
+                    H58
+                    V48
+                    H8
+                    Z
+                    "
+                  />
+
+                  <circle
+                    cx="17"
+                    cy="40"
+                    r="4"
+                  />
+
+                  <circle
+                    cx="49"
+                    cy="40"
+                    r="4"
+                  />
+
+                  <rect
+                    x="49"
+                    y="13"
+                    width="22"
+                    height="22"
+                    rx="3"
+                  />
+
+                  <path
+                    d="
+                    M54 13
+                    V9
+                    C54 2 66 2 66 9
+                    V13
+                    "
+                  />
+
+                </svg>
+
+              </div>
+
+
+              <div class="accent-line red"></div>
+
+            </div>
+
+
+            <div class="card-copy">
+
+              <span class="card-category">
+                SISTEMA DE SEGURIDAD
+              </span>
+
+              <h3>
+                CIERRE
+                <br>
+                CENTRALIZADO
+              </h3>
+
+              <p>
+                Sistema de apertura y cierre
+                centralizado del vehículo.
+              </p>
+
+            </div>
+
+
+            <div class="card-status">
+
+              <span class="status-dot"></span>
+
+              SISTEMA DISPONIBLE
+
+            </div>
+
+          </div>
+
+
+          <!-- BOTON -->
+
+          <div class="card-action">
+
+            <span>
+              →
+            </span>
+
+          </div>
+
+
+          <!-- BORDE DECORATIVO -->
+
+          <div class="card-corner"></div>
+
+
+        </article>
+
+
+      </div>
+
+    </main>
+
+
+    <!-- ==================================================== -->
+    <!-- FRANJA INFERIOR                                     -->
+    <!-- ==================================================== -->
+
+    <section class="technology-bar">
+
+
+      <!-- SISTEMAS -->
+
+      <div class="technology-item">
+
+        <div class="technology-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+
+            <rect
+              x="6"
+              y="6"
+              width="12"
+              height="12"
+              rx="1"
+            />
+
+            <path
+              d="
+              M9 2v4
+              M15 2v4
+              M9 18v4
+              M15 18v4
+              M2 9h4
+              M2 15h4
+              M18 9h4
+              M18 15h4
+              "
+            />
+
+          </svg>
+
+        </div>
+
+
         <div>
-          <strong>CETA</strong>
+
+          <strong>
+            Sistemas
+          </strong>
 
           <span>
-            ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
+            Automotrices
           </span>
+
         </div>
 
       </div>
 
 
-      <div class="footer-text">
-        PLATAFORMA DE PROYECTOS IoT AUTOMOTRICES
+      <div class="technology-divider"></div>
+
+
+      <!-- IoT -->
+
+      <div class="technology-item">
+
+        <div class="technology-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+
+            <path
+              d="
+              M3 9
+              C8 4 16 4 21 9
+              "
+            />
+
+            <path
+              d="
+              M6 12
+              C9 9 15 9 18 12
+              "
+            />
+
+            <path
+              d="
+              M9 15
+              C11 13 13 13 15 15
+              "
+            />
+
+            <circle
+              cx="12"
+              cy="19"
+              r="1.5"
+            />
+
+          </svg>
+
+        </div>
+
+
+        <div>
+
+          <strong>
+            Tecnología
+          </strong>
+
+          <span>
+            IoT
+          </span>
+
+        </div>
+
       </div>
 
-    </div>
 
-  </footer>
+      <div class="technology-divider"></div>
+
+
+      <!-- CONTROL -->
+
+      <div class="technology-item">
+
+        <div class="technology-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+
+            <circle
+              cx="12"
+              cy="12"
+              r="4"
+            />
+
+            <path
+              d="
+              M12 2v3
+              M12 19v3
+              M2 12h3
+              M19 12h3
+              M5 5l2 2
+              M17 17l2 2
+              M19 5l-2 2
+              M7 17l-2 2
+              "
+            />
+
+          </svg>
+
+        </div>
+
+
+        <div>
+
+          <strong>
+            Control y
+          </strong>
+
+          <span>
+            Monitoreo
+          </span>
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+
+    <!-- ==================================================== -->
+    <!-- PIE                                                 -->
+    <!-- ==================================================== -->
+
+    <footer class="main-footer">
+
+      <span>
+        CETA
+      </span>
+
+      <p>
+        ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
+      </p>
+
+      <small>
+        PLATAFORMA DE PROYECTOS IoT
+      </small>
+
+    </footer>
+
+
+  </div>
+
+
+  <!-- ====================================================== -->
+  <!-- DECORACION INFERIOR                                   -->
+  <!-- ====================================================== -->
+
+  <div class="bottom-decoration">
+
+    <span class="bottom-blue"></span>
+
+    <span class="bottom-cyan"></span>
+
+    <span class="bottom-red"></span>
+
+  </div>
+
 
 </body>
+
 </html>
