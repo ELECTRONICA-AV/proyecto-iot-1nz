@@ -299,11 +299,83 @@ document
   .getElementById("temperatureButton")
   .addEventListener(
     "click",
-    () => {
+    async () => {
 
-      alert(
-        "La lectura de temperatura se conectara al ESP32 mas adelante."
-      );
+      const button =
+        document.getElementById(
+          "temperatureButton"
+        );
+
+      const temperatureValue =
+        document.getElementById(
+          "temperatureValue"
+        );
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "CONSULTANDO...";
+
+
+      try {
+
+        const result =
+          await vehicleApi(
+            "temperature"
+          );
+
+
+        const temperature =
+          Number(
+            result.temperature
+          );
+
+
+        if (
+          !Number.isFinite(
+            temperature
+          )
+        ) {
+
+          throw new Error(
+            "Valor de temperatura invalido"
+          );
+        }
+
+
+        temperatureValue.textContent =
+          temperature.toFixed(1);
+
+
+        updateLastCommunication();
+
+
+      } catch (error) {
+
+        console.error(
+          "Error consultando temperatura:",
+          error
+        );
+
+
+        temperatureValue.textContent =
+          "--";
+
+
+        alert(
+          "No se pudo obtener la temperatura.\n\n" +
+          error.message
+        );
+
+
+      } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+          "CONSULTAR";
+      }
     }
   );
 
