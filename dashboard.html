@@ -2,141 +2,581 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Electrónica AV | Toyota 1NZ</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <link rel="stylesheet" href="dashboard.css">
+  <meta
+    name="theme-color"
+    content="#071426"
+  >
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <title>
+    CETA | Toyota 1NZ-FE
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="dashboard.css"
+  >
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+  </script>
 </head>
 
 <body>
 
-  <div id="loadingScreen" class="loading-screen">
+  <!-- ===================================================== -->
+  <!-- FONDO DECORATIVO                                     -->
+  <!-- ===================================================== -->
+
+  <div class="background-decoration background-decoration-one"></div>
+  <div class="background-decoration background-decoration-two"></div>
+
+
+  <!-- ===================================================== -->
+  <!-- PANTALLA DE CARGA                                     -->
+  <!-- ===================================================== -->
+
+  <div
+    id="loadingScreen"
+    class="loading-screen"
+  >
+
+    <div class="loading-logo-container">
+
+      <img
+        src="ceta-logo.png"
+        alt="CETA"
+        class="loading-logo"
+      >
+
+    </div>
+
     <div class="loader"></div>
-    <p>Verificando acceso...</p>
+
+    <p>
+      Verificando acceso seguro...
+    </p>
+
   </div>
 
-  <main id="dashboard" class="dashboard hidden">
+
+  <!-- ===================================================== -->
+  <!-- DASHBOARD                                             -->
+  <!-- ===================================================== -->
+
+  <main
+    id="dashboard"
+    class="dashboard hidden"
+  >
+
+
+    <!-- =================================================== -->
+    <!-- CABECERA                                            -->
+    <!-- =================================================== -->
 
     <header class="topbar">
-      <div>
-        <p class="brand">ELECTRÓNICA AV</p>
-        <h1>Toyota 1NZ</h1>
+
+      <div class="institution">
+
+        <div class="logo-container">
+
+          <img
+            src="ceta-logo.png"
+            alt="Logo CETA"
+            class="institution-logo"
+          >
+
+        </div>
+
+
+        <div class="institution-text">
+
+          <p class="institution-name">
+            CETA
+          </p>
+
+          <p class="institution-area">
+            ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
+          </p>
+
+          <div class="vehicle-title">
+
+            <span class="vehicle-brand">
+              TOYOTA
+            </span>
+
+            <span class="vehicle-separator">
+              /
+            </span>
+
+            <h1>
+              1NZ-FE
+            </h1>
+
+          </div>
+
+        </div>
+
       </div>
 
-      <div class="connection">
-        <span id="statusDot" class="status-dot offline"></span>
-        <span id="connectionText">SIN CONEXIÓN</span>
+
+      <!-- ESTADO DE CONEXION -->
+
+      <div class="connection-panel">
+
+        <div class="connection-status">
+
+          <span
+            id="statusDot"
+            class="status-dot unknown">
+          </span>
+
+          <div>
+
+            <span class="connection-label">
+              ESP32
+            </span>
+
+            <strong id="connectionText">
+              SIN VERIFICAR
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <button
+          id="connectionButton"
+          class="connection-button"
+          type="button"
+        >
+          VERIFICAR CONEXIÓN
+        </button>
+
       </div>
+
     </header>
+
+
+    <!-- =================================================== -->
+    <!-- IDENTIFICACION                                      -->
+    <!-- =================================================== -->
+
+    <section class="hero">
+
+      <div>
+
+        <p class="eyebrow">
+          SISTEMA IoT VEHICULAR
+        </p>
+
+        <h2>
+          Monitoreo y control remoto
+        </h2>
+
+        <p class="hero-description">
+          Plataforma de supervisión electrónica del vehículo
+          Toyota equipado con motor 1NZ-FE.
+        </p>
+
+      </div>
+
+
+      <div class="security-badge">
+
+        <span class="security-icon">
+          ◈
+        </span>
+
+        <div>
+
+          <small>
+            ACCESO
+          </small>
+
+          <strong>
+            SESIÓN SEGURA
+          </strong>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================== -->
+    <!-- MONITOREO                                           -->
+    <!-- =================================================== -->
+
+    <div class="section-heading">
+
+      <div>
+
+        <p class="eyebrow">
+          TELEMETRÍA
+        </p>
+
+        <h2>
+          Estado del vehículo
+        </h2>
+
+      </div>
+
+      <span class="section-line"></span>
+
+    </div>
+
 
     <section class="grid">
 
+
+      <!-- BATERIA -->
+
       <article class="card">
-        <div class="icon">🔋</div>
-        <h2>Batería</h2>
-        <div class="value">
-          <span id="batteryValue">--</span>
-          <small>V</small>
+
+        <div class="card-top">
+
+          <div class="sensor-icon">
+            🔋
+          </div>
+
+          <span class="sensor-code">
+            V1
+          </span>
+
         </div>
 
-        <button class="secondary" id="batteryButton">
+        <div class="card-content">
+
+          <h3>
+            BATERÍA
+          </h3>
+
+          <div class="value">
+
+            <span id="batteryValue">
+              --
+            </span>
+
+            <small>
+              V
+            </small>
+
+          </div>
+
+          <p class="card-note">
+            Voltaje del sistema eléctrico
+          </p>
+
+        </div>
+
+        <button
+          class="secondary"
+          id="batteryButton"
+          type="button"
+        >
           CONSULTAR
         </button>
+
       </article>
 
+
+      <!-- TEMPERATURA -->
+
       <article class="card">
-        <div class="icon">🌡️</div>
-        <h2>Temperatura</h2>
-        <div class="value">
-          <span id="temperatureValue">--</span>
-          <small>°C</small>
+
+        <div class="card-top">
+
+          <div class="sensor-icon">
+            🌡️
+          </div>
+
+          <span class="sensor-code">
+            V2
+          </span>
+
         </div>
 
-        <button class="secondary" id="temperatureButton">
+        <div class="card-content">
+
+          <h3>
+            TEMPERATURA
+          </h3>
+
+          <div class="value">
+
+            <span id="temperatureValue">
+              --
+            </span>
+
+            <small>
+              °C
+            </small>
+
+          </div>
+
+          <p class="card-note">
+            Temperatura registrada
+          </p>
+
+        </div>
+
+        <button
+          class="secondary"
+          id="temperatureButton"
+          type="button"
+        >
           CONSULTAR
         </button>
+
       </article>
 
+
+      <!-- COMBUSTIBLE -->
+
       <article class="card">
-        <div class="icon">⛽</div>
-        <h2>Combustible</h2>
-        <div class="value">
-          <span id="fuelValue">--</span>
-          <small>%</small>
+
+        <div class="card-top">
+
+          <div class="sensor-icon">
+            ⛽
+          </div>
+
+          <span class="sensor-code">
+            V3
+          </span>
+
         </div>
 
-        <button class="secondary" id="fuelButton">
+        <div class="card-content">
+
+          <h3>
+            COMBUSTIBLE
+          </h3>
+
+          <div class="value">
+
+            <span id="fuelValue">
+              --
+            </span>
+
+            <small>
+              %
+            </small>
+
+          </div>
+
+          <p class="card-note">
+            Nivel estimado del tanque
+          </p>
+
+        </div>
+
+        <button
+          class="secondary"
+          id="fuelButton"
+          type="button"
+        >
           CONSULTAR
         </button>
+
       </article>
 
-      <article class="card">
-        <div class="icon">⚙️</div>
-        <h2>Motor</h2>
 
-        <div id="engineStatus" class="engine-status">
-          DESCONOCIDO
+      <!-- MOTOR -->
+
+      <article class="card engine-card">
+
+        <div class="card-top">
+
+          <div class="sensor-icon engine-icon">
+            ⚙
+          </div>
+
+          <span class="sensor-code">
+            V4
+          </span>
+
         </div>
 
-        <p class="card-note">
-          Estado actual del motor
-        </p>
+        <div class="card-content">
+
+          <h3>
+            MOTOR 1NZ-FE
+          </h3>
+
+          <div
+            id="engineStatus"
+            class="engine-status"
+          >
+            DESCONOCIDO
+          </div>
+
+          <p class="card-note">
+            Estado actual del motor
+          </p>
+
+        </div>
+
+        <div class="engine-indicator">
+
+          <span class="engine-indicator-dot"></span>
+
+          Supervisión remota
+
+        </div>
+
       </article>
 
     </section>
+
+
+    <!-- =================================================== -->
+    <!-- CONTROL REMOTO                                      -->
+    <!-- =================================================== -->
 
     <section class="control-panel">
 
-      <div class="section-title">
-        <p>CONTROL REMOTO</p>
-        <h2>Control del vehículo</h2>
+      <div class="control-header">
+
+        <div>
+
+          <p class="eyebrow red">
+            CONTROL REMOTO
+          </p>
+
+          <h2>
+            Control del vehículo
+          </h2>
+
+          <p>
+            Ejecución remota de funciones del sistema.
+          </p>
+
+        </div>
+
+
+        <div class="control-symbol">
+          CETA
+        </div>
+
       </div>
+
 
       <div class="motor-controls">
 
-        <button id="startButton" class="control-button start">
-          ENCENDER MOTOR
+        <button
+          id="startButton"
+          class="control-button start"
+          type="button"
+        >
+
+          <span class="button-symbol">
+            ▶
+          </span>
+
+          <span>
+            ENCENDER MOTOR
+          </span>
+
         </button>
 
-        <button id="stopButton" class="control-button stop">
-          APAGAR MOTOR
+
+        <button
+          id="stopButton"
+          class="control-button stop"
+          type="button"
+        >
+
+          <span class="button-symbol">
+            ■
+          </span>
+
+          <span>
+            APAGAR MOTOR
+          </span>
+
         </button>
 
       </div>
 
-      <button id="immobilizerButton"
-              class="control-button immobilizer">
-        🔒 INMOVILIZAR VEHÍCULO
+
+      <button
+        id="immobilizerButton"
+        class="control-button immobilizer"
+        type="button"
+      >
+        ACTIVAR INMOVILIZADOR
       </button>
 
-      <p class="safety-note">
-        Los comandos críticos requerirán confirmación antes de ser enviados.
-      </p>
+
+      <div class="safety-note">
+
+        <span class="safety-icon">
+          !
+        </span>
+
+        <p>
+          Los comandos críticos requieren confirmación
+          antes de ser enviados al vehículo.
+        </p>
+
+      </div>
 
     </section>
 
+
+    <!-- =================================================== -->
+    <!-- PIE                                                  -->
+    <!-- =================================================== -->
+
     <footer>
 
-      <div>
+      <div class="footer-info">
+
         <span class="footer-label">
-          Última comunicación
+          ÚLTIMA COMUNICACIÓN
         </span>
 
         <strong id="lastCommunication">
           --
         </strong>
+
       </div>
 
-      <button id="logoutButton" class="logout">
+
+      <div class="footer-brand">
+
+        <span>
+          CETA
+        </span>
+
+        <small>
+          ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
+        </small>
+
+      </div>
+
+
+      <button
+        id="logoutButton"
+        class="logout"
+        type="button"
+      >
         CERRAR SESIÓN
       </button>
 
     </footer>
 
   </main>
+
 
   <script src="dashboard.js"></script>
 
