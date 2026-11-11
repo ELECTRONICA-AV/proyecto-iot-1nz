@@ -15,231 +15,187 @@
     content="#071426"
   >
 
-  <title>
-    CETA | Toyota 1NZ-FE
-  </title>
+  <title>CETA | Toyota 1NZ-FE</title>
 
   <!-- ESTILOS PRINCIPALES -->
-
-  <link
-    rel="stylesheet"
-    href="dashboard.css"
-  >
+  <link rel="stylesheet" href="dashboard.css">
 
   <!-- SUPABASE -->
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-  </script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- ===================================================== -->
-  <!-- ESTILOS DE CONFIRMACION MANUAL DEL MOTOR               -->
+  <!-- ESTILOS DE VERIFICACION MANUAL DEL VEHICULO            -->
   <!-- ===================================================== -->
 
   <style>
 
     .manual-engine-button {
-
       display: block;
-
       width: 100%;
-
       margin-top: 12px;
-
       padding: 15px 18px;
-
       border: 1px solid #3479c6;
-
       border-radius: 10px;
-
-      background: linear-gradient(
-        100deg,
-        #153c66,
-        #10243e
-      );
-
+      background: linear-gradient(100deg, #153c66, #10243e);
       color: #eef6ff;
-
       font: inherit;
-
       font-weight: 800;
-
       cursor: pointer;
     }
 
-
     .manual-engine-button:hover {
-
       filter: brightness(1.15);
     }
 
+    .manual-engine-button:focus-visible {
+      outline: 3px solid #7dbbff;
+      outline-offset: 3px;
+    }
 
     .manual-engine-note {
-
       margin: 10px 0 0;
-
       color: #aabbd0;
-
       font-size: 12px;
-
       line-height: 1.5;
     }
 
-
-    .manual-engine-note[hidden] {
-
+    .manual-engine-note[hidden],
+    .manual-engine-modal[hidden] {
       display: none !important;
     }
 
-
-    /* VENTANA MODAL */
+    /* VENTANA DE VERIFICACION */
 
     .manual-engine-modal {
-
       position: fixed;
-
       inset: 0;
-
       z-index: 9999;
-
       display: flex;
-
       justify-content: center;
-
       align-items: center;
-
       padding: 18px;
-
       box-sizing: border-box;
-
-      background: rgba(
-        1,
-        8,
-        18,
-        0.82
-      );
+      background: rgba(1, 8, 18, 0.85);
     }
-
-
-    /* IMPORTANTE:
-       El JavaScript modifica el atributo hidden.
-    */
-
-    .manual-engine-modal[hidden] {
-
-      display: none !important;
-    }
-
 
     .manual-engine-dialog {
-
       width: min(100%, 460px);
-
+      max-height: 90vh;
+      overflow-y: auto;
       padding: 26px;
-
       box-sizing: border-box;
-
       border: 1px solid #335477;
-
       border-radius: 18px;
-
       background: #0c1b30;
-
       color: #f1f6ff;
-
-      box-shadow: 0 20px 80px
-        rgba(0, 0, 0, 0.5);
+      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
     }
 
-
     .manual-engine-dialog h2 {
-
       margin: 0 0 12px;
-
       font-size: 22px;
     }
 
-
     .manual-engine-dialog p {
-
       color: #b9c9dd;
-
       line-height: 1.5;
     }
 
-
     .manual-engine-actions {
-
       display: flex;
-
-      gap: 10px;
-
+      flex-direction: column;
+      gap: 12px;
       margin-top: 22px;
     }
 
-
     .manual-engine-actions button {
-
-      flex: 1;
-
-      min-height: 48px;
-
-      padding: 10px;
-
-      border: 0;
-
-      border-radius: 9px;
-
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 52px;
+      padding: 12px;
+      border: 1px solid transparent;
+      border-radius: 10px;
       color: white;
-
       font: inherit;
-
       font-weight: 800;
-
       cursor: pointer;
+      transition: filter 0.2s ease;
     }
 
+    .manual-engine-actions button:hover {
+      filter: brightness(1.15);
+    }
+
+    /* MOTOR ENCENDIDO */
 
     .manual-engine-yes {
-
       background: #147e4e;
+      border-color: #21a66a !important;
     }
 
+    /* MOTOR APAGADO */
 
     .manual-engine-no {
-
       background: #9b2631;
+      border-color: #c74752 !important;
     }
 
+    /* VEHICULO INMOVILIZADO */
+
+    .manual-engine-immobilized {
+      background: #a56716;
+      border-color: #d79837 !important;
+    }
+
+    /* CANCELAR */
 
     .manual-engine-cancel {
-
       display: block;
-
       width: 100%;
-
-      margin-top: 12px;
-
-      padding: 10px;
-
+      margin-top: 16px;
+      padding: 12px;
       border: 1px solid #48617d;
-
       border-radius: 9px;
-
       background: transparent;
-
       color: #d7e3f1;
-
+      font: inherit;
+      font-weight: 700;
       cursor: pointer;
     }
 
+    .manual-engine-cancel:hover {
+      background: #18304d;
+    }
+
+    .manual-engine-warning {
+      margin-top: 18px;
+      padding: 12px;
+      border-left: 3px solid #3479c6;
+      border-radius: 5px;
+      background: #10253e;
+      font-size: 12px;
+    }
+
+    /* INDICADOR DE INMOVILIZACION */
+
+    .engine-status.engine-immobilized {
+      color: #ffbf63;
+    }
 
     @media (max-width: 420px) {
 
-      .manual-engine-actions {
+      .manual-engine-dialog {
+        padding: 20px;
+      }
 
-        flex-direction: column;
+      .manual-engine-dialog h2 {
+        font-size: 20px;
+      }
+
+      .manual-engine-actions button {
+        min-height: 50px;
       }
 
     }
@@ -251,19 +207,12 @@
 
 <body>
 
-
   <!-- ===================================================== -->
   <!-- FONDO DECORATIVO                                      -->
   <!-- ===================================================== -->
 
-  <div
-    class="background-decoration background-decoration-one">
-  </div>
-
-  <div
-    class="background-decoration background-decoration-two">
-  </div>
-
+  <div class="background-decoration background-decoration-one"></div>
+  <div class="background-decoration background-decoration-two"></div>
 
 
   <!-- ===================================================== -->
@@ -285,16 +234,13 @@
 
     </div>
 
-
     <div class="loader"></div>
-
 
     <p>
       Verificando acceso seguro...
     </p>
 
   </div>
-
 
 
   <!-- ===================================================== -->
@@ -306,16 +252,13 @@
     class="dashboard hidden"
   >
 
-
     <!-- =================================================== -->
     <!-- CABECERA                                            -->
     <!-- =================================================== -->
 
     <header class="topbar">
 
-
       <div class="institution">
-
 
         <div class="logo-container">
 
@@ -327,98 +270,73 @@
 
         </div>
 
-
         <div class="institution-text">
-
 
           <p class="institution-name">
             CETA
           </p>
 
-
           <p class="institution-area">
             ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
           </p>
 
-
           <div class="vehicle-title">
-
 
             <span class="vehicle-brand">
               TOYOTA
             </span>
 
-
             <span class="vehicle-separator">
               /
             </span>
-
 
             <h1>
               1NZ-FE
             </h1>
 
-
           </div>
-
 
         </div>
 
-
       </div>
-
 
 
       <!-- ESTADO DE CONEXION ESP32 -->
 
       <div class="connection-panel">
 
-
         <div class="connection-status">
-
 
           <span
             id="statusDot"
             class="status-dot unknown">
           </span>
 
-
           <div>
-
 
             <span class="connection-label">
               ESP32
             </span>
 
-
             <strong id="connectionText">
               SIN VERIFICAR
             </strong>
 
-
           </div>
 
-
         </div>
-
-
 
         <button
           id="connectionButton"
           class="connection-button"
           type="button"
         >
-
           VERIFICAR CONEXIÓN
-
         </button>
-
 
       </div>
 
-
     </header>
-
 
 
     <!-- =================================================== -->
@@ -427,62 +345,44 @@
 
     <section class="hero">
 
-
       <div>
-
 
         <p class="eyebrow">
           SISTEMA IoT VEHICULAR
         </p>
 
-
         <h2>
           Monitoreo y control remoto
         </h2>
 
-
         <p class="hero-description">
-
-          Plataforma de supervisión electrónica
-          del vehículo Toyota equipado con
-          motor 1NZ-FE.
-
+          Plataforma de supervisión electrónica del vehículo
+          Toyota equipado con motor 1NZ-FE.
         </p>
-
 
       </div>
 
-
-
       <div class="security-badge">
-
 
         <span class="security-icon">
           ◈
         </span>
 
-
         <div>
-
 
           <small>
             ACCESO
           </small>
 
-
           <strong>
             SESIÓN SEGURA
           </strong>
 
-
         </div>
-
 
       </div>
 
-
     </section>
-
 
 
     <!-- =================================================== -->
@@ -491,28 +391,21 @@
 
     <div class="section-heading">
 
-
       <div>
-
 
         <p class="eyebrow">
           TELEMETRÍA
         </p>
 
-
         <h2>
           Estado del vehículo
         </h2>
 
-
       </div>
-
 
       <span class="section-line"></span>
 
-
     </div>
-
 
 
     <!-- =================================================== -->
@@ -522,78 +415,57 @@
     <section class="grid">
 
 
-
       <!-- ================================================= -->
       <!-- BATERIA                                           -->
       <!-- ================================================= -->
 
       <article class="card">
 
-
         <div class="card-top">
-
 
           <div class="sensor-icon">
             🔋
           </div>
 
-
           <span class="sensor-code">
             V1
           </span>
 
-
         </div>
 
-
-
         <div class="card-content">
-
 
           <h3>
             BATERÍA
           </h3>
 
-
           <div class="value">
-
 
             <span id="batteryValue">
               --
             </span>
 
-
             <small>
               V
             </small>
 
-
           </div>
-
-
 
           <p class="card-note">
             Voltaje del sistema eléctrico
           </p>
 
-
         </div>
-
-
 
         <button
           class="secondary"
           id="batteryButton"
           type="button"
         >
-
           CONSULTAR
-
         </button>
 
-
       </article>
-
 
 
       <!-- ================================================= -->
@@ -602,71 +474,51 @@
 
       <article class="card">
 
-
         <div class="card-top">
-
 
           <div class="sensor-icon">
             🌡️
           </div>
 
-
           <span class="sensor-code">
             V2
           </span>
 
-
         </div>
 
-
-
         <div class="card-content">
-
 
           <h3>
             TEMPERATURA
           </h3>
 
-
           <div class="value">
-
 
             <span id="temperatureValue">
               --
             </span>
 
-
             <small>
               °C
             </small>
 
-
           </div>
-
-
 
           <p class="card-note">
             Temperatura registrada
           </p>
 
-
         </div>
-
-
 
         <button
           class="secondary"
           id="temperatureButton"
           type="button"
         >
-
           CONSULTAR
-
         </button>
 
-
       </article>
-
 
 
       <!-- ================================================= -->
@@ -675,71 +527,51 @@
 
       <article class="card">
 
-
         <div class="card-top">
-
 
           <div class="sensor-icon">
             ⛽
           </div>
 
-
           <span class="sensor-code">
             V3
           </span>
 
-
         </div>
 
-
-
         <div class="card-content">
-
 
           <h3>
             COMBUSTIBLE
           </h3>
 
-
           <div class="value">
-
 
             <span id="fuelValue">
               --
             </span>
 
-
             <small>
               %
             </small>
 
-
           </div>
-
-
 
           <p class="card-note">
             Nivel estimado del tanque
           </p>
 
-
         </div>
-
-
 
         <button
           class="secondary"
           id="fuelButton"
           type="button"
         >
-
           CONSULTAR
-
         </button>
 
-
       </article>
-
 
 
       <!-- ================================================= -->
@@ -748,70 +580,48 @@
 
       <article class="card engine-card">
 
-
         <div class="card-top">
-
 
           <div class="sensor-icon engine-icon">
             ⚙
           </div>
 
-
           <span class="sensor-code">
             V4
           </span>
 
-
         </div>
 
-
-
         <div class="card-content">
-
 
           <h3>
             MOTOR 1NZ-FE
           </h3>
 
-
-
           <div
             id="engineStatus"
             class="engine-status"
           >
-
             DESCONOCIDO
-
           </div>
-
-
 
           <p class="card-note">
             Estado actual del motor
           </p>
 
-
         </div>
-
-
 
         <div class="engine-indicator">
 
-
           <span class="engine-indicator-dot"></span>
-
 
           Supervisión remota
 
-
         </div>
-
 
       </article>
 
-
     </section>
-
 
 
     <!-- =================================================== -->
@@ -820,40 +630,29 @@
 
     <section class="control-panel">
 
-
-
       <div class="control-header">
 
-
         <div>
-
 
           <p class="eyebrow red">
             CONTROL REMOTO
           </p>
 
-
           <h2>
             Control del vehículo
           </h2>
-
 
           <p>
             Ejecución remota de funciones del sistema.
           </p>
 
-
         </div>
-
-
 
         <div class="control-symbol">
           CETA
         </div>
 
-
       </div>
-
 
 
       <!-- ================================================= -->
@@ -861,7 +660,6 @@
       <!-- ================================================= -->
 
       <div class="motor-controls">
-
 
 
         <!-- ENCENDER MOTOR -->
@@ -872,19 +670,15 @@
           type="button"
         >
 
-
           <span class="button-symbol">
             ▶
           </span>
-
 
           <span>
             ENCENDER MOTOR
           </span>
 
-
         </button>
-
 
 
         <!-- APAGAR MOTOR -->
@@ -895,22 +689,17 @@
           type="button"
         >
 
-
           <span class="button-symbol">
             ■
           </span>
-
 
           <span>
             APAGAR MOTOR
           </span>
 
-
         </button>
 
-
       </div>
-
 
 
       <!-- ================================================= -->
@@ -922,30 +711,26 @@
         class="control-button immobilizer"
         type="button"
       >
-
         ACTIVAR INMOVILIZADOR
-
       </button>
 
 
-
       <!-- ================================================= -->
-      <!-- VERIFICACION MANUAL DEL MOTOR                      -->
+      <!-- VERIFICACION MANUAL DEL ESTADO                     -->
       <!-- ================================================= -->
 
       <button
         id="manualEngineButton"
         class="manual-engine-button"
         type="button"
+        aria-haspopup="dialog"
+        aria-controls="manualEngineModal"
       >
-
         ⚙ VERIFICAR ESTADO DEL MOTOR
-
       </button>
 
 
-
-      <!-- NOTA DE CONFIRMACION MANUAL -->
+      <!-- NOTA DE ESTADO CONFIRMADO -->
 
       <p
         id="manualEngineNote"
@@ -955,32 +740,24 @@
       ></p>
 
 
-
       <!-- ================================================= -->
       <!-- ADVERTENCIA DE SEGURIDAD                          -->
       <!-- ================================================= -->
 
       <div class="safety-note">
 
-
         <span class="safety-icon">
           !
         </span>
 
-
         <p>
-
           Los comandos críticos requieren confirmación
           antes de ser enviados al vehículo.
-
         </p>
-
 
       </div>
 
-
     </section>
-
 
 
     <!-- =================================================== -->
@@ -989,88 +766,52 @@
 
     <footer>
 
-
-
       <div class="footer-info">
-
 
         <span class="footer-label">
           ÚLTIMA COMUNICACIÓN
         </span>
 
-
         <strong id="lastCommunication">
           --
         </strong>
 
-
       </div>
 
-
-
       <div class="footer-brand">
-
 
         <span>
           CETA
         </span>
 
-
         <small>
           ELECTRICIDAD Y ELECTRÓNICA AUTOMOTRIZ
         </small>
 
-
       </div>
-
-
 
       <button
         id="logoutButton"
         class="logout"
         type="button"
       >
-
         CERRAR SESIÓN
-
       </button>
 
-
     </footer>
-
 
   </main>
 
 
-
   <!-- ===================================================== -->
-  <!-- VENTANA DE CONFIRMACION MANUAL DEL MOTOR               -->
+  <!-- VENTANA DE VERIFICACION MANUAL                         -->
   <!-- ===================================================== -->
-
-  <!--
-    IMPORTANTE:
-
-    La ventana comienza oculta con el atributo hidden.
-
-    dashboard.js debe abrirla utilizando:
-
-      manualEngineModal.hidden = false;
-
-    Y cerrarla utilizando:
-
-      manualEngineModal.hidden = true;
-
-    Esta confirmacion solo actualiza la interfaz.
-    No envia comandos al ESP32.
-  -->
-
 
   <div
     id="manualEngineModal"
     class="manual-engine-modal"
     hidden
   >
-
 
     <div
       class="manual-engine-dialog"
@@ -1080,74 +821,72 @@
       aria-describedby="manualEngineDescription"
     >
 
-
-
       <h2 id="manualEngineTitle">
-
-        Verificar estado del motor
-
+        Verificar estado del vehículo
       </h2>
 
-
-
       <p id="manualEngineDescription">
-
-        ¿Has comprobado físicamente que
-        el motor está encendido?
-
+        ¿Cuál es el estado que has comprobado
+        físicamente en el vehículo?
       </p>
-
-
 
       <p>
-
-        Esta respuesta solo actualiza la
-        visualización del Dashboard.
-
-        No envía órdenes al vehículo
-        ni sustituye la señal IGF.
-
+        Selecciona una opción para corregir el estado
+        mostrado en el Dashboard cuando la comunicación
+        no haya reflejado correctamente la operación.
       </p>
-
 
 
       <!-- ================================================= -->
-      <!-- RESPUESTAS                                        -->
+      <!-- TRES OPCIONES DE ESTADO                            -->
       <!-- ================================================= -->
 
       <div class="manual-engine-actions">
 
 
-
-        <!-- MOTOR ENCENDIDO -->
+        <!-- OPCION 1: MOTOR ENCENDIDO -->
 
         <button
           id="manualEngineYes"
           class="manual-engine-yes"
           type="button"
         >
-
-          SÍ, ESTÁ ENCENDIDO
-
+          ✓ MOTOR ENCENDIDO
         </button>
 
 
-
-        <!-- MOTOR APAGADO -->
+        <!-- OPCION 2: MOTOR APAGADO -->
 
         <button
           id="manualEngineNo"
           class="manual-engine-no"
           type="button"
         >
-
-          NO, ESTÁ APAGADO
-
+          ■ MOTOR APAGADO
         </button>
 
 
+        <!-- OPCION 3: VEHICULO INMOVILIZADO -->
+
+        <button
+          id="manualEngineImmobilized"
+          class="manual-engine-immobilized"
+          type="button"
+        >
+          🔒 VEHÍCULO INMOVILIZADO
+        </button>
+
       </div>
 
+
+      <!-- AVISO INFORMATIVO -->
+
+      <p class="manual-engine-warning">
+        La selección manual actualiza la información
+        del Dashboard. Las órdenes enviadas al vehículo
+        siguen sujetas a las comprobaciones de seguridad
+        del controlador.
+      </p>
 
 
       <!-- CANCELAR -->
@@ -1157,17 +896,12 @@
         class="manual-engine-cancel"
         type="button"
       >
-
         CANCELAR
-
       </button>
-
 
     </div>
 
-
   </div>
-
 
 
   <!-- ===================================================== -->
@@ -1176,7 +910,5 @@
 
   <script src="dashboard.js"></script>
 
-
 </body>
-
 </html>
