@@ -25,6 +25,47 @@
   <script
     src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
   </script>
+  <!-- Estilos independientes para la confirmación manual del motor -->
+  <style>
+    .manual-engine-button {
+      display: block; width: 100%; margin-top: 12px; padding: 15px 18px;
+      border: 1px solid #3479c6; border-radius: 10px;
+      background: linear-gradient(100deg, #153c66, #10243e);
+      color: #eef6ff; font: inherit; font-weight: 800; cursor: pointer;
+    }
+    .manual-engine-button:hover { filter: brightness(1.15); }
+    .manual-engine-note { margin: 10px 0 0; color: #aabbd0; font-size: 12px; }
+    .manual-engine-note[hidden], .manual-engine-modal[hidden] { display: none !important; }
+    .manual-engine-modal {
+      position: fixed; inset: 0; z-index: 9999; display: flex;
+      justify-content: center; align-items: center; padding: 18px;
+      background: rgba(1, 8, 18, .82);
+    }
+    .manual-engine-dialog {
+      width: min(100%, 460px); padding: 26px; box-sizing: border-box;
+      border: 1px solid #335477; border-radius: 18px;
+      background: #0c1b30; color: #f1f6ff;
+      box-shadow: 0 20px 80px rgba(0, 0, 0, .5);
+    }
+    .manual-engine-dialog h2 { margin: 0 0 12px; font-size: 22px; }
+    .manual-engine-dialog p { color: #b9c9dd; line-height: 1.5; }
+    .manual-engine-actions { display: flex; gap: 10px; margin-top: 22px; }
+    .manual-engine-actions button {
+      flex: 1; min-height: 48px; padding: 10px; border: 0;
+      border-radius: 9px; color: white; font: inherit;
+      font-weight: 800; cursor: pointer;
+    }
+    .manual-engine-yes { background: #147e4e; }
+    .manual-engine-no { background: #9b2631; }
+    .manual-engine-cancel {
+      display: block; width: 100%; margin-top: 12px; padding: 10px;
+      border: 1px solid #48617d; border-radius: 9px;
+      background: transparent; color: #d7e3f1; cursor: pointer;
+    }
+    @media (max-width: 420px) {
+      .manual-engine-actions { flex-direction: column; }
+    }
+  </style>
 </head>
 
 <body>
@@ -517,6 +558,18 @@
       </button>
 
 
+      <!-- CONFIRMACIÓN MANUAL DEL ESTADO DEL MOTOR (SIN IGF) -->
+      <button
+        id="manualEngineButton"
+        class="manual-engine-button"
+        type="button"
+      >
+        ⚙ VERIFICAR ESTADO DEL MOTOR
+      </button>
+
+      <p id="manualEngineNote" class="manual-engine-note" hidden
+         aria-live="polite"></p>
+
       <div class="safety-note">
 
         <span class="safety-icon">
@@ -578,8 +631,31 @@
   </main>
 
 
+  <!-- Ventana de confirmación manual: solo cambia la indicación visual -->
+  <div id="manualEngineModal" class="manual-engine-modal" hidden>
+    <div class="manual-engine-dialog" role="dialog" aria-modal="true"
+         aria-labelledby="manualEngineTitle" aria-describedby="manualEngineDescription">
+      <h2 id="manualEngineTitle">Verificar estado del motor</h2>
+      <p id="manualEngineDescription">
+        ¿Has comprobado físicamente que el motor está encendido?
+      </p>
+      <p>Esta respuesta solo actualiza la visualización del Dashboard.
+         No envía órdenes al vehículo ni sustituye la señal IGF.</p>
+      <div class="manual-engine-actions">
+        <button id="manualEngineYes" class="manual-engine-yes" type="button">
+          SÍ, ESTÁ ENCENDIDO
+        </button>
+        <button id="manualEngineNo" class="manual-engine-no" type="button">
+          NO, ESTÁ APAGADO
+        </button>
+      </div>
+      <button id="manualEngineCancel" class="manual-engine-cancel" type="button">
+        CANCELAR
+      </button>
+    </div>
+  </div>
+
   <script src="dashboard.js"></script>
 
 </body>
 </html>
-
