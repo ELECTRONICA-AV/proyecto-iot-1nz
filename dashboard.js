@@ -52,6 +52,11 @@ const engineStatus =
 // ==========================================================
 
 let engineOn = null;
+
+// Confirmación manual solo para visualización.
+// No modifica el estado usado para ejecutar comandos.
+let manualEngineState = null;
+
 let engineCommandRunning = false;
 
 let immobilizerOn = null;
@@ -92,21 +97,15 @@ async function verifySession() {
   );
 
 
-  // --------------------------------------------------------
-  // ESTADO DE CONEXION INICIAL
-  //
-  // NO hacemos prueba V8/V9 automaticamente.
-  // El usuario debe pulsar VERIFICAR CONEXION.
-  // --------------------------------------------------------
+  // La prueba de conexión V8/V9 no es automática.
+  // Se realiza al pulsar VERIFICAR CONEXIÓN.
 
   setConnectionState(
     "unknown"
   );
 
 
-  // --------------------------------------------------------
-  // CONSULTAR ESTADOS AL ABRIR
-  // --------------------------------------------------------
+  // Consultar estados al abrir el Dashboard.
 
   await refreshEngineState();
 
@@ -297,9 +296,7 @@ function setConnectionState(state) {
   );
 
 
-  // --------------------------------------------------------
   // SIN VERIFICAR
-  // --------------------------------------------------------
 
   if (state === "unknown") {
 
@@ -314,9 +311,7 @@ function setConnectionState(state) {
   }
 
 
-  // --------------------------------------------------------
   // VERIFICANDO
-  // --------------------------------------------------------
 
   if (state === "checking") {
 
@@ -331,9 +326,7 @@ function setConnectionState(state) {
   }
 
 
-  // --------------------------------------------------------
   // CONECTADO
-  // --------------------------------------------------------
 
   if (state === "online") {
 
@@ -348,9 +341,7 @@ function setConnectionState(state) {
   }
 
 
-  // --------------------------------------------------------
   // DESCONECTADO
-  // --------------------------------------------------------
 
   statusDot.classList.add(
     "offline"
@@ -366,7 +357,7 @@ function setConnectionState(state) {
 //
 // Dashboard
 //   ↓
-// Supabase
+// Servicio web
 //   ↓
 // V9 = 0
 // V8 = 1
@@ -375,7 +366,7 @@ function setConnectionState(state) {
 //   ↓
 // V9 = 1
 //   ↓
-// Supabase
+// Servicio web
 //   ↓
 // Dashboard
 // ==========================================================
@@ -415,9 +406,7 @@ connectionButton.addEventListener(
       );
 
 
-      // ----------------------------------------------------
       // ESP32 RESPONDIO V9 = 1
-      // ----------------------------------------------------
 
       if (result.connected === true) {
 
@@ -432,9 +421,7 @@ connectionButton.addEventListener(
 
       } else {
 
-        // --------------------------------------------------
-        // SUPABASE FUNCIONO, PERO ESP32 NO RESPONDIO
-        // --------------------------------------------------
+        // EL ESP32 NO RESPONDIO
 
         setConnectionState(
           "offline"
@@ -476,10 +463,8 @@ connectionButton.addEventListener(
     }
   }
 );
-
-
 // ==========================================================
-// ACTUALIZAR VISUALMENTE ESTADO MOTOR
+// ESTADO VISUAL DEL MOTOR
 // ==========================================================
 
 function updateEngineVisual() {
@@ -488,15 +473,41 @@ function updateEngineVisual() {
     return;
   }
 
-
   engineStatus.classList.remove(
     "engine-on",
     "engine-off"
   );
 
+  // --------------------------------------------------------
+  // CONFIRMACION MANUAL
+  // --------------------------------------------------------
+
+  if (manualEngineState === true) {
+
+    engineStatus.textContent =
+      "ENCENDIDO (MANUAL)";
+
+    engineStatus.classList.add(
+      "engine-on"
+    );
+
+    return;
+  }
+
+  if (manualEngineState === false) {
+
+    engineStatus.textContent =
+      "APAGADO (MANUAL)";
+
+    engineStatus.classList.add(
+      "engine-off"
+    );
+
+    return;
+  }
 
   // --------------------------------------------------------
-  // ENCENDIDO
+  // ESTADO REPORTADO POR EL SISTEMA
   // --------------------------------------------------------
 
   if (engineOn === true) {
@@ -511,11 +522,6 @@ function updateEngineVisual() {
     return;
   }
 
-
-  // --------------------------------------------------------
-  // APAGADO
-  // --------------------------------------------------------
-
   if (engineOn === false) {
 
     engineStatus.textContent =
@@ -528,24 +534,21 @@ function updateEngineVisual() {
     return;
   }
 
-
-  // --------------------------------------------------------
-  // DESCONOCIDO
-  // --------------------------------------------------------
-
   engineStatus.textContent =
     "DESCONOCIDO";
 }
 
 
 // ==========================================================
-// CONTROL VISUAL BOTONES MOTOR
+// CONTROL VISUAL DE BOTONES DEL MOTOR
 // ==========================================================
 
 function updateEngineButtons() {
 
   updateEngineVisual();
 
+  // La confirmacion manual NO controla los botones.
+  // Solo se utiliza el estado reportado por el sistema.
 
   if (engineCommandRunning) {
 
@@ -555,9 +558,6 @@ function updateEngineButtons() {
     return;
   }
 
-
-  // MOTOR ENCENDIDO
-
   if (engineOn === true) {
 
     startButton.disabled = true;
@@ -565,9 +565,6 @@ function updateEngineButtons() {
 
     return;
   }
-
-
-  // MOTOR APAGADO
 
   if (engineOn === false) {
 
@@ -577,16 +574,13 @@ function updateEngineButtons() {
     return;
   }
 
-
-  // ESTADO DESCONOCIDO
-
   startButton.disabled = true;
   stopButton.disabled = true;
 }
 
 
 // ==========================================================
-// CONSULTAR ESTADO MOTOR
+// CONSULTAR ESTADO DEL MOTOR
 // ==========================================================
 
 async function refreshEngineState() {
@@ -595,7 +589,6 @@ async function refreshEngineState() {
 
   updateEngineButtons();
 
-
   try {
 
     const result =
@@ -603,21 +596,17 @@ async function refreshEngineState() {
         "engine-status"
       );
 
-
     engineOn =
       result.engineOn === true;
 
-
     console.log(
-      "Estado motor:",
+      "Estado motor reportado:",
       engineOn
         ? "ENCENDIDO"
         : "APAGADO"
     );
 
-
     updateLastCommunication();
-
 
   } catch (error) {
 
@@ -626,9 +615,7 @@ async function refreshEngineState() {
       error
     );
 
-
     engineOn = null;
-
 
   } finally {
 
@@ -638,7 +625,180 @@ async function refreshEngineState() {
 
 
 // ==========================================================
-// CONTROL VISUAL INMOVILIZADOR
+// CONFIRMACION MANUAL DEL MOTOR
+// ==========================================================
+
+// El boton y la ventana deben existir en dashboard.html.
+//
+// IDs utilizados:
+// manualEngineButton
+// manualEngineModal
+// manualEngineYes
+// manualEngineNo
+// manualEngineCancel
+
+const manualEngineButton =
+  document.getElementById(
+    "manualEngineButton"
+  );
+
+const manualEngineModal =
+  document.getElementById(
+    "manualEngineModal"
+  );
+
+const manualEngineYes =
+  document.getElementById(
+    "manualEngineYes"
+  );
+
+const manualEngineNo =
+  document.getElementById(
+    "manualEngineNo"
+  );
+
+const manualEngineCancel =
+  document.getElementById(
+    "manualEngineCancel"
+  );
+
+
+function openManualEngineModal() {
+
+  if (!manualEngineModal) {
+    return;
+  }
+
+  manualEngineModal.classList.remove(
+    "hidden"
+  );
+
+  manualEngineModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+}
+
+
+function closeManualEngineModal() {
+
+  if (!manualEngineModal) {
+    return;
+  }
+
+  manualEngineModal.classList.add(
+    "hidden"
+  );
+
+  manualEngineModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+}
+
+
+function confirmManualEngineState(state) {
+
+  if (engineCommandRunning) {
+
+    alert(
+      "Espere a que termine el comando del motor."
+    );
+
+    return;
+  }
+
+  // SOLO cambia el estado visual.
+  // NO envia comandos al ESP32.
+  // NO modifica engineOn.
+
+  manualEngineState = state;
+
+  updateEngineVisual();
+
+  closeManualEngineModal();
+
+  console.log(
+    "Confirmacion manual del motor:",
+    state ? "ENCENDIDO" : "APAGADO"
+  );
+}
+
+
+if (manualEngineButton) {
+
+  manualEngineButton.addEventListener(
+    "click",
+    () => {
+
+      if (engineCommandRunning) {
+
+        alert(
+          "Espere a que termine el comando del motor."
+        );
+
+        return;
+      }
+
+      openManualEngineModal();
+    }
+  );
+}
+
+
+if (manualEngineYes) {
+
+  manualEngineYes.addEventListener(
+    "click",
+    () => {
+
+      confirmManualEngineState(
+        true
+      );
+    }
+  );
+}
+
+
+if (manualEngineNo) {
+
+  manualEngineNo.addEventListener(
+    "click",
+    () => {
+
+      confirmManualEngineState(
+        false
+      );
+    }
+  );
+}
+
+
+if (manualEngineCancel) {
+
+  manualEngineCancel.addEventListener(
+    "click",
+    closeManualEngineModal
+  );
+}
+
+
+// Cerrar ventana con la tecla ESC.
+
+document.addEventListener(
+  "keydown",
+  (event) => {
+
+    if (event.key === "Escape") {
+
+      closeManualEngineModal();
+    }
+  }
+);
+
+
+// ==========================================================
+// CONTROL VISUAL DEL INMOVILIZADOR
 // ==========================================================
 
 function updateImmobilizerButton() {
@@ -646,11 +806,6 @@ function updateImmobilizerButton() {
   if (!immobilizerButton) {
     return;
   }
-
-
-  // --------------------------------------------------------
-  // PROCESANDO
-  // --------------------------------------------------------
 
   if (immobilizerCommandRunning) {
 
@@ -662,13 +817,7 @@ function updateImmobilizerButton() {
     return;
   }
 
-
   immobilizerButton.disabled = false;
-
-
-  // --------------------------------------------------------
-  // ACTIVADO
-  // --------------------------------------------------------
 
   if (immobilizerOn === true) {
 
@@ -678,11 +827,6 @@ function updateImmobilizerButton() {
     return;
   }
 
-
-  // --------------------------------------------------------
-  // DESACTIVADO
-  // --------------------------------------------------------
-
   if (immobilizerOn === false) {
 
     immobilizerButton.textContent =
@@ -690,11 +834,6 @@ function updateImmobilizerButton() {
 
     return;
   }
-
-
-  // --------------------------------------------------------
-  // DESCONOCIDO
-  // --------------------------------------------------------
 
   immobilizerButton.textContent =
     "CONSULTAR INMOVILIZADOR";
@@ -711,7 +850,6 @@ async function refreshImmobilizerState() {
 
   updateImmobilizerButton();
 
-
   try {
 
     const result =
@@ -719,10 +857,8 @@ async function refreshImmobilizerState() {
         "immobilizer-status"
       );
 
-
     immobilizerOn =
       result.immobilizerOn === true;
-
 
     console.log(
       "Estado inmovilizador:",
@@ -731,9 +867,7 @@ async function refreshImmobilizerState() {
         : "DESACTIVADO"
     );
 
-
     updateLastCommunication();
-
 
   } catch (error) {
 
@@ -742,9 +876,7 @@ async function refreshImmobilizerState() {
       error
     );
 
-
     immobilizerOn = null;
-
 
   } finally {
 
@@ -754,7 +886,7 @@ async function refreshImmobilizerState() {
 
 
 // ==========================================================
-// BATERIA
+// CONSULTAR BATERIA
 // ==========================================================
 
 document
@@ -773,12 +905,10 @@ document
           "batteryValue"
         );
 
-
       button.disabled = true;
 
       button.textContent =
         "CONSULTANDO...";
-
 
       try {
 
@@ -787,31 +917,22 @@ document
             "battery"
           );
 
-
         const voltage =
           Number(
             result.battery
           );
 
-
-        if (
-          !Number.isFinite(
-            voltage
-          )
-        ) {
+        if (!Number.isFinite(voltage)) {
 
           throw new Error(
             "Valor de bateria invalido"
           );
         }
 
-
         batteryValue.textContent =
           voltage.toFixed(2);
 
-
         updateLastCommunication();
-
 
       } catch (error) {
 
@@ -820,16 +941,13 @@ document
           error
         );
 
-
         batteryValue.textContent =
           "--";
-
 
         alert(
           "No se pudo obtener el voltaje de bateria.\n\n" +
           error.message
         );
-
 
       } finally {
 
@@ -843,7 +961,7 @@ document
 
 
 // ==========================================================
-// TEMPERATURA
+// CONSULTAR TEMPERATURA
 // ==========================================================
 
 document
@@ -862,12 +980,10 @@ document
           "temperatureValue"
         );
 
-
       button.disabled = true;
 
       button.textContent =
         "CONSULTANDO...";
-
 
       try {
 
@@ -876,31 +992,22 @@ document
             "temperature"
           );
 
-
         const temperature =
           Number(
             result.temperature
           );
 
-
-        if (
-          !Number.isFinite(
-            temperature
-          )
-        ) {
+        if (!Number.isFinite(temperature)) {
 
           throw new Error(
             "Valor de temperatura invalido"
           );
         }
 
-
         temperatureValue.textContent =
           temperature.toFixed(1);
 
-
         updateLastCommunication();
-
 
       } catch (error) {
 
@@ -909,16 +1016,13 @@ document
           error
         );
 
-
         temperatureValue.textContent =
           "--";
-
 
         alert(
           "No se pudo obtener la temperatura.\n\n" +
           error.message
         );
-
 
       } finally {
 
@@ -932,7 +1036,7 @@ document
 
 
 // ==========================================================
-// COMBUSTIBLE
+// CONSULTAR COMBUSTIBLE
 // ==========================================================
 
 document
@@ -951,12 +1055,10 @@ document
           "fuelValue"
         );
 
-
       button.disabled = true;
 
       button.textContent =
         "CONSULTANDO...";
-
 
       try {
 
@@ -965,31 +1067,22 @@ document
             "fuel"
           );
 
-
         const fuel =
           Number(
             result.fuel
           );
 
-
-        if (
-          !Number.isFinite(
-            fuel
-          )
-        ) {
+        if (!Number.isFinite(fuel)) {
 
           throw new Error(
             "Valor de combustible invalido"
           );
         }
 
-
         fuelValue.textContent =
           Math.round(fuel);
 
-
         updateLastCommunication();
-
 
       } catch (error) {
 
@@ -998,16 +1091,13 @@ document
           error
         );
 
-
         fuelValue.textContent =
           "--";
-
 
         alert(
           "No se pudo obtener el nivel de combustible.\n\n" +
           error.message
         );
-
 
       } finally {
 
@@ -1018,8 +1108,6 @@ document
       }
     }
   );
-
-
 // ==========================================================
 // ENCENDER MOTOR
 // ==========================================================
@@ -1027,6 +1115,10 @@ document
 startButton.addEventListener(
   "click",
   async () => {
+
+    if (engineCommandRunning) {
+      return;
+    }
 
     if (engineOn === true) {
 
@@ -1039,7 +1131,6 @@ startButton.addEventListener(
       return;
     }
 
-
     if (engineOn === null) {
 
       alert(
@@ -1051,30 +1142,26 @@ startButton.addEventListener(
       return;
     }
 
-
     const confirmed =
       confirm(
-        "¿Desea solicitar el encendido del motor?"
+        "¿Desea solicitar el encendido del motor?\n\n" +
+        "Verifique físicamente que el vehículo esté " +
+        "en una condición segura para el arranque."
       );
-
 
     if (!confirmed) {
       return;
     }
 
-
     engineCommandRunning = true;
 
     updateEngineButtons();
 
-
     const originalText =
       startButton.textContent;
 
-
     startButton.textContent =
       "ENCENDIENDO...";
-
 
     try {
 
@@ -1083,24 +1170,35 @@ startButton.addEventListener(
           "start"
         );
 
-
       console.log(
         "Resultado de arranque:",
         result
       );
 
+      // Conservamos el comportamiento existente:
+      // el servicio web reporta la solicitud exitosa.
+      //
+      // Esto NO confirma físicamente que el motor
+      // haya arrancado, porque IGF aún no está conectado.
 
       engineOn = true;
+
+      // Se elimina cualquier confirmación manual anterior.
+      // El usuario podrá volver a verificar el motor.
+
+      manualEngineState = null;
 
       updateEngineVisual();
 
       updateLastCommunication();
 
-
       alert(
-        "Motor marcado como encendido."
+        "Solicitud de encendido completada.\n\n" +
+        "El arranque físico del motor no está " +
+        "confirmado mediante IGF.\n\n" +
+        "Utilice VERIFICAR ESTADO DEL MOTOR " +
+        "para registrar el estado observado."
       );
-
 
     } catch (error) {
 
@@ -1109,15 +1207,14 @@ startButton.addEventListener(
         error
       );
 
-
       alert(
         "No se pudo completar la solicitud de encendido.\n\n" +
         error.message
       );
 
-
       engineOn = null;
 
+      manualEngineState = null;
 
     } finally {
 
@@ -1125,7 +1222,6 @@ startButton.addEventListener(
         originalText;
 
       engineCommandRunning = false;
-
 
       if (engineOn === null) {
 
@@ -1148,6 +1244,10 @@ stopButton.addEventListener(
   "click",
   async () => {
 
+    if (engineCommandRunning) {
+      return;
+    }
+
     if (engineOn === false) {
 
       alert(
@@ -1158,7 +1258,6 @@ stopButton.addEventListener(
 
       return;
     }
-
 
     if (engineOn === null) {
 
@@ -1171,30 +1270,24 @@ stopButton.addEventListener(
       return;
     }
 
-
     const confirmed =
       confirm(
         "¿Desea solicitar el apagado del motor?"
       );
 
-
     if (!confirmed) {
       return;
     }
-
 
     engineCommandRunning = true;
 
     updateEngineButtons();
 
-
     const originalText =
       stopButton.textContent;
 
-
     stopButton.textContent =
       "APAGANDO...";
-
 
     try {
 
@@ -1203,24 +1296,28 @@ stopButton.addEventListener(
           "stop"
         );
 
-
       console.log(
         "Resultado de apagado:",
         result
       );
 
+      // Se conserva el comportamiento original.
+      // La respuesta del servicio no constituye
+      // verificación física de motor detenido.
 
       engineOn = false;
+
+      manualEngineState = null;
 
       updateEngineVisual();
 
       updateLastCommunication();
 
-
       alert(
-        "Motor marcado como apagado."
+        "Solicitud de apagado completada.\n\n" +
+        "Verifique físicamente que el motor " +
+        "se haya detenido."
       );
-
 
     } catch (error) {
 
@@ -1229,15 +1326,14 @@ stopButton.addEventListener(
         error
       );
 
-
       alert(
         "No se pudo completar la solicitud de apagado.\n\n" +
         error.message
       );
 
-
       engineOn = null;
 
+      manualEngineState = null;
 
     } finally {
 
@@ -1245,7 +1341,6 @@ stopButton.addEventListener(
         originalText;
 
       engineCommandRunning = false;
-
 
       if (engineOn === null) {
 
@@ -1268,25 +1363,28 @@ immobilizerButton.addEventListener(
   "click",
   async () => {
 
+    if (immobilizerCommandRunning) {
+      return;
+    }
+
     // --------------------------------------------------------
-    // SI NO CONOCEMOS EL ESTADO, CONSULTAR PRIMERO
+    // CONSULTAR ESTADO SI ES DESCONOCIDO
     // --------------------------------------------------------
 
     if (immobilizerOn === null) {
 
       await refreshImmobilizerState();
 
-
       if (immobilizerOn === null) {
 
         alert(
-          "No se pudo conocer el estado actual del inmovilizador."
+          "No se pudo conocer el estado actual " +
+          "del inmovilizador."
         );
 
         return;
       }
     }
-
 
     // --------------------------------------------------------
     // CONFIRMACION
@@ -1295,24 +1393,27 @@ immobilizerButton.addEventListener(
     const mensaje =
       immobilizerOn
         ? "¿Desea DESACTIVAR el inmovilizador?"
-        : "¿Desea ACTIVAR el inmovilizador?";
-
+        : "¿Desea ACTIVAR el inmovilizador?\n\n" +
+          "IMPORTANTE: confirme físicamente que " +
+          "el motor esté completamente detenido.\n" +
+          "No active el bloqueo con el motor en marcha.";
 
     const confirmed =
       confirm(
         mensaje
       );
 
-
     if (!confirmed) {
       return;
     }
 
+    // --------------------------------------------------------
+    // PROCESANDO
+    // --------------------------------------------------------
 
     immobilizerCommandRunning = true;
 
     updateImmobilizerButton();
-
 
     try {
 
@@ -1321,24 +1422,23 @@ immobilizerButton.addEventListener(
           "immobilizer"
         );
 
-
       console.log(
         "Resultado inmovilizador:",
         result
       );
 
-
       immobilizerOn =
         result.immobilizerOn === true;
 
-
       updateLastCommunication();
-
 
       if (immobilizerOn) {
 
         alert(
-          "Inmovilizador ACTIVADO."
+          "Inmovilizador ACTIVADO.\n\n" +
+          "El bloqueo debe impedir futuros " +
+          "arranques, nunca detener un motor " +
+          "que ya está funcionando."
         );
 
       } else {
@@ -1348,7 +1448,6 @@ immobilizerButton.addEventListener(
         );
       }
 
-
     } catch (error) {
 
       console.error(
@@ -1356,20 +1455,17 @@ immobilizerButton.addEventListener(
         error
       );
 
-
       alert(
-        "No se pudo cambiar el estado del inmovilizador.\n\n" +
+        "No se pudo cambiar el estado " +
+        "del inmovilizador.\n\n" +
         error.message
       );
 
-
       immobilizerOn = null;
-
 
     } finally {
 
       immobilizerCommandRunning = false;
-
 
       if (immobilizerOn === null) {
 
@@ -1382,3 +1478,8 @@ immobilizerButton.addEventListener(
     }
   }
 );
+
+
+// ==========================================================
+// FIN DEL ARCHIVO dashboard.js
+// ==========================================================
